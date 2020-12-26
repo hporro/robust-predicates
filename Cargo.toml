@@ -1,0 +1,12 @@
+[package]
+name = "robust-predicates"
+description = "Robust predicates for computer geometry"
+version = "0.1.0"
+authors = ["hporro <hporro@dcc.uchile.cl>"]
+edition = "2018"
+build = "build.rs"
+license = "MIT"
+keywords = ["geometry", "math", "robust", "predicates"]
+
+[build-dependencies]
+cc = "1.0.66"
