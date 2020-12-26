@@ -7,6 +7,8 @@ edition = "2018"
 build = "build.rs"
 license = "MIT"
 keywords = ["geometry", "math", "robust", "predicates"]
+homepage = "https://github.com/hporro/robust-predicates"
+repository = "https://github.com/hporro/robust-predicates"
 
 [build-dependencies]
 cc = "1.0.66"
