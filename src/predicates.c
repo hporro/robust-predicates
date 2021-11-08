@@ -140,6 +140,8 @@
 #define NARROWRAND narrowdoublerand
 #define UNIFORMRAND uniformdoublerand
 
+double random(){return rand();}
+
 /* Which of the following two methods of finding the absolute values is      */
 /*   fastest is compiler-dependent.  A few compilers can inline and optimize */
 /*   the fabs() call; but most will incur the overhead of a function call,   */
