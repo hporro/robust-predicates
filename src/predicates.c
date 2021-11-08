@@ -140,7 +140,9 @@
 #define NARROWRAND narrowdoublerand
 #define UNIFORMRAND uniformdoublerand
 
+#ifdef _MSC_VER
 double random(){return rand();}
+#endif
 
 /* Which of the following two methods of finding the absolute values is      */
 /*   fastest is compiler-dependent.  A few compilers can inline and optimize */
