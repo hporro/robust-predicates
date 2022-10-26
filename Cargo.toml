@@ -4,7 +4,6 @@ description = "Robust predicates for computer geometry"
 version = "0.1.4"
 authors = ["hporro <heinich.porro@unilim.fr>"]
 edition = "2021"
-build = "build.rs"
 license = "MIT"
 keywords = ["geometry", "math", "robust", "predicates"]
 homepage = "https://github.com/hporro/robust-predicates"
