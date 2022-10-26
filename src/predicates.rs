@@ -34,8 +34,8 @@ pub unsafe extern "C" fn exactinit() {
     let mut half: libc::c_double = 0.;
     let mut check: libc::c_double = 0.;
     let mut lastcheck: libc::c_double = 0.;
-    let mut every_other: libc::c_int = 0;
-    every_other = 1 as libc::c_int;
+    let mut every_other: i32 = 0;
+    every_other = 1 as i32;
     half = 0.5f64;
     epsilon = 1.0f64;
     splitter = 1.0f64;
@@ -46,7 +46,7 @@ pub unsafe extern "C" fn exactinit() {
         if every_other != 0 {
             splitter *= 2.0f64;
         }
-        every_other = (every_other == 0) as libc::c_int;
+        every_other = (every_other == 0) as i32;
         check = 1.0f64 + epsilon;
         if !(check != 1.0f64 && check != lastcheck) {
             break;
@@ -69,21 +69,21 @@ pub unsafe extern "C" fn exactinit() {
 }
 #[no_mangle]
 pub unsafe extern "C" fn grow_expansion(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
     mut b: libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
     Q = b;
-    eindex = 0 as libc::c_int;
+    eindex = 0 as i32;
     while eindex < elen {
         enow = *e.offset(eindex as isize);
         Qnew = Q + enow;
@@ -96,28 +96,28 @@ pub unsafe extern "C" fn grow_expansion(
         eindex += 1;
     }
     *h.offset(eindex as isize) = Q;
-    return eindex + 1 as libc::c_int;
+    return eindex + 1 as i32;
 }
 #[no_mangle]
 pub unsafe extern "C" fn grow_expansion_zeroelim(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
     mut b: libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut hh: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    hindex = 0 as libc::c_int;
+    hindex = 0 as i32;
     Q = b;
-    eindex = 0 as libc::c_int;
+    eindex = 0 as i32;
     while eindex < elen {
         enow = *e.offset(eindex as isize);
         Qnew = Q + enow;
@@ -134,7 +134,7 @@ pub unsafe extern "C" fn grow_expansion_zeroelim(
         }
         eindex += 1;
     }
-    if Q != 0.0f64 || hindex == 0 as libc::c_int {
+    if Q != 0.0f64 || hindex == 0 as i32 {
         let fresh1 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh1 as isize) = Q;
@@ -143,24 +143,24 @@ pub unsafe extern "C" fn grow_expansion_zeroelim(
 }
 #[no_mangle]
 pub unsafe extern "C" fn expansion_sum(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
-    let mut hlast: libc::c_int = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
+    let mut hlast: i32 = 0;
     let mut hnow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    Q = *f.offset(0 as libc::c_int as isize);
-    hindex = 0 as libc::c_int;
+    Q = *f.offset(0 as i32 as isize);
+    hindex = 0 as i32;
     while hindex < elen {
         hnow = *e.offset(hindex as isize);
         Qnew = Q + hnow;
@@ -174,7 +174,7 @@ pub unsafe extern "C" fn expansion_sum(
     }
     *h.offset(hindex as isize) = Q;
     hlast = hindex;
-    findex = 1 as libc::c_int;
+    findex = 1 as i32;
     while findex < flen {
         Q = *f.offset(findex as isize);
         hindex = findex;
@@ -193,29 +193,29 @@ pub unsafe extern "C" fn expansion_sum(
         *h.offset(hlast as isize) = Q;
         findex += 1;
     }
-    return hlast + 1 as libc::c_int;
+    return hlast + 1 as i32;
 }
 #[no_mangle]
 pub unsafe extern "C" fn expansion_sum_zeroelim1(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
-    let mut index: libc::c_int = 0;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
-    let mut hlast: libc::c_int = 0;
+    let mut index: i32 = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
+    let mut hlast: i32 = 0;
     let mut hnow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    Q = *f.offset(0 as libc::c_int as isize);
-    hindex = 0 as libc::c_int;
+    Q = *f.offset(0 as i32 as isize);
+    hindex = 0 as i32;
     while hindex < elen {
         hnow = *e.offset(hindex as isize);
         Qnew = Q + hnow;
@@ -229,7 +229,7 @@ pub unsafe extern "C" fn expansion_sum_zeroelim1(
     }
     *h.offset(hindex as isize) = Q;
     hlast = hindex;
-    findex = 1 as libc::c_int;
+    findex = 1 as i32;
     while findex < flen {
         Q = *f.offset(findex as isize);
         hindex = findex;
@@ -248,8 +248,8 @@ pub unsafe extern "C" fn expansion_sum_zeroelim1(
         *h.offset(hlast as isize) = Q;
         findex += 1;
     }
-    hindex = -(1 as libc::c_int);
-    index = 0 as libc::c_int;
+    hindex = -(1 as i32);
+    index = 0 as i32;
     while index <= hlast {
         hnow = *h.offset(index as isize);
         if hnow != 0.0f64 {
@@ -258,35 +258,35 @@ pub unsafe extern "C" fn expansion_sum_zeroelim1(
         }
         index += 1;
     }
-    if hindex == -(1 as libc::c_int) {
-        return 1 as libc::c_int
+    if hindex == -(1 as i32) {
+        return 1 as i32
     } else {
-        return hindex + 1 as libc::c_int
+        return hindex + 1 as i32
     };
 }
 #[no_mangle]
 pub unsafe extern "C" fn expansion_sum_zeroelim2(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut hh: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
-    let mut hlast: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
+    let mut hlast: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    hindex = 0 as libc::c_int;
-    Q = *f.offset(0 as libc::c_int as isize);
-    eindex = 0 as libc::c_int;
+    hindex = 0 as i32;
+    Q = *f.offset(0 as i32 as isize);
+    eindex = 0 as i32;
     while eindex < elen {
         enow = *e.offset(eindex as isize);
         Qnew = Q + enow;
@@ -305,11 +305,11 @@ pub unsafe extern "C" fn expansion_sum_zeroelim2(
     }
     *h.offset(hindex as isize) = Q;
     hlast = hindex;
-    findex = 1 as libc::c_int;
+    findex = 1 as i32;
     while findex < flen {
-        hindex = 0 as libc::c_int;
+        hindex = 0 as i32;
         Q = *f.offset(findex as isize);
-        eindex = 0 as libc::c_int;
+        eindex = 0 as i32;
         while eindex <= hlast {
             enow = *h.offset(eindex as isize);
             Qnew = Q + enow;
@@ -319,7 +319,7 @@ pub unsafe extern "C" fn expansion_sum_zeroelim2(
             around = Q - avirt;
             hh = around + bround;
             Q = Qnew;
-            if hh != 0 as libc::c_int as libc::c_double {
+            if hh != 0 as i32 as libc::c_double {
                 let fresh3 = hindex;
                 hindex = hindex + 1;
                 *h.offset(fresh3 as isize) = hh;
@@ -330,32 +330,32 @@ pub unsafe extern "C" fn expansion_sum_zeroelim2(
         hlast = hindex;
         findex += 1;
     }
-    return hlast + 1 as libc::c_int;
+    return hlast + 1 as i32;
 }
 #[no_mangle]
 pub unsafe extern "C" fn fast_expansion_sum(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut fnow: libc::c_double = 0.;
-    enow = *e.offset(0 as libc::c_int as isize);
-    fnow = *f.offset(0 as libc::c_int as isize);
-    findex = 0 as libc::c_int;
+    enow = *e.offset(0 as i32 as isize);
+    fnow = *f.offset(0 as i32 as isize);
+    findex = 0 as i32;
     eindex = findex;
-    if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+    if (fnow > enow) as i32 == (fnow > -enow) as i32 {
         Q = enow;
         eindex += 1;
         enow = *e.offset(eindex as isize);
@@ -364,25 +364,25 @@ pub unsafe extern "C" fn fast_expansion_sum(
         findex += 1;
         fnow = *f.offset(findex as isize);
     }
-    hindex = 0 as libc::c_int;
+    hindex = 0 as i32;
     if eindex < elen && findex < flen {
-        if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+        if (fnow > enow) as i32 == (fnow > -enow) as i32 {
             Qnew = enow + Q;
             bvirt = Qnew - enow;
-            *h.offset(0 as libc::c_int as isize) = Q - bvirt;
+            *h.offset(0 as i32 as isize) = Q - bvirt;
             eindex += 1;
             enow = *e.offset(eindex as isize);
         } else {
             Qnew = fnow + Q;
             bvirt = Qnew - fnow;
-            *h.offset(0 as libc::c_int as isize) = Q - bvirt;
+            *h.offset(0 as i32 as isize) = Q - bvirt;
             findex += 1;
             fnow = *f.offset(findex as isize);
         }
         Q = Qnew;
-        hindex = 1 as libc::c_int;
+        hindex = 1 as i32;
         while eindex < elen && findex < flen {
-            if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+            if (fnow > enow) as i32 == (fnow > -enow) as i32 {
                 Qnew = Q + enow;
                 bvirt = Qnew - Q;
                 avirt = Qnew - bvirt;
@@ -430,16 +430,16 @@ pub unsafe extern "C" fn fast_expansion_sum(
         hindex += 1;
     }
     *h.offset(hindex as isize) = Q;
-    return hindex + 1 as libc::c_int;
+    return hindex + 1 as i32;
 }
 #[no_mangle]
 pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
     let mut hh: libc::c_double = 0.;
@@ -447,16 +447,16 @@ pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut fnow: libc::c_double = 0.;
-    enow = *e.offset(0 as libc::c_int as isize);
-    fnow = *f.offset(0 as libc::c_int as isize);
-    findex = 0 as libc::c_int;
+    enow = *e.offset(0 as i32 as isize);
+    fnow = *f.offset(0 as i32 as isize);
+    findex = 0 as i32;
     eindex = findex;
-    if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+    if (fnow > enow) as i32 == (fnow > -enow) as i32 {
         Q = enow;
         eindex += 1;
         enow = *e.offset(eindex as isize);
@@ -465,9 +465,9 @@ pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
         findex += 1;
         fnow = *f.offset(findex as isize);
     }
-    hindex = 0 as libc::c_int;
+    hindex = 0 as i32;
     if eindex < elen && findex < flen {
-        if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+        if (fnow > enow) as i32 == (fnow > -enow) as i32 {
             Qnew = enow + Q;
             bvirt = Qnew - enow;
             hh = Q - bvirt;
@@ -487,7 +487,7 @@ pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
             *h.offset(fresh4 as isize) = hh;
         }
         while eindex < elen && findex < flen {
-            if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+            if (fnow > enow) as i32 == (fnow > -enow) as i32 {
                 Qnew = Q + enow;
                 bvirt = Qnew - Q;
                 avirt = Qnew - bvirt;
@@ -546,7 +546,7 @@ pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
             *h.offset(fresh7 as isize) = hh;
         }
     }
-    if Q != 0.0f64 || hindex == 0 as libc::c_int {
+    if Q != 0.0f64 || hindex == 0 as i32 {
         let fresh8 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh8 as isize) = Q;
@@ -555,12 +555,12 @@ pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
 }
 #[no_mangle]
 pub unsafe extern "C" fn linear_expansion_sum(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
@@ -569,17 +569,17 @@ pub unsafe extern "C" fn linear_expansion_sum(
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut fnow: libc::c_double = 0.;
     let mut g0: libc::c_double = 0.;
-    enow = *e.offset(0 as libc::c_int as isize);
-    fnow = *f.offset(0 as libc::c_int as isize);
-    findex = 0 as libc::c_int;
+    enow = *e.offset(0 as i32 as isize);
+    fnow = *f.offset(0 as i32 as isize);
+    findex = 0 as i32;
     eindex = findex;
-    if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+    if (fnow > enow) as i32 == (fnow > -enow) as i32 {
         g0 = enow;
         eindex += 1;
         enow = *e.offset(eindex as isize);
@@ -590,7 +590,7 @@ pub unsafe extern "C" fn linear_expansion_sum(
     }
     if eindex < elen
         && (findex >= flen
-            || (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int)
+            || (fnow > enow) as i32 == (fnow > -enow) as i32)
     {
         Qnew = enow + g0;
         bvirt = Qnew - enow;
@@ -605,11 +605,11 @@ pub unsafe extern "C" fn linear_expansion_sum(
         fnow = *f.offset(findex as isize);
     }
     Q = Qnew;
-    hindex = 0 as libc::c_int;
-    while hindex < elen + flen - 2 as libc::c_int {
+    hindex = 0 as i32;
+    while hindex < elen + flen - 2 as i32 {
         if eindex < elen
             && (findex >= flen
-                || (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int)
+                || (fnow > enow) as i32 == (fnow > -enow) as i32)
         {
             R = enow + q;
             bvirt = R - enow;
@@ -633,17 +633,17 @@ pub unsafe extern "C" fn linear_expansion_sum(
         hindex += 1;
     }
     *h.offset(hindex as isize) = q;
-    *h.offset((hindex + 1 as libc::c_int) as isize) = Q;
-    return hindex + 2 as libc::c_int;
+    *h.offset((hindex + 1 as i32) as isize) = Q;
+    return hindex + 2 as i32;
 }
 #[no_mangle]
 pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
-    mut flen: libc::c_int,
+    mut flen: i32,
     mut f: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut q: libc::c_double = 0.;
     let mut hh: libc::c_double = 0.;
@@ -653,19 +653,19 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
     let mut around: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut findex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
-    let mut count: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut findex: i32 = 0;
+    let mut hindex: i32 = 0;
+    let mut count: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut fnow: libc::c_double = 0.;
     let mut g0: libc::c_double = 0.;
-    enow = *e.offset(0 as libc::c_int as isize);
-    fnow = *f.offset(0 as libc::c_int as isize);
-    findex = 0 as libc::c_int;
+    enow = *e.offset(0 as i32 as isize);
+    fnow = *f.offset(0 as i32 as isize);
+    findex = 0 as i32;
     eindex = findex;
-    hindex = 0 as libc::c_int;
-    if (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int {
+    hindex = 0 as i32;
+    if (fnow > enow) as i32 == (fnow > -enow) as i32 {
         g0 = enow;
         eindex += 1;
         enow = *e.offset(eindex as isize);
@@ -676,7 +676,7 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
     }
     if eindex < elen
         && (findex >= flen
-            || (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int)
+            || (fnow > enow) as i32 == (fnow > -enow) as i32)
     {
         Qnew = enow + g0;
         bvirt = Qnew - enow;
@@ -691,11 +691,11 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
         fnow = *f.offset(findex as isize);
     }
     Q = Qnew;
-    count = 2 as libc::c_int;
+    count = 2 as i32;
     while count < elen + flen {
         if eindex < elen
             && (findex >= flen
-                || (fnow > enow) as libc::c_int == (fnow > -enow) as libc::c_int)
+                || (fnow > enow) as i32 == (fnow > -enow) as i32)
         {
             R = enow + q;
             bvirt = R - enow;
@@ -716,19 +716,19 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
         around = Q - avirt;
         q = around + bround;
         Q = Qnew;
-        if hh != 0 as libc::c_int as libc::c_double {
+        if hh != 0 as i32 as libc::c_double {
             let fresh9 = hindex;
             hindex = hindex + 1;
             *h.offset(fresh9 as isize) = hh;
         }
         count += 1;
     }
-    if q != 0 as libc::c_int as libc::c_double {
+    if q != 0 as i32 as libc::c_double {
         let fresh10 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh10 as isize) = q;
     }
-    if Q != 0.0f64 || hindex == 0 as libc::c_int {
+    if Q != 0.0f64 || hindex == 0 as i32 {
         let fresh11 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh11 as isize) = Q;
@@ -737,17 +737,17 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
 }
 #[no_mangle]
 pub unsafe extern "C" fn scale_expansion(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
     mut b: libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut sum: libc::c_double = 0.;
     let mut product1: libc::c_double = 0.;
     let mut product0: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
@@ -766,17 +766,17 @@ pub unsafe extern "C" fn scale_expansion(
     abig = c - b;
     bhi = c - abig;
     blo = b - bhi;
-    Q = *e.offset(0 as libc::c_int as isize) * b;
-    c = splitter * *e.offset(0 as libc::c_int as isize);
-    abig = c - *e.offset(0 as libc::c_int as isize);
+    Q = *e.offset(0 as i32 as isize) * b;
+    c = splitter * *e.offset(0 as i32 as isize);
+    abig = c - *e.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *e.offset(0 as libc::c_int as isize) - ahi;
+    alo = *e.offset(0 as i32 as isize) - ahi;
     err1 = Q - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
-    *h.offset(0 as libc::c_int as isize) = alo * blo - err3;
-    hindex = 1 as libc::c_int;
-    eindex = 1 as libc::c_int;
+    *h.offset(0 as i32 as isize) = alo * blo - err3;
+    hindex = 1 as i32;
+    eindex = 1 as i32;
     while eindex < elen {
         enow = *e.offset(eindex as isize);
         product1 = enow * b;
@@ -809,18 +809,18 @@ pub unsafe extern "C" fn scale_expansion(
 }
 #[no_mangle]
 pub unsafe extern "C" fn scale_expansion_zeroelim(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
     mut b: libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut sum: libc::c_double = 0.;
     let mut hh: libc::c_double = 0.;
     let mut product1: libc::c_double = 0.;
     let mut product0: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut enow: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
@@ -839,22 +839,22 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
     abig = c - b;
     bhi = c - abig;
     blo = b - bhi;
-    Q = *e.offset(0 as libc::c_int as isize) * b;
-    c = splitter * *e.offset(0 as libc::c_int as isize);
-    abig = c - *e.offset(0 as libc::c_int as isize);
+    Q = *e.offset(0 as i32 as isize) * b;
+    c = splitter * *e.offset(0 as i32 as isize);
+    abig = c - *e.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *e.offset(0 as libc::c_int as isize) - ahi;
+    alo = *e.offset(0 as i32 as isize) - ahi;
     err1 = Q - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     hh = alo * blo - err3;
-    hindex = 0 as libc::c_int;
-    if hh != 0 as libc::c_int as libc::c_double {
+    hindex = 0 as i32;
+    if hh != 0 as i32 as libc::c_double {
         let fresh12 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh12 as isize) = hh;
     }
-    eindex = 1 as libc::c_int;
+    eindex = 1 as i32;
     while eindex < elen {
         enow = *e.offset(eindex as isize);
         product1 = enow * b;
@@ -872,7 +872,7 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
         bround = product0 - bvirt;
         around = Q - avirt;
         hh = around + bround;
-        if hh != 0 as libc::c_int as libc::c_double {
+        if hh != 0 as i32 as libc::c_double {
             let fresh13 = hindex;
             hindex = hindex + 1;
             *h.offset(fresh13 as isize) = hh;
@@ -880,14 +880,14 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
         Q = product1 + sum;
         bvirt = Q - product1;
         hh = sum - bvirt;
-        if hh != 0 as libc::c_int as libc::c_double {
+        if hh != 0 as i32 as libc::c_double {
             let fresh14 = hindex;
             hindex = hindex + 1;
             *h.offset(fresh14 as isize) = hh;
         }
         eindex += 1;
     }
-    if Q != 0.0f64 || hindex == 0 as libc::c_int {
+    if Q != 0.0f64 || hindex == 0 as i32 {
         let fresh15 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh15 as isize) = Q;
@@ -896,29 +896,29 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
 }
 #[no_mangle]
 pub unsafe extern "C" fn compress(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
     mut h: *mut libc::c_double,
-) -> libc::c_int {
+) -> i32 {
     let mut Q: libc::c_double = 0.;
     let mut q: libc::c_double = 0.;
     let mut Qnew: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    let mut hindex: libc::c_int = 0;
+    let mut eindex: i32 = 0;
+    let mut hindex: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut enow: libc::c_double = 0.;
     let mut hnow: libc::c_double = 0.;
-    let mut top: libc::c_int = 0;
-    let mut bottom: libc::c_int = 0;
-    bottom = elen - 1 as libc::c_int;
+    let mut top: i32 = 0;
+    let mut bottom: i32 = 0;
+    bottom = elen - 1 as i32;
     Q = *e.offset(bottom as isize);
-    eindex = elen - 2 as libc::c_int;
-    while eindex >= 0 as libc::c_int {
+    eindex = elen - 2 as i32;
+    while eindex >= 0 as i32 {
         enow = *e.offset(eindex as isize);
         Qnew = Q + enow;
         bvirt = Qnew - Q;
         q = enow - bvirt;
-        if q != 0 as libc::c_int as libc::c_double {
+        if q != 0 as i32 as libc::c_double {
             let fresh16 = bottom;
             bottom = bottom - 1;
             *h.offset(fresh16 as isize) = Qnew;
@@ -928,14 +928,14 @@ pub unsafe extern "C" fn compress(
         }
         eindex -= 1;
     }
-    top = 0 as libc::c_int;
-    hindex = bottom + 1 as libc::c_int;
+    top = 0 as i32;
+    hindex = bottom + 1 as i32;
     while hindex < elen {
         hnow = *h.offset(hindex as isize);
         Qnew = hnow + Q;
         bvirt = Qnew - hnow;
         q = Q - bvirt;
-        if q != 0 as libc::c_int as libc::c_double {
+        if q != 0 as i32 as libc::c_double {
             let fresh17 = top;
             top = top + 1;
             *h.offset(fresh17 as isize) = q;
@@ -944,17 +944,17 @@ pub unsafe extern "C" fn compress(
         hindex += 1;
     }
     *h.offset(top as isize) = Q;
-    return top + 1 as libc::c_int;
+    return top + 1 as i32;
 }
 #[no_mangle]
 pub unsafe extern "C" fn estimate(
-    mut elen: libc::c_int,
+    mut elen: i32,
     mut e: *mut libc::c_double,
 ) -> libc::c_double {
     let mut Q: libc::c_double = 0.;
-    let mut eindex: libc::c_int = 0;
-    Q = *e.offset(0 as libc::c_int as isize);
-    eindex = 1 as libc::c_int;
+    let mut eindex: i32 = 0;
+    Q = *e.offset(0 as i32 as isize);
+    eindex = 1 as i32;
     while eindex < elen {
         Q += *e.offset(eindex as isize);
         eindex += 1;
@@ -971,10 +971,10 @@ pub unsafe extern "C" fn orient2dfast(
     let mut bcx: libc::c_double = 0.;
     let mut acy: libc::c_double = 0.;
     let mut bcy: libc::c_double = 0.;
-    acx = *pa.offset(0 as libc::c_int as isize) - *pc.offset(0 as libc::c_int as isize);
-    bcx = *pb.offset(0 as libc::c_int as isize) - *pc.offset(0 as libc::c_int as isize);
-    acy = *pa.offset(1 as libc::c_int as isize) - *pc.offset(1 as libc::c_int as isize);
-    bcy = *pb.offset(1 as libc::c_int as isize) - *pc.offset(1 as libc::c_int as isize);
+    acx = *pa.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
+    bcx = *pb.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
+    acy = *pa.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
+    bcy = *pb.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
     return acx * bcy - acy * bcx;
 }
 #[no_mangle]
@@ -1003,8 +1003,8 @@ pub unsafe extern "C" fn orient2dexact(
     let mut cterms3: libc::c_double = 0.;
     let mut v: [libc::c_double; 8] = [0.; 8];
     let mut w: [libc::c_double; 12] = [0.; 12];
-    let mut vlength: libc::c_int = 0;
-    let mut wlength: libc::c_int = 0;
+    let mut vlength: i32 = 0;
+    let mut wlength: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -1021,30 +1021,30 @@ pub unsafe extern "C" fn orient2dexact(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    axby1 = *pa.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axby1 = *pa.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = axby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axby0 = alo * blo - err3;
-    axcy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axcy1 = *pa.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = axcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -1054,7 +1054,7 @@ pub unsafe extern "C" fn orient2dexact(
     avirt = _i + bvirt;
     bround = bvirt - axcy0;
     around = axby0 - avirt;
-    aterms[0 as libc::c_int as usize] = around + bround;
+    aterms[0 as i32 as usize] = around + bround;
     _j = axby1 + _i;
     bvirt = _j - axby1;
     avirt = _j - bvirt;
@@ -1066,38 +1066,38 @@ pub unsafe extern "C" fn orient2dexact(
     avirt = _i + bvirt;
     bround = bvirt - axcy1;
     around = _0 - avirt;
-    aterms[1 as libc::c_int as usize] = around + bround;
+    aterms[1 as i32 as usize] = around + bround;
     aterms3 = _j + _i;
     bvirt = aterms3 - _j;
     avirt = aterms3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    aterms[2 as libc::c_int as usize] = around + bround;
-    aterms[3 as libc::c_int as usize] = aterms3;
-    bxcy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    aterms[2 as i32 as usize] = around + bround;
+    aterms[3 as i32 as usize] = aterms3;
+    bxcy1 = *pb.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = bxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxcy0 = alo * blo - err3;
-    bxay1 = *pb.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    bxay1 = *pb.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = bxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -1107,7 +1107,7 @@ pub unsafe extern "C" fn orient2dexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay0;
     around = bxcy0 - avirt;
-    bterms[0 as libc::c_int as usize] = around + bround;
+    bterms[0 as i32 as usize] = around + bround;
     _j = bxcy1 + _i;
     bvirt = _j - bxcy1;
     avirt = _j - bvirt;
@@ -1119,38 +1119,38 @@ pub unsafe extern "C" fn orient2dexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay1;
     around = _0 - avirt;
-    bterms[1 as libc::c_int as usize] = around + bround;
+    bterms[1 as i32 as usize] = around + bround;
     bterms3 = _j + _i;
     bvirt = bterms3 - _j;
     avirt = bterms3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bterms[2 as libc::c_int as usize] = around + bround;
-    bterms[3 as libc::c_int as usize] = bterms3;
-    cxay1 = *pc.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    bterms[2 as i32 as usize] = around + bround;
+    bterms[3 as i32 as usize] = bterms3;
+    cxay1 = *pc.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = cxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     cxay0 = alo * blo - err3;
-    cxby1 = *pc.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxby1 = *pc.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = cxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -1160,7 +1160,7 @@ pub unsafe extern "C" fn orient2dexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby0;
     around = cxay0 - avirt;
-    cterms[0 as libc::c_int as usize] = around + bround;
+    cterms[0 as i32 as usize] = around + bround;
     _j = cxay1 + _i;
     bvirt = _j - cxay1;
     avirt = _j - bvirt;
@@ -1172,29 +1172,29 @@ pub unsafe extern "C" fn orient2dexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby1;
     around = _0 - avirt;
-    cterms[1 as libc::c_int as usize] = around + bround;
+    cterms[1 as i32 as usize] = around + bround;
     cterms3 = _j + _i;
     bvirt = cterms3 - _j;
     avirt = cterms3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    cterms[2 as libc::c_int as usize] = around + bround;
-    cterms[3 as libc::c_int as usize] = cterms3;
+    cterms[2 as i32 as usize] = around + bround;
+    cterms[3 as i32 as usize] = cterms3;
     vlength = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         aterms.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bterms.as_mut_ptr(),
         v.as_mut_ptr(),
     );
     wlength = fast_expansion_sum_zeroelim(
         vlength,
         v.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         cterms.as_mut_ptr(),
         w.as_mut_ptr(),
     );
-    return w[(wlength - 1 as libc::c_int) as usize];
+    return w[(wlength - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dslow(
@@ -1217,7 +1217,7 @@ pub unsafe extern "C" fn orient2dslow(
     let mut axby7: libc::c_double = 0.;
     let mut bxay7: libc::c_double = 0.;
     let mut deter: [libc::c_double; 16] = [0.; 16];
-    let mut deterlen: libc::c_int = 0;
+    let mut deterlen: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -1242,29 +1242,29 @@ pub unsafe extern "C" fn orient2dslow(
     let mut _0: libc::c_double = 0.;
     let mut _1: libc::c_double = 0.;
     let mut _2: libc::c_double = 0.;
-    acx = *pa.offset(0 as libc::c_int as isize) - *pc.offset(0 as libc::c_int as isize);
-    bvirt = *pa.offset(0 as libc::c_int as isize) - acx;
+    acx = *pa.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
+    bvirt = *pa.offset(0 as i32 as isize) - acx;
     avirt = acx + bvirt;
-    bround = bvirt - *pc.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     acxtail = around + bround;
-    acy = *pa.offset(1 as libc::c_int as isize) - *pc.offset(1 as libc::c_int as isize);
-    bvirt = *pa.offset(1 as libc::c_int as isize) - acy;
+    acy = *pa.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
+    bvirt = *pa.offset(1 as i32 as isize) - acy;
     avirt = acy + bvirt;
-    bround = bvirt - *pc.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     acytail = around + bround;
-    bcx = *pb.offset(0 as libc::c_int as isize) - *pc.offset(0 as libc::c_int as isize);
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bcx;
+    bcx = *pb.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
+    bvirt = *pb.offset(0 as i32 as isize) - bcx;
     avirt = bcx + bvirt;
-    bround = bvirt - *pc.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bcxtail = around + bround;
-    bcy = *pb.offset(1 as libc::c_int as isize) - *pc.offset(1 as libc::c_int as isize);
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bcy;
+    bcy = *pb.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
+    bvirt = *pb.offset(1 as i32 as isize) - bcy;
     avirt = bcy + bvirt;
-    bround = bvirt - *pc.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     bcytail = around + bround;
     c = splitter * acxtail;
     abig = c - acxtail;
@@ -1278,7 +1278,7 @@ pub unsafe extern "C" fn orient2dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * acx;
     abig = c - acx;
     a1hi = c - abig;
@@ -1311,7 +1311,7 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[1 as libc::c_int as usize] = around + bround;
+    axby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -1340,7 +1340,7 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[2 as libc::c_int as usize] = around + bround;
+    axby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -1364,7 +1364,7 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[3 as libc::c_int as usize] = around + bround;
+    axby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -1382,20 +1382,20 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axby[4 as libc::c_int as usize] = around + bround;
+    axby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axby[5 as libc::c_int as usize] = around + bround;
+    axby[5 as i32 as usize] = around + bround;
     axby7 = _m + _k;
     bvirt = axby7 - _m;
     avirt = axby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axby[6 as libc::c_int as usize] = around + bround;
-    axby[7 as libc::c_int as usize] = axby7;
+    axby[6 as i32 as usize] = around + bround;
+    axby[7 as i32 as usize] = axby7;
     negate = -acy;
     negatetail = -acytail;
     c = splitter * bcxtail;
@@ -1410,7 +1410,7 @@ pub unsafe extern "C" fn orient2dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bcx;
     abig = c - bcx;
     a1hi = c - abig;
@@ -1443,7 +1443,7 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[1 as libc::c_int as usize] = around + bround;
+    bxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -1472,7 +1472,7 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[2 as libc::c_int as usize] = around + bround;
+    bxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -1496,7 +1496,7 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[3 as libc::c_int as usize] = around + bround;
+    bxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -1514,28 +1514,28 @@ pub unsafe extern "C" fn orient2dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxay[4 as libc::c_int as usize] = around + bround;
+    bxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxay[5 as libc::c_int as usize] = around + bround;
+    bxay[5 as i32 as usize] = around + bround;
     bxay7 = _m + _k;
     bvirt = bxay7 - _m;
     avirt = bxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxay[6 as libc::c_int as usize] = around + bround;
-    bxay[7 as libc::c_int as usize] = bxay7;
+    bxay[6 as i32 as usize] = around + bround;
+    bxay[7 as i32 as usize] = bxay7;
     deterlen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         axby.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         bxay.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dadapt(
@@ -1563,9 +1563,9 @@ pub unsafe extern "C" fn orient2dadapt(
     let mut C2: [libc::c_double; 12] = [0.; 12];
     let mut D: [libc::c_double; 16] = [0.; 16];
     let mut B3: libc::c_double = 0.;
-    let mut C1length: libc::c_int = 0;
-    let mut C2length: libc::c_int = 0;
-    let mut Dlength: libc::c_int = 0;
+    let mut C1length: i32 = 0;
+    let mut C2length: i32 = 0;
+    let mut Dlength: i32 = 0;
     let mut u: [libc::c_double; 4] = [0.; 4];
     let mut u3: libc::c_double = 0.;
     let mut s1: libc::c_double = 0.;
@@ -1588,10 +1588,10 @@ pub unsafe extern "C" fn orient2dadapt(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    acx = *pa.offset(0 as libc::c_int as isize) - *pc.offset(0 as libc::c_int as isize);
-    bcx = *pb.offset(0 as libc::c_int as isize) - *pc.offset(0 as libc::c_int as isize);
-    acy = *pa.offset(1 as libc::c_int as isize) - *pc.offset(1 as libc::c_int as isize);
-    bcy = *pb.offset(1 as libc::c_int as isize) - *pc.offset(1 as libc::c_int as isize);
+    acx = *pa.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
+    bcx = *pb.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
+    acy = *pa.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
+    bcy = *pb.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
     detleft = acx * bcy;
     c = splitter * acx;
     abig = c - acx;
@@ -1623,7 +1623,7 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - detrighttail;
     around = detlefttail - avirt;
-    B[0 as libc::c_int as usize] = around + bround;
+    B[0 as i32 as usize] = around + bround;
     _j = detleft + _i;
     bvirt = _j - detleft;
     avirt = _j - bvirt;
@@ -1635,38 +1635,38 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - detright;
     around = _0 - avirt;
-    B[1 as libc::c_int as usize] = around + bround;
+    B[1 as i32 as usize] = around + bround;
     B3 = _j + _i;
     bvirt = B3 - _j;
     avirt = B3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    B[2 as libc::c_int as usize] = around + bround;
-    B[3 as libc::c_int as usize] = B3;
-    det = estimate(4 as libc::c_int, B.as_mut_ptr());
+    B[2 as i32 as usize] = around + bround;
+    B[3 as i32 as usize] = B3;
+    det = estimate(4 as i32, B.as_mut_ptr());
     errbound = ccwerrboundB * detsum;
     if det >= errbound || -det >= errbound {
         return det;
     }
-    bvirt = *pa.offset(0 as libc::c_int as isize) - acx;
+    bvirt = *pa.offset(0 as i32 as isize) - acx;
     avirt = acx + bvirt;
-    bround = bvirt - *pc.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     acxtail = around + bround;
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bcx;
+    bvirt = *pb.offset(0 as i32 as isize) - bcx;
     avirt = bcx + bvirt;
-    bround = bvirt - *pc.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bcxtail = around + bround;
-    bvirt = *pa.offset(1 as libc::c_int as isize) - acy;
+    bvirt = *pa.offset(1 as i32 as isize) - acy;
     avirt = acy + bvirt;
-    bround = bvirt - *pc.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     acytail = around + bround;
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bcy;
+    bvirt = *pb.offset(1 as i32 as isize) - bcy;
     avirt = bcy + bvirt;
-    bround = bvirt - *pc.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pc.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     bcytail = around + bround;
     if acxtail == 0.0f64 && acytail == 0.0f64 && bcxtail == 0.0f64 && bcytail == 0.0f64 {
         return det;
@@ -1708,7 +1708,7 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - t0;
     around = s0 - avirt;
-    u[0 as libc::c_int as usize] = around + bround;
+    u[0 as i32 as usize] = around + bround;
     _j = s1 + _i;
     bvirt = _j - s1;
     avirt = _j - bvirt;
@@ -1720,18 +1720,18 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - t1;
     around = _0 - avirt;
-    u[1 as libc::c_int as usize] = around + bround;
+    u[1 as i32 as usize] = around + bround;
     u3 = _j + _i;
     bvirt = u3 - _j;
     avirt = u3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    u[2 as libc::c_int as usize] = around + bround;
-    u[3 as libc::c_int as usize] = u3;
+    u[2 as i32 as usize] = around + bround;
+    u[3 as i32 as usize] = u3;
     C1length = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         B.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         u.as_mut_ptr(),
         C1.as_mut_ptr(),
     );
@@ -1766,7 +1766,7 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - t0;
     around = s0 - avirt;
-    u[0 as libc::c_int as usize] = around + bround;
+    u[0 as i32 as usize] = around + bround;
     _j = s1 + _i;
     bvirt = _j - s1;
     avirt = _j - bvirt;
@@ -1778,18 +1778,18 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - t1;
     around = _0 - avirt;
-    u[1 as libc::c_int as usize] = around + bround;
+    u[1 as i32 as usize] = around + bround;
     u3 = _j + _i;
     bvirt = u3 - _j;
     avirt = u3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    u[2 as libc::c_int as usize] = around + bround;
-    u[3 as libc::c_int as usize] = u3;
+    u[2 as i32 as usize] = around + bround;
+    u[3 as i32 as usize] = u3;
     C2length = fast_expansion_sum_zeroelim(
         C1length,
         C1.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         u.as_mut_ptr(),
         C2.as_mut_ptr(),
     );
@@ -1824,7 +1824,7 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - t0;
     around = s0 - avirt;
-    u[0 as libc::c_int as usize] = around + bround;
+    u[0 as i32 as usize] = around + bround;
     _j = s1 + _i;
     bvirt = _j - s1;
     avirt = _j - bvirt;
@@ -1836,22 +1836,22 @@ pub unsafe extern "C" fn orient2dadapt(
     avirt = _i + bvirt;
     bround = bvirt - t1;
     around = _0 - avirt;
-    u[1 as libc::c_int as usize] = around + bround;
+    u[1 as i32 as usize] = around + bround;
     u3 = _j + _i;
     bvirt = u3 - _j;
     avirt = u3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    u[2 as libc::c_int as usize] = around + bround;
-    u[3 as libc::c_int as usize] = u3;
+    u[2 as i32 as usize] = around + bround;
+    u[3 as i32 as usize] = u3;
     Dlength = fast_expansion_sum_zeroelim(
         C2length,
         C2.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         u.as_mut_ptr(),
         D.as_mut_ptr(),
     );
-    return D[(Dlength - 1 as libc::c_int) as usize];
+    return D[(Dlength - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2d(
@@ -1864,14 +1864,14 @@ pub unsafe extern "C" fn orient2d(
     let mut det: libc::c_double = 0.;
     let mut detsum: libc::c_double = 0.;
     let mut errbound: libc::c_double = 0.;
-    detleft = (*pa.offset(0 as libc::c_int as isize)
-        - *pc.offset(0 as libc::c_int as isize))
-        * (*pb.offset(1 as libc::c_int as isize)
-            - *pc.offset(1 as libc::c_int as isize));
-    detright = (*pa.offset(1 as libc::c_int as isize)
-        - *pc.offset(1 as libc::c_int as isize))
-        * (*pb.offset(0 as libc::c_int as isize)
-            - *pc.offset(0 as libc::c_int as isize));
+    detleft = (*pa.offset(0 as i32 as isize)
+        - *pc.offset(0 as i32 as isize))
+        * (*pb.offset(1 as i32 as isize)
+            - *pc.offset(1 as i32 as isize));
+    detright = (*pa.offset(1 as i32 as isize)
+        - *pc.offset(1 as i32 as isize))
+        * (*pb.offset(0 as i32 as isize)
+            - *pc.offset(0 as i32 as isize));
     det = detleft - detright;
     if detleft > 0.0f64 {
         if detright <= 0.0f64 {
@@ -1910,15 +1910,15 @@ pub unsafe extern "C" fn orient3dfast(
     let mut adz: libc::c_double = 0.;
     let mut bdz: libc::c_double = 0.;
     let mut cdz: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    adz = *pa.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    bdz = *pb.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    cdz = *pc.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    adz = *pa.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    bdz = *pb.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    cdz = *pc.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
     return adx * (bdy * cdz - bdz * cdy) + bdx * (cdy * adz - cdz * ady)
         + cdx * (ady * bdz - adz * bdy);
 }
@@ -1960,30 +1960,30 @@ pub unsafe extern "C" fn orient3dexact(
     let mut ac: [libc::c_double; 4] = [0.; 4];
     let mut bd: [libc::c_double; 4] = [0.; 4];
     let mut temp8: [libc::c_double; 8] = [0.; 8];
-    let mut templen: libc::c_int = 0;
+    let mut templen: i32 = 0;
     let mut abc: [libc::c_double; 12] = [0.; 12];
     let mut bcd: [libc::c_double; 12] = [0.; 12];
     let mut cda: [libc::c_double; 12] = [0.; 12];
     let mut dab: [libc::c_double; 12] = [0.; 12];
-    let mut abclen: libc::c_int = 0;
-    let mut bcdlen: libc::c_int = 0;
-    let mut cdalen: libc::c_int = 0;
-    let mut dablen: libc::c_int = 0;
+    let mut abclen: i32 = 0;
+    let mut bcdlen: i32 = 0;
+    let mut cdalen: i32 = 0;
+    let mut dablen: i32 = 0;
     let mut adet: [libc::c_double; 24] = [0.; 24];
     let mut bdet: [libc::c_double; 24] = [0.; 24];
     let mut cdet: [libc::c_double; 24] = [0.; 24];
     let mut ddet: [libc::c_double; 24] = [0.; 24];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
-    let mut dlen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
+    let mut dlen: i32 = 0;
     let mut abdet: [libc::c_double; 48] = [0.; 48];
     let mut cddet: [libc::c_double; 48] = [0.; 48];
-    let mut ablen: libc::c_int = 0;
-    let mut cdlen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
+    let mut cdlen: i32 = 0;
     let mut deter: [libc::c_double; 96] = [0.; 96];
-    let mut deterlen: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    let mut deterlen: i32 = 0;
+    let mut i: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -2000,30 +2000,30 @@ pub unsafe extern "C" fn orient3dexact(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    axby1 = *pa.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axby1 = *pa.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = axby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axby0 = alo * blo - err3;
-    bxay1 = *pb.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    bxay1 = *pb.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = bxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -2033,7 +2033,7 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay0;
     around = axby0 - avirt;
-    ab[0 as libc::c_int as usize] = around + bround;
+    ab[0 as i32 as usize] = around + bround;
     _j = axby1 + _i;
     bvirt = _j - axby1;
     avirt = _j - bvirt;
@@ -2045,37 +2045,37 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay1;
     around = _0 - avirt;
-    ab[1 as libc::c_int as usize] = around + bround;
-    ab[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ab[3 as libc::c_int as usize] - _j;
-    avirt = ab[3 as libc::c_int as usize] - bvirt;
+    ab[1 as i32 as usize] = around + bround;
+    ab[3 as i32 as usize] = _j + _i;
+    bvirt = ab[3 as i32 as usize] - _j;
+    avirt = ab[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ab[2 as libc::c_int as usize] = around + bround;
-    bxcy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    ab[2 as i32 as usize] = around + bround;
+    bxcy1 = *pb.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = bxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxcy0 = alo * blo - err3;
-    cxby1 = *pc.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxby1 = *pc.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = cxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -2085,7 +2085,7 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby0;
     around = bxcy0 - avirt;
-    bc[0 as libc::c_int as usize] = around + bround;
+    bc[0 as i32 as usize] = around + bround;
     _j = bxcy1 + _i;
     bvirt = _j - bxcy1;
     avirt = _j - bvirt;
@@ -2097,37 +2097,37 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby1;
     around = _0 - avirt;
-    bc[1 as libc::c_int as usize] = around + bround;
-    bc[3 as libc::c_int as usize] = _j + _i;
-    bvirt = bc[3 as libc::c_int as usize] - _j;
-    avirt = bc[3 as libc::c_int as usize] - bvirt;
+    bc[1 as i32 as usize] = around + bround;
+    bc[3 as i32 as usize] = _j + _i;
+    bvirt = bc[3 as i32 as usize] - _j;
+    avirt = bc[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bc[2 as libc::c_int as usize] = around + bround;
-    cxdy1 = *pc.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    bc[2 as i32 as usize] = around + bround;
+    cxdy1 = *pc.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = cxdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     cxdy0 = alo * blo - err3;
-    dxcy1 = *pd.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    dxcy1 = *pd.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = dxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -2137,7 +2137,7 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - dxcy0;
     around = cxdy0 - avirt;
-    cd[0 as libc::c_int as usize] = around + bround;
+    cd[0 as i32 as usize] = around + bround;
     _j = cxdy1 + _i;
     bvirt = _j - cxdy1;
     avirt = _j - bvirt;
@@ -2149,37 +2149,37 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - dxcy1;
     around = _0 - avirt;
-    cd[1 as libc::c_int as usize] = around + bround;
-    cd[3 as libc::c_int as usize] = _j + _i;
-    bvirt = cd[3 as libc::c_int as usize] - _j;
-    avirt = cd[3 as libc::c_int as usize] - bvirt;
+    cd[1 as i32 as usize] = around + bround;
+    cd[3 as i32 as usize] = _j + _i;
+    bvirt = cd[3 as i32 as usize] - _j;
+    avirt = cd[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    cd[2 as libc::c_int as usize] = around + bround;
-    dxay1 = *pd.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    cd[2 as i32 as usize] = around + bround;
+    dxay1 = *pd.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = dxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     dxay0 = alo * blo - err3;
-    axdy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axdy1 = *pa.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = axdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -2189,7 +2189,7 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - axdy0;
     around = dxay0 - avirt;
-    da[0 as libc::c_int as usize] = around + bround;
+    da[0 as i32 as usize] = around + bround;
     _j = dxay1 + _i;
     bvirt = _j - dxay1;
     avirt = _j - bvirt;
@@ -2201,37 +2201,37 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - axdy1;
     around = _0 - avirt;
-    da[1 as libc::c_int as usize] = around + bround;
-    da[3 as libc::c_int as usize] = _j + _i;
-    bvirt = da[3 as libc::c_int as usize] - _j;
-    avirt = da[3 as libc::c_int as usize] - bvirt;
+    da[1 as i32 as usize] = around + bround;
+    da[3 as i32 as usize] = _j + _i;
+    bvirt = da[3 as i32 as usize] - _j;
+    avirt = da[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    da[2 as libc::c_int as usize] = around + bround;
-    axcy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    da[2 as i32 as usize] = around + bround;
+    axcy1 = *pa.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = axcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axcy0 = alo * blo - err3;
-    cxay1 = *pc.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxay1 = *pc.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = cxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -2241,7 +2241,7 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - cxay0;
     around = axcy0 - avirt;
-    ac[0 as libc::c_int as usize] = around + bround;
+    ac[0 as i32 as usize] = around + bround;
     _j = axcy1 + _i;
     bvirt = _j - axcy1;
     avirt = _j - bvirt;
@@ -2253,37 +2253,37 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - cxay1;
     around = _0 - avirt;
-    ac[1 as libc::c_int as usize] = around + bround;
-    ac[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ac[3 as libc::c_int as usize] - _j;
-    avirt = ac[3 as libc::c_int as usize] - bvirt;
+    ac[1 as i32 as usize] = around + bround;
+    ac[3 as i32 as usize] = _j + _i;
+    bvirt = ac[3 as i32 as usize] - _j;
+    avirt = ac[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ac[2 as libc::c_int as usize] = around + bround;
-    bxdy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    ac[2 as i32 as usize] = around + bround;
+    bxdy1 = *pb.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = bxdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxdy0 = alo * blo - err3;
-    dxby1 = *pd.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    dxby1 = *pd.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = dxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -2293,7 +2293,7 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - dxby0;
     around = bxdy0 - avirt;
-    bd[0 as libc::c_int as usize] = around + bround;
+    bd[0 as i32 as usize] = around + bround;
     _j = bxdy1 + _i;
     bvirt = _j - bxdy1;
     avirt = _j - bvirt;
@@ -2305,97 +2305,97 @@ pub unsafe extern "C" fn orient3dexact(
     avirt = _i + bvirt;
     bround = bvirt - dxby1;
     around = _0 - avirt;
-    bd[1 as libc::c_int as usize] = around + bround;
-    bd[3 as libc::c_int as usize] = _j + _i;
-    bvirt = bd[3 as libc::c_int as usize] - _j;
-    avirt = bd[3 as libc::c_int as usize] - bvirt;
+    bd[1 as i32 as usize] = around + bround;
+    bd[3 as i32 as usize] = _j + _i;
+    bvirt = bd[3 as i32 as usize] - _j;
+    avirt = bd[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bd[2 as libc::c_int as usize] = around + bround;
+    bd[2 as i32 as usize] = around + bround;
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     cdalen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
         cda.as_mut_ptr(),
     );
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     dablen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
         dab.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
-    while i < 4 as libc::c_int {
+    i = 0 as i32;
+    while i < 4 as i32 {
         bd[i as usize] = -bd[i as usize];
         ac[i as usize] = -ac[i as usize];
         i += 1;
     }
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     abclen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
         abc.as_mut_ptr(),
     );
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     bcdlen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
         bcd.as_mut_ptr(),
     );
     alen = scale_expansion_zeroelim(
         bcdlen,
         bcd.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         adet.as_mut_ptr(),
     );
     blen = scale_expansion_zeroelim(
         cdalen,
         cda.as_mut_ptr(),
-        -*pb.offset(2 as libc::c_int as isize),
+        -*pb.offset(2 as i32 as isize),
         bdet.as_mut_ptr(),
     );
     clen = scale_expansion_zeroelim(
         dablen,
         dab.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         cdet.as_mut_ptr(),
     );
     dlen = scale_expansion_zeroelim(
         abclen,
         abc.as_mut_ptr(),
-        -*pd.offset(2 as libc::c_int as isize),
+        -*pd.offset(2 as i32 as isize),
         ddet.as_mut_ptr(),
     );
     ablen = fast_expansion_sum_zeroelim(
@@ -2419,7 +2419,7 @@ pub unsafe extern "C" fn orient3dexact(
         cddet.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dslow(
@@ -2463,19 +2463,19 @@ pub unsafe extern "C" fn orient3dslow(
     let mut temp16: [libc::c_double; 16] = [0.; 16];
     let mut temp32: [libc::c_double; 32] = [0.; 32];
     let mut temp32t: [libc::c_double; 32] = [0.; 32];
-    let mut temp16len: libc::c_int = 0;
-    let mut temp32len: libc::c_int = 0;
-    let mut temp32tlen: libc::c_int = 0;
+    let mut temp16len: i32 = 0;
+    let mut temp32len: i32 = 0;
+    let mut temp32tlen: i32 = 0;
     let mut adet: [libc::c_double; 64] = [0.; 64];
     let mut bdet: [libc::c_double; 64] = [0.; 64];
     let mut cdet: [libc::c_double; 64] = [0.; 64];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
     let mut abdet: [libc::c_double; 128] = [0.; 128];
-    let mut ablen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
     let mut deter: [libc::c_double; 192] = [0.; 192];
-    let mut deterlen: libc::c_int = 0;
+    let mut deterlen: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -2500,59 +2500,59 @@ pub unsafe extern "C" fn orient3dslow(
     let mut _0: libc::c_double = 0.;
     let mut _1: libc::c_double = 0.;
     let mut _2: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bvirt = *pa.offset(0 as libc::c_int as isize) - adx;
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bvirt = *pa.offset(0 as i32 as isize) - adx;
     avirt = adx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     adxtail = around + bround;
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bvirt = *pa.offset(1 as libc::c_int as isize) - ady;
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bvirt = *pa.offset(1 as i32 as isize) - ady;
     avirt = ady + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     adytail = around + bround;
-    adz = *pa.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    bvirt = *pa.offset(2 as libc::c_int as isize) - adz;
+    adz = *pa.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    bvirt = *pa.offset(2 as i32 as isize) - adz;
     avirt = adz + bvirt;
-    bround = bvirt - *pd.offset(2 as libc::c_int as isize);
-    around = *pa.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(2 as i32 as isize);
+    around = *pa.offset(2 as i32 as isize) - avirt;
     adztail = around + bround;
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bdx;
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bvirt = *pb.offset(0 as i32 as isize) - bdx;
     avirt = bdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bdxtail = around + bround;
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bdy;
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bvirt = *pb.offset(1 as i32 as isize) - bdy;
     avirt = bdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     bdytail = around + bround;
-    bdz = *pb.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    bvirt = *pb.offset(2 as libc::c_int as isize) - bdz;
+    bdz = *pb.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    bvirt = *pb.offset(2 as i32 as isize) - bdz;
     avirt = bdz + bvirt;
-    bround = bvirt - *pd.offset(2 as libc::c_int as isize);
-    around = *pb.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(2 as i32 as isize);
+    around = *pb.offset(2 as i32 as isize) - avirt;
     bdztail = around + bround;
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bvirt = *pc.offset(0 as libc::c_int as isize) - cdx;
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bvirt = *pc.offset(0 as i32 as isize) - cdx;
     avirt = cdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pc.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pc.offset(0 as i32 as isize) - avirt;
     cdxtail = around + bround;
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bvirt = *pc.offset(1 as libc::c_int as isize) - cdy;
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bvirt = *pc.offset(1 as i32 as isize) - cdy;
     avirt = cdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pc.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pc.offset(1 as i32 as isize) - avirt;
     cdytail = around + bround;
-    cdz = *pc.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    bvirt = *pc.offset(2 as libc::c_int as isize) - cdz;
+    cdz = *pc.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    bvirt = *pc.offset(2 as i32 as isize) - cdz;
     avirt = cdz + bvirt;
-    bround = bvirt - *pd.offset(2 as libc::c_int as isize);
-    around = *pc.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(2 as i32 as isize);
+    around = *pc.offset(2 as i32 as isize) - avirt;
     cdztail = around + bround;
     c = splitter * adxtail;
     abig = c - adxtail;
@@ -2566,7 +2566,7 @@ pub unsafe extern "C" fn orient3dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * adx;
     abig = c - adx;
     a1hi = c - abig;
@@ -2599,7 +2599,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[1 as libc::c_int as usize] = around + bround;
+    axby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -2628,7 +2628,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[2 as libc::c_int as usize] = around + bround;
+    axby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -2652,7 +2652,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[3 as libc::c_int as usize] = around + bround;
+    axby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -2670,20 +2670,20 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axby[4 as libc::c_int as usize] = around + bround;
+    axby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axby[5 as libc::c_int as usize] = around + bround;
+    axby[5 as i32 as usize] = around + bround;
     axby7 = _m + _k;
     bvirt = axby7 - _m;
     avirt = axby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axby[6 as libc::c_int as usize] = around + bround;
-    axby[7 as libc::c_int as usize] = axby7;
+    axby[6 as i32 as usize] = around + bround;
+    axby[7 as i32 as usize] = axby7;
     negate = -ady;
     negatetail = -adytail;
     c = splitter * bdxtail;
@@ -2698,7 +2698,7 @@ pub unsafe extern "C" fn orient3dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bdx;
     abig = c - bdx;
     a1hi = c - abig;
@@ -2731,7 +2731,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[1 as libc::c_int as usize] = around + bround;
+    bxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -2760,7 +2760,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[2 as libc::c_int as usize] = around + bround;
+    bxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -2784,7 +2784,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[3 as libc::c_int as usize] = around + bround;
+    bxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -2802,20 +2802,20 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxay[4 as libc::c_int as usize] = around + bround;
+    bxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxay[5 as libc::c_int as usize] = around + bround;
+    bxay[5 as i32 as usize] = around + bround;
     bxay7 = _m + _k;
     bvirt = bxay7 - _m;
     avirt = bxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxay[6 as libc::c_int as usize] = around + bround;
-    bxay[7 as libc::c_int as usize] = bxay7;
+    bxay[6 as i32 as usize] = around + bround;
+    bxay[7 as i32 as usize] = bxay7;
     c = splitter * bdxtail;
     abig = c - bdxtail;
     a0hi = c - abig;
@@ -2828,7 +2828,7 @@ pub unsafe extern "C" fn orient3dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bdx;
     abig = c - bdx;
     a1hi = c - abig;
@@ -2861,7 +2861,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[1 as libc::c_int as usize] = around + bround;
+    bxcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -2890,7 +2890,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[2 as libc::c_int as usize] = around + bround;
+    bxcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -2914,7 +2914,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[3 as libc::c_int as usize] = around + bround;
+    bxcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -2932,20 +2932,20 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxcy[4 as libc::c_int as usize] = around + bround;
+    bxcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxcy[5 as libc::c_int as usize] = around + bround;
+    bxcy[5 as i32 as usize] = around + bround;
     bxcy7 = _m + _k;
     bvirt = bxcy7 - _m;
     avirt = bxcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxcy[6 as libc::c_int as usize] = around + bround;
-    bxcy[7 as libc::c_int as usize] = bxcy7;
+    bxcy[6 as i32 as usize] = around + bround;
+    bxcy[7 as i32 as usize] = bxcy7;
     negate = -bdy;
     negatetail = -bdytail;
     c = splitter * cdxtail;
@@ -2960,7 +2960,7 @@ pub unsafe extern "C" fn orient3dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cdx;
     abig = c - cdx;
     a1hi = c - abig;
@@ -2993,7 +2993,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[1 as libc::c_int as usize] = around + bround;
+    cxby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -3022,7 +3022,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[2 as libc::c_int as usize] = around + bround;
+    cxby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -3046,7 +3046,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[3 as libc::c_int as usize] = around + bround;
+    cxby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -3064,20 +3064,20 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxby[4 as libc::c_int as usize] = around + bround;
+    cxby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxby[5 as libc::c_int as usize] = around + bround;
+    cxby[5 as i32 as usize] = around + bround;
     cxby7 = _m + _k;
     bvirt = cxby7 - _m;
     avirt = cxby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxby[6 as libc::c_int as usize] = around + bround;
-    cxby[7 as libc::c_int as usize] = cxby7;
+    cxby[6 as i32 as usize] = around + bround;
+    cxby[7 as i32 as usize] = cxby7;
     c = splitter * cdxtail;
     abig = c - cdxtail;
     a0hi = c - abig;
@@ -3090,7 +3090,7 @@ pub unsafe extern "C" fn orient3dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cdx;
     abig = c - cdx;
     a1hi = c - abig;
@@ -3123,7 +3123,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[1 as libc::c_int as usize] = around + bround;
+    cxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -3152,7 +3152,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[2 as libc::c_int as usize] = around + bround;
+    cxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -3176,7 +3176,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[3 as libc::c_int as usize] = around + bround;
+    cxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -3194,20 +3194,20 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxay[4 as libc::c_int as usize] = around + bround;
+    cxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxay[5 as libc::c_int as usize] = around + bround;
+    cxay[5 as i32 as usize] = around + bround;
     cxay7 = _m + _k;
     bvirt = cxay7 - _m;
     avirt = cxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxay[6 as libc::c_int as usize] = around + bround;
-    cxay[7 as libc::c_int as usize] = cxay7;
+    cxay[6 as i32 as usize] = around + bround;
+    cxay[7 as i32 as usize] = cxay7;
     negate = -cdy;
     negatetail = -cdytail;
     c = splitter * adxtail;
@@ -3222,7 +3222,7 @@ pub unsafe extern "C" fn orient3dslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * adx;
     abig = c - adx;
     a1hi = c - abig;
@@ -3255,7 +3255,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[1 as libc::c_int as usize] = around + bround;
+    axcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -3284,7 +3284,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[2 as libc::c_int as usize] = around + bround;
+    axcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -3308,7 +3308,7 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[3 as libc::c_int as usize] = around + bround;
+    axcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -3326,24 +3326,24 @@ pub unsafe extern "C" fn orient3dslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axcy[4 as libc::c_int as usize] = around + bround;
+    axcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axcy[5 as libc::c_int as usize] = around + bround;
+    axcy[5 as i32 as usize] = around + bround;
     axcy7 = _m + _k;
     bvirt = axcy7 - _m;
     avirt = axcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axcy[6 as libc::c_int as usize] = around + bround;
-    axcy[7 as libc::c_int as usize] = axcy7;
+    axcy[6 as i32 as usize] = around + bround;
+    axcy[7 as i32 as usize] = axcy7;
     temp16len = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         bxcy.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         cxby.as_mut_ptr(),
         temp16.as_mut_ptr(),
     );
@@ -3367,9 +3367,9 @@ pub unsafe extern "C" fn orient3dslow(
         adet.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         cxay.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         axcy.as_mut_ptr(),
         temp16.as_mut_ptr(),
     );
@@ -3393,9 +3393,9 @@ pub unsafe extern "C" fn orient3dslow(
         bdet.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         axby.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         bxay.as_mut_ptr(),
         temp16.as_mut_ptr(),
     );
@@ -3432,7 +3432,7 @@ pub unsafe extern "C" fn orient3dslow(
         cdet.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dadapt(
@@ -3474,17 +3474,17 @@ pub unsafe extern "C" fn orient3dadapt(
     let mut adet: [libc::c_double; 8] = [0.; 8];
     let mut bdet: [libc::c_double; 8] = [0.; 8];
     let mut cdet: [libc::c_double; 8] = [0.; 8];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
     let mut abdet: [libc::c_double; 16] = [0.; 16];
-    let mut ablen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
     let mut finnow: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut finother: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut finswap: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut fin1: [libc::c_double; 192] = [0.; 192];
     let mut fin2: [libc::c_double; 192] = [0.; 192];
-    let mut finlength: libc::c_int = 0;
+    let mut finlength: i32 = 0;
     let mut adxtail: libc::c_double = 0.;
     let mut bdxtail: libc::c_double = 0.;
     let mut cdxtail: libc::c_double = 0.;
@@ -3506,12 +3506,12 @@ pub unsafe extern "C" fn orient3dadapt(
     let mut bt_a: [libc::c_double; 4] = [0.; 4];
     let mut ct_a: [libc::c_double; 4] = [0.; 4];
     let mut ct_b: [libc::c_double; 4] = [0.; 4];
-    let mut at_blen: libc::c_int = 0;
-    let mut at_clen: libc::c_int = 0;
-    let mut bt_clen: libc::c_int = 0;
-    let mut bt_alen: libc::c_int = 0;
-    let mut ct_alen: libc::c_int = 0;
-    let mut ct_blen: libc::c_int = 0;
+    let mut at_blen: i32 = 0;
+    let mut at_clen: i32 = 0;
+    let mut bt_clen: i32 = 0;
+    let mut bt_alen: i32 = 0;
+    let mut ct_alen: i32 = 0;
+    let mut ct_blen: i32 = 0;
     let mut bdxt_cdy1: libc::c_double = 0.;
     let mut cdxt_bdy1: libc::c_double = 0.;
     let mut cdxt_ady1: libc::c_double = 0.;
@@ -3539,9 +3539,9 @@ pub unsafe extern "C" fn orient3dadapt(
     let mut bct: [libc::c_double; 8] = [0.; 8];
     let mut cat: [libc::c_double; 8] = [0.; 8];
     let mut abt: [libc::c_double; 8] = [0.; 8];
-    let mut bctlen: libc::c_int = 0;
-    let mut catlen: libc::c_int = 0;
-    let mut abtlen: libc::c_int = 0;
+    let mut bctlen: i32 = 0;
+    let mut catlen: i32 = 0;
+    let mut abtlen: i32 = 0;
     let mut bdxt_cdyt1: libc::c_double = 0.;
     let mut cdxt_bdyt1: libc::c_double = 0.;
     let mut cdxt_adyt1: libc::c_double = 0.;
@@ -3558,8 +3558,8 @@ pub unsafe extern "C" fn orient3dadapt(
     let mut v: [libc::c_double; 12] = [0.; 12];
     let mut w: [libc::c_double; 16] = [0.; 16];
     let mut u3: libc::c_double = 0.;
-    let mut vlength: libc::c_int = 0;
-    let mut wlength: libc::c_int = 0;
+    let mut vlength: i32 = 0;
+    let mut wlength: i32 = 0;
     let mut negate: libc::c_double = 0.;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
@@ -3578,15 +3578,15 @@ pub unsafe extern "C" fn orient3dadapt(
     let mut _j: libc::c_double = 0.;
     let mut _k: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    adz = *pa.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    bdz = *pb.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    cdz = *pc.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    adz = *pa.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    bdz = *pb.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    cdz = *pc.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
     bdxcdy1 = bdx * cdy;
     c = splitter * bdx;
     abig = c - bdx;
@@ -3618,7 +3618,7 @@ pub unsafe extern "C" fn orient3dadapt(
     avirt = _i + bvirt;
     bround = bvirt - cdxbdy0;
     around = bdxcdy0 - avirt;
-    bc[0 as libc::c_int as usize] = around + bround;
+    bc[0 as i32 as usize] = around + bround;
     _j = bdxcdy1 + _i;
     bvirt = _j - bdxcdy1;
     avirt = _j - bvirt;
@@ -3630,16 +3630,16 @@ pub unsafe extern "C" fn orient3dadapt(
     avirt = _i + bvirt;
     bround = bvirt - cdxbdy1;
     around = _0 - avirt;
-    bc[1 as libc::c_int as usize] = around + bround;
+    bc[1 as i32 as usize] = around + bround;
     bc3 = _j + _i;
     bvirt = bc3 - _j;
     avirt = bc3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bc[2 as libc::c_int as usize] = around + bround;
-    bc[3 as libc::c_int as usize] = bc3;
+    bc[2 as i32 as usize] = around + bround;
+    bc[3 as i32 as usize] = bc3;
     alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         adz,
         adet.as_mut_ptr(),
@@ -3675,7 +3675,7 @@ pub unsafe extern "C" fn orient3dadapt(
     avirt = _i + bvirt;
     bround = bvirt - adxcdy0;
     around = cdxady0 - avirt;
-    ca[0 as libc::c_int as usize] = around + bround;
+    ca[0 as i32 as usize] = around + bround;
     _j = cdxady1 + _i;
     bvirt = _j - cdxady1;
     avirt = _j - bvirt;
@@ -3687,16 +3687,16 @@ pub unsafe extern "C" fn orient3dadapt(
     avirt = _i + bvirt;
     bround = bvirt - adxcdy1;
     around = _0 - avirt;
-    ca[1 as libc::c_int as usize] = around + bround;
+    ca[1 as i32 as usize] = around + bround;
     ca3 = _j + _i;
     bvirt = ca3 - _j;
     avirt = ca3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ca[2 as libc::c_int as usize] = around + bround;
-    ca[3 as libc::c_int as usize] = ca3;
+    ca[2 as i32 as usize] = around + bround;
+    ca[3 as i32 as usize] = ca3;
     blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ca.as_mut_ptr(),
         bdz,
         bdet.as_mut_ptr(),
@@ -3732,7 +3732,7 @@ pub unsafe extern "C" fn orient3dadapt(
     avirt = _i + bvirt;
     bround = bvirt - bdxady0;
     around = adxbdy0 - avirt;
-    ab[0 as libc::c_int as usize] = around + bround;
+    ab[0 as i32 as usize] = around + bround;
     _j = adxbdy1 + _i;
     bvirt = _j - adxbdy1;
     avirt = _j - bvirt;
@@ -3744,16 +3744,16 @@ pub unsafe extern "C" fn orient3dadapt(
     avirt = _i + bvirt;
     bround = bvirt - bdxady1;
     around = _0 - avirt;
-    ab[1 as libc::c_int as usize] = around + bround;
+    ab[1 as i32 as usize] = around + bround;
     ab3 = _j + _i;
     bvirt = ab3 - _j;
     avirt = ab3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ab[2 as libc::c_int as usize] = around + bround;
-    ab[3 as libc::c_int as usize] = ab3;
+    ab[2 as i32 as usize] = around + bround;
+    ab[3 as i32 as usize] = ab3;
     clen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         cdz,
         cdet.as_mut_ptr(),
@@ -3777,50 +3777,50 @@ pub unsafe extern "C" fn orient3dadapt(
     if det >= errbound || -det >= errbound {
         return det;
     }
-    bvirt = *pa.offset(0 as libc::c_int as isize) - adx;
+    bvirt = *pa.offset(0 as i32 as isize) - adx;
     avirt = adx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     adxtail = around + bround;
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bdx;
+    bvirt = *pb.offset(0 as i32 as isize) - bdx;
     avirt = bdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bdxtail = around + bround;
-    bvirt = *pc.offset(0 as libc::c_int as isize) - cdx;
+    bvirt = *pc.offset(0 as i32 as isize) - cdx;
     avirt = cdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pc.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pc.offset(0 as i32 as isize) - avirt;
     cdxtail = around + bround;
-    bvirt = *pa.offset(1 as libc::c_int as isize) - ady;
+    bvirt = *pa.offset(1 as i32 as isize) - ady;
     avirt = ady + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     adytail = around + bround;
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bdy;
+    bvirt = *pb.offset(1 as i32 as isize) - bdy;
     avirt = bdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     bdytail = around + bround;
-    bvirt = *pc.offset(1 as libc::c_int as isize) - cdy;
+    bvirt = *pc.offset(1 as i32 as isize) - cdy;
     avirt = cdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pc.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pc.offset(1 as i32 as isize) - avirt;
     cdytail = around + bround;
-    bvirt = *pa.offset(2 as libc::c_int as isize) - adz;
+    bvirt = *pa.offset(2 as i32 as isize) - adz;
     avirt = adz + bvirt;
-    bround = bvirt - *pd.offset(2 as libc::c_int as isize);
-    around = *pa.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(2 as i32 as isize);
+    around = *pa.offset(2 as i32 as isize) - avirt;
     adztail = around + bround;
-    bvirt = *pb.offset(2 as libc::c_int as isize) - bdz;
+    bvirt = *pb.offset(2 as i32 as isize) - bdz;
     avirt = bdz + bvirt;
-    bround = bvirt - *pd.offset(2 as libc::c_int as isize);
-    around = *pb.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(2 as i32 as isize);
+    around = *pb.offset(2 as i32 as isize) - avirt;
     bdztail = around + bround;
-    bvirt = *pc.offset(2 as libc::c_int as isize) - cdz;
+    bvirt = *pc.offset(2 as i32 as isize) - cdz;
     avirt = cdz + bvirt;
-    bround = bvirt - *pd.offset(2 as libc::c_int as isize);
-    around = *pc.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(2 as i32 as isize);
+    around = *pc.offset(2 as i32 as isize) - avirt;
     cdztail = around + bround;
     if adxtail == 0.0f64 && bdxtail == 0.0f64 && cdxtail == 0.0f64 && adytail == 0.0f64
         && bdytail == 0.0f64 && cdytail == 0.0f64 && adztail == 0.0f64
@@ -3844,10 +3844,10 @@ pub unsafe extern "C" fn orient3dadapt(
     finother = fin2.as_mut_ptr();
     if adxtail == 0.0f64 {
         if adytail == 0.0f64 {
-            at_b[0 as libc::c_int as usize] = 0.0f64;
-            at_blen = 1 as libc::c_int;
-            at_c[0 as libc::c_int as usize] = 0.0f64;
-            at_clen = 1 as libc::c_int;
+            at_b[0 as i32 as usize] = 0.0f64;
+            at_blen = 1 as i32;
+            at_c[0 as i32 as usize] = 0.0f64;
+            at_clen = 1 as i32;
         } else {
             negate = -adytail;
             at_blarge = negate * bdx;
@@ -3862,9 +3862,9 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = at_blarge - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            at_b[0 as libc::c_int as usize] = alo * blo - err3;
-            at_b[1 as libc::c_int as usize] = at_blarge;
-            at_blen = 2 as libc::c_int;
+            at_b[0 as i32 as usize] = alo * blo - err3;
+            at_b[1 as i32 as usize] = at_blarge;
+            at_blen = 2 as i32;
             at_clarge = adytail * cdx;
             c = splitter * adytail;
             abig = c - adytail;
@@ -3877,9 +3877,9 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = at_clarge - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            at_c[0 as libc::c_int as usize] = alo * blo - err3;
-            at_c[1 as libc::c_int as usize] = at_clarge;
-            at_clen = 2 as libc::c_int;
+            at_c[0 as i32 as usize] = alo * blo - err3;
+            at_c[1 as i32 as usize] = at_clarge;
+            at_clen = 2 as i32;
         }
     } else if adytail == 0.0f64 {
         at_blarge = adxtail * bdy;
@@ -3894,9 +3894,9 @@ pub unsafe extern "C" fn orient3dadapt(
         err1 = at_blarge - ahi * bhi;
         err2 = err1 - alo * bhi;
         err3 = err2 - ahi * blo;
-        at_b[0 as libc::c_int as usize] = alo * blo - err3;
-        at_b[1 as libc::c_int as usize] = at_blarge;
-        at_blen = 2 as libc::c_int;
+        at_b[0 as i32 as usize] = alo * blo - err3;
+        at_b[1 as i32 as usize] = at_blarge;
+        at_blen = 2 as i32;
         negate = -adxtail;
         at_clarge = negate * cdy;
         c = splitter * negate;
@@ -3910,9 +3910,9 @@ pub unsafe extern "C" fn orient3dadapt(
         err1 = at_clarge - ahi * bhi;
         err2 = err1 - alo * bhi;
         err3 = err2 - ahi * blo;
-        at_c[0 as libc::c_int as usize] = alo * blo - err3;
-        at_c[1 as libc::c_int as usize] = at_clarge;
-        at_clen = 2 as libc::c_int;
+        at_c[0 as i32 as usize] = alo * blo - err3;
+        at_c[1 as i32 as usize] = at_clarge;
+        at_clen = 2 as i32;
     } else {
         adxt_bdy1 = adxtail * bdy;
         c = splitter * adxtail;
@@ -3945,7 +3945,7 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - adyt_bdx0;
         around = adxt_bdy0 - avirt;
-        at_b[0 as libc::c_int as usize] = around + bround;
+        at_b[0 as i32 as usize] = around + bround;
         _j = adxt_bdy1 + _i;
         bvirt = _j - adxt_bdy1;
         avirt = _j - bvirt;
@@ -3957,15 +3957,15 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - adyt_bdx1;
         around = _0 - avirt;
-        at_b[1 as libc::c_int as usize] = around + bround;
+        at_b[1 as i32 as usize] = around + bround;
         at_blarge = _j + _i;
         bvirt = at_blarge - _j;
         avirt = at_blarge - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        at_b[2 as libc::c_int as usize] = around + bround;
-        at_b[3 as libc::c_int as usize] = at_blarge;
-        at_blen = 4 as libc::c_int;
+        at_b[2 as i32 as usize] = around + bround;
+        at_b[3 as i32 as usize] = at_blarge;
+        at_blen = 4 as i32;
         adyt_cdx1 = adytail * cdx;
         c = splitter * adytail;
         abig = c - adytail;
@@ -3997,7 +3997,7 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - adxt_cdy0;
         around = adyt_cdx0 - avirt;
-        at_c[0 as libc::c_int as usize] = around + bround;
+        at_c[0 as i32 as usize] = around + bround;
         _j = adyt_cdx1 + _i;
         bvirt = _j - adyt_cdx1;
         avirt = _j - bvirt;
@@ -4009,22 +4009,22 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - adxt_cdy1;
         around = _0 - avirt;
-        at_c[1 as libc::c_int as usize] = around + bround;
+        at_c[1 as i32 as usize] = around + bround;
         at_clarge = _j + _i;
         bvirt = at_clarge - _j;
         avirt = at_clarge - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        at_c[2 as libc::c_int as usize] = around + bround;
-        at_c[3 as libc::c_int as usize] = at_clarge;
-        at_clen = 4 as libc::c_int;
+        at_c[2 as i32 as usize] = around + bround;
+        at_c[3 as i32 as usize] = at_clarge;
+        at_clen = 4 as i32;
     }
     if bdxtail == 0.0f64 {
         if bdytail == 0.0f64 {
-            bt_c[0 as libc::c_int as usize] = 0.0f64;
-            bt_clen = 1 as libc::c_int;
-            bt_a[0 as libc::c_int as usize] = 0.0f64;
-            bt_alen = 1 as libc::c_int;
+            bt_c[0 as i32 as usize] = 0.0f64;
+            bt_clen = 1 as i32;
+            bt_a[0 as i32 as usize] = 0.0f64;
+            bt_alen = 1 as i32;
         } else {
             negate = -bdytail;
             bt_clarge = negate * cdx;
@@ -4039,9 +4039,9 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = bt_clarge - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            bt_c[0 as libc::c_int as usize] = alo * blo - err3;
-            bt_c[1 as libc::c_int as usize] = bt_clarge;
-            bt_clen = 2 as libc::c_int;
+            bt_c[0 as i32 as usize] = alo * blo - err3;
+            bt_c[1 as i32 as usize] = bt_clarge;
+            bt_clen = 2 as i32;
             bt_alarge = bdytail * adx;
             c = splitter * bdytail;
             abig = c - bdytail;
@@ -4054,9 +4054,9 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = bt_alarge - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            bt_a[0 as libc::c_int as usize] = alo * blo - err3;
-            bt_a[1 as libc::c_int as usize] = bt_alarge;
-            bt_alen = 2 as libc::c_int;
+            bt_a[0 as i32 as usize] = alo * blo - err3;
+            bt_a[1 as i32 as usize] = bt_alarge;
+            bt_alen = 2 as i32;
         }
     } else if bdytail == 0.0f64 {
         bt_clarge = bdxtail * cdy;
@@ -4071,9 +4071,9 @@ pub unsafe extern "C" fn orient3dadapt(
         err1 = bt_clarge - ahi * bhi;
         err2 = err1 - alo * bhi;
         err3 = err2 - ahi * blo;
-        bt_c[0 as libc::c_int as usize] = alo * blo - err3;
-        bt_c[1 as libc::c_int as usize] = bt_clarge;
-        bt_clen = 2 as libc::c_int;
+        bt_c[0 as i32 as usize] = alo * blo - err3;
+        bt_c[1 as i32 as usize] = bt_clarge;
+        bt_clen = 2 as i32;
         negate = -bdxtail;
         bt_alarge = negate * ady;
         c = splitter * negate;
@@ -4087,9 +4087,9 @@ pub unsafe extern "C" fn orient3dadapt(
         err1 = bt_alarge - ahi * bhi;
         err2 = err1 - alo * bhi;
         err3 = err2 - ahi * blo;
-        bt_a[0 as libc::c_int as usize] = alo * blo - err3;
-        bt_a[1 as libc::c_int as usize] = bt_alarge;
-        bt_alen = 2 as libc::c_int;
+        bt_a[0 as i32 as usize] = alo * blo - err3;
+        bt_a[1 as i32 as usize] = bt_alarge;
+        bt_alen = 2 as i32;
     } else {
         bdxt_cdy1 = bdxtail * cdy;
         c = splitter * bdxtail;
@@ -4122,7 +4122,7 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - bdyt_cdx0;
         around = bdxt_cdy0 - avirt;
-        bt_c[0 as libc::c_int as usize] = around + bround;
+        bt_c[0 as i32 as usize] = around + bround;
         _j = bdxt_cdy1 + _i;
         bvirt = _j - bdxt_cdy1;
         avirt = _j - bvirt;
@@ -4134,15 +4134,15 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - bdyt_cdx1;
         around = _0 - avirt;
-        bt_c[1 as libc::c_int as usize] = around + bround;
+        bt_c[1 as i32 as usize] = around + bround;
         bt_clarge = _j + _i;
         bvirt = bt_clarge - _j;
         avirt = bt_clarge - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        bt_c[2 as libc::c_int as usize] = around + bround;
-        bt_c[3 as libc::c_int as usize] = bt_clarge;
-        bt_clen = 4 as libc::c_int;
+        bt_c[2 as i32 as usize] = around + bround;
+        bt_c[3 as i32 as usize] = bt_clarge;
+        bt_clen = 4 as i32;
         bdyt_adx1 = bdytail * adx;
         c = splitter * bdytail;
         abig = c - bdytail;
@@ -4174,7 +4174,7 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - bdxt_ady0;
         around = bdyt_adx0 - avirt;
-        bt_a[0 as libc::c_int as usize] = around + bround;
+        bt_a[0 as i32 as usize] = around + bround;
         _j = bdyt_adx1 + _i;
         bvirt = _j - bdyt_adx1;
         avirt = _j - bvirt;
@@ -4186,22 +4186,22 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - bdxt_ady1;
         around = _0 - avirt;
-        bt_a[1 as libc::c_int as usize] = around + bround;
+        bt_a[1 as i32 as usize] = around + bround;
         bt_alarge = _j + _i;
         bvirt = bt_alarge - _j;
         avirt = bt_alarge - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        bt_a[2 as libc::c_int as usize] = around + bround;
-        bt_a[3 as libc::c_int as usize] = bt_alarge;
-        bt_alen = 4 as libc::c_int;
+        bt_a[2 as i32 as usize] = around + bround;
+        bt_a[3 as i32 as usize] = bt_alarge;
+        bt_alen = 4 as i32;
     }
     if cdxtail == 0.0f64 {
         if cdytail == 0.0f64 {
-            ct_a[0 as libc::c_int as usize] = 0.0f64;
-            ct_alen = 1 as libc::c_int;
-            ct_b[0 as libc::c_int as usize] = 0.0f64;
-            ct_blen = 1 as libc::c_int;
+            ct_a[0 as i32 as usize] = 0.0f64;
+            ct_alen = 1 as i32;
+            ct_b[0 as i32 as usize] = 0.0f64;
+            ct_blen = 1 as i32;
         } else {
             negate = -cdytail;
             ct_alarge = negate * adx;
@@ -4216,9 +4216,9 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = ct_alarge - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            ct_a[0 as libc::c_int as usize] = alo * blo - err3;
-            ct_a[1 as libc::c_int as usize] = ct_alarge;
-            ct_alen = 2 as libc::c_int;
+            ct_a[0 as i32 as usize] = alo * blo - err3;
+            ct_a[1 as i32 as usize] = ct_alarge;
+            ct_alen = 2 as i32;
             ct_blarge = cdytail * bdx;
             c = splitter * cdytail;
             abig = c - cdytail;
@@ -4231,9 +4231,9 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = ct_blarge - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            ct_b[0 as libc::c_int as usize] = alo * blo - err3;
-            ct_b[1 as libc::c_int as usize] = ct_blarge;
-            ct_blen = 2 as libc::c_int;
+            ct_b[0 as i32 as usize] = alo * blo - err3;
+            ct_b[1 as i32 as usize] = ct_blarge;
+            ct_blen = 2 as i32;
         }
     } else if cdytail == 0.0f64 {
         ct_alarge = cdxtail * ady;
@@ -4248,9 +4248,9 @@ pub unsafe extern "C" fn orient3dadapt(
         err1 = ct_alarge - ahi * bhi;
         err2 = err1 - alo * bhi;
         err3 = err2 - ahi * blo;
-        ct_a[0 as libc::c_int as usize] = alo * blo - err3;
-        ct_a[1 as libc::c_int as usize] = ct_alarge;
-        ct_alen = 2 as libc::c_int;
+        ct_a[0 as i32 as usize] = alo * blo - err3;
+        ct_a[1 as i32 as usize] = ct_alarge;
+        ct_alen = 2 as i32;
         negate = -cdxtail;
         ct_blarge = negate * bdy;
         c = splitter * negate;
@@ -4264,9 +4264,9 @@ pub unsafe extern "C" fn orient3dadapt(
         err1 = ct_blarge - ahi * bhi;
         err2 = err1 - alo * bhi;
         err3 = err2 - ahi * blo;
-        ct_b[0 as libc::c_int as usize] = alo * blo - err3;
-        ct_b[1 as libc::c_int as usize] = ct_blarge;
-        ct_blen = 2 as libc::c_int;
+        ct_b[0 as i32 as usize] = alo * blo - err3;
+        ct_b[1 as i32 as usize] = ct_blarge;
+        ct_blen = 2 as i32;
     } else {
         cdxt_ady1 = cdxtail * ady;
         c = splitter * cdxtail;
@@ -4299,7 +4299,7 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - cdyt_adx0;
         around = cdxt_ady0 - avirt;
-        ct_a[0 as libc::c_int as usize] = around + bround;
+        ct_a[0 as i32 as usize] = around + bround;
         _j = cdxt_ady1 + _i;
         bvirt = _j - cdxt_ady1;
         avirt = _j - bvirt;
@@ -4311,15 +4311,15 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - cdyt_adx1;
         around = _0 - avirt;
-        ct_a[1 as libc::c_int as usize] = around + bround;
+        ct_a[1 as i32 as usize] = around + bround;
         ct_alarge = _j + _i;
         bvirt = ct_alarge - _j;
         avirt = ct_alarge - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        ct_a[2 as libc::c_int as usize] = around + bround;
-        ct_a[3 as libc::c_int as usize] = ct_alarge;
-        ct_alen = 4 as libc::c_int;
+        ct_a[2 as i32 as usize] = around + bround;
+        ct_a[3 as i32 as usize] = ct_alarge;
+        ct_alen = 4 as i32;
         cdyt_bdx1 = cdytail * bdx;
         c = splitter * cdytail;
         abig = c - cdytail;
@@ -4351,7 +4351,7 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - cdxt_bdy0;
         around = cdyt_bdx0 - avirt;
-        ct_b[0 as libc::c_int as usize] = around + bround;
+        ct_b[0 as i32 as usize] = around + bround;
         _j = cdyt_bdx1 + _i;
         bvirt = _j - cdyt_bdx1;
         avirt = _j - bvirt;
@@ -4363,15 +4363,15 @@ pub unsafe extern "C" fn orient3dadapt(
         avirt = _i + bvirt;
         bround = bvirt - cdxt_bdy1;
         around = _0 - avirt;
-        ct_b[1 as libc::c_int as usize] = around + bround;
+        ct_b[1 as i32 as usize] = around + bround;
         ct_blarge = _j + _i;
         bvirt = ct_blarge - _j;
         avirt = ct_blarge - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        ct_b[2 as libc::c_int as usize] = around + bround;
-        ct_b[3 as libc::c_int as usize] = ct_blarge;
-        ct_blen = 4 as libc::c_int;
+        ct_b[2 as i32 as usize] = around + bround;
+        ct_b[3 as i32 as usize] = ct_blarge;
+        ct_blen = 4 as i32;
     }
     bctlen = fast_expansion_sum_zeroelim(
         bt_clen,
@@ -4429,7 +4429,7 @@ pub unsafe extern "C" fn orient3dadapt(
     finother = finswap;
     if adztail != 0.0f64 {
         vlength = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bc.as_mut_ptr(),
             adztail,
             v.as_mut_ptr(),
@@ -4447,7 +4447,7 @@ pub unsafe extern "C" fn orient3dadapt(
     }
     if bdztail != 0.0f64 {
         vlength = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             ca.as_mut_ptr(),
             bdztail,
             v.as_mut_ptr(),
@@ -4465,7 +4465,7 @@ pub unsafe extern "C" fn orient3dadapt(
     }
     if cdztail != 0.0f64 {
         vlength = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             ab.as_mut_ptr(),
             cdztail,
             v.as_mut_ptr(),
@@ -4508,7 +4508,7 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = _i - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            u[0 as libc::c_int as usize] = alo * blo - err3;
+            u[0 as i32 as usize] = alo * blo - err3;
             _j = adxt_bdyt1 * cdz;
             c = splitter * adxt_bdyt1;
             abig = c - adxt_bdyt1;
@@ -4523,15 +4523,15 @@ pub unsafe extern "C" fn orient3dadapt(
             avirt = _k - bvirt;
             bround = _0 - bvirt;
             around = _i - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _k;
             bvirt = u3 - _j;
-            u[2 as libc::c_int as usize] = _k - bvirt;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = _k - bvirt;
+            u[3 as i32 as usize] = u3;
             finlength = fast_expansion_sum_zeroelim(
                 finlength,
                 finnow,
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
                 finother,
             );
@@ -4551,7 +4551,7 @@ pub unsafe extern "C" fn orient3dadapt(
                 err1 = _i - ahi * bhi;
                 err2 = err1 - alo * bhi;
                 err3 = err2 - ahi * blo;
-                u[0 as libc::c_int as usize] = alo * blo - err3;
+                u[0 as i32 as usize] = alo * blo - err3;
                 _j = adxt_bdyt1 * cdztail;
                 c = splitter * adxt_bdyt1;
                 abig = c - adxt_bdyt1;
@@ -4566,15 +4566,15 @@ pub unsafe extern "C" fn orient3dadapt(
                 avirt = _k - bvirt;
                 bround = _0 - bvirt;
                 around = _i - avirt;
-                u[1 as libc::c_int as usize] = around + bround;
+                u[1 as i32 as usize] = around + bround;
                 u3 = _j + _k;
                 bvirt = u3 - _j;
-                u[2 as libc::c_int as usize] = _k - bvirt;
-                u[3 as libc::c_int as usize] = u3;
+                u[2 as i32 as usize] = _k - bvirt;
+                u[3 as i32 as usize] = u3;
                 finlength = fast_expansion_sum_zeroelim(
                     finlength,
                     finnow,
-                    4 as libc::c_int,
+                    4 as i32,
                     u.as_mut_ptr(),
                     finother,
                 );
@@ -4610,7 +4610,7 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = _i - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            u[0 as libc::c_int as usize] = alo * blo - err3;
+            u[0 as i32 as usize] = alo * blo - err3;
             _j = adxt_cdyt1 * bdz;
             c = splitter * adxt_cdyt1;
             abig = c - adxt_cdyt1;
@@ -4625,15 +4625,15 @@ pub unsafe extern "C" fn orient3dadapt(
             avirt = _k - bvirt;
             bround = _0 - bvirt;
             around = _i - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _k;
             bvirt = u3 - _j;
-            u[2 as libc::c_int as usize] = _k - bvirt;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = _k - bvirt;
+            u[3 as i32 as usize] = u3;
             finlength = fast_expansion_sum_zeroelim(
                 finlength,
                 finnow,
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
                 finother,
             );
@@ -4653,7 +4653,7 @@ pub unsafe extern "C" fn orient3dadapt(
                 err1 = _i - ahi * bhi;
                 err2 = err1 - alo * bhi;
                 err3 = err2 - ahi * blo;
-                u[0 as libc::c_int as usize] = alo * blo - err3;
+                u[0 as i32 as usize] = alo * blo - err3;
                 _j = adxt_cdyt1 * bdztail;
                 c = splitter * adxt_cdyt1;
                 abig = c - adxt_cdyt1;
@@ -4668,15 +4668,15 @@ pub unsafe extern "C" fn orient3dadapt(
                 avirt = _k - bvirt;
                 bround = _0 - bvirt;
                 around = _i - avirt;
-                u[1 as libc::c_int as usize] = around + bround;
+                u[1 as i32 as usize] = around + bround;
                 u3 = _j + _k;
                 bvirt = u3 - _j;
-                u[2 as libc::c_int as usize] = _k - bvirt;
-                u[3 as libc::c_int as usize] = u3;
+                u[2 as i32 as usize] = _k - bvirt;
+                u[3 as i32 as usize] = u3;
                 finlength = fast_expansion_sum_zeroelim(
                     finlength,
                     finnow,
-                    4 as libc::c_int,
+                    4 as i32,
                     u.as_mut_ptr(),
                     finother,
                 );
@@ -4713,7 +4713,7 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = _i - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            u[0 as libc::c_int as usize] = alo * blo - err3;
+            u[0 as i32 as usize] = alo * blo - err3;
             _j = bdxt_cdyt1 * adz;
             c = splitter * bdxt_cdyt1;
             abig = c - bdxt_cdyt1;
@@ -4728,15 +4728,15 @@ pub unsafe extern "C" fn orient3dadapt(
             avirt = _k - bvirt;
             bround = _0 - bvirt;
             around = _i - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _k;
             bvirt = u3 - _j;
-            u[2 as libc::c_int as usize] = _k - bvirt;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = _k - bvirt;
+            u[3 as i32 as usize] = u3;
             finlength = fast_expansion_sum_zeroelim(
                 finlength,
                 finnow,
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
                 finother,
             );
@@ -4756,7 +4756,7 @@ pub unsafe extern "C" fn orient3dadapt(
                 err1 = _i - ahi * bhi;
                 err2 = err1 - alo * bhi;
                 err3 = err2 - ahi * blo;
-                u[0 as libc::c_int as usize] = alo * blo - err3;
+                u[0 as i32 as usize] = alo * blo - err3;
                 _j = bdxt_cdyt1 * adztail;
                 c = splitter * bdxt_cdyt1;
                 abig = c - bdxt_cdyt1;
@@ -4771,15 +4771,15 @@ pub unsafe extern "C" fn orient3dadapt(
                 avirt = _k - bvirt;
                 bround = _0 - bvirt;
                 around = _i - avirt;
-                u[1 as libc::c_int as usize] = around + bround;
+                u[1 as i32 as usize] = around + bround;
                 u3 = _j + _k;
                 bvirt = u3 - _j;
-                u[2 as libc::c_int as usize] = _k - bvirt;
-                u[3 as libc::c_int as usize] = u3;
+                u[2 as i32 as usize] = _k - bvirt;
+                u[3 as i32 as usize] = u3;
                 finlength = fast_expansion_sum_zeroelim(
                     finlength,
                     finnow,
-                    4 as libc::c_int,
+                    4 as i32,
                     u.as_mut_ptr(),
                     finother,
                 );
@@ -4815,7 +4815,7 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = _i - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            u[0 as libc::c_int as usize] = alo * blo - err3;
+            u[0 as i32 as usize] = alo * blo - err3;
             _j = bdxt_adyt1 * cdz;
             c = splitter * bdxt_adyt1;
             abig = c - bdxt_adyt1;
@@ -4830,15 +4830,15 @@ pub unsafe extern "C" fn orient3dadapt(
             avirt = _k - bvirt;
             bround = _0 - bvirt;
             around = _i - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _k;
             bvirt = u3 - _j;
-            u[2 as libc::c_int as usize] = _k - bvirt;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = _k - bvirt;
+            u[3 as i32 as usize] = u3;
             finlength = fast_expansion_sum_zeroelim(
                 finlength,
                 finnow,
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
                 finother,
             );
@@ -4858,7 +4858,7 @@ pub unsafe extern "C" fn orient3dadapt(
                 err1 = _i - ahi * bhi;
                 err2 = err1 - alo * bhi;
                 err3 = err2 - ahi * blo;
-                u[0 as libc::c_int as usize] = alo * blo - err3;
+                u[0 as i32 as usize] = alo * blo - err3;
                 _j = bdxt_adyt1 * cdztail;
                 c = splitter * bdxt_adyt1;
                 abig = c - bdxt_adyt1;
@@ -4873,15 +4873,15 @@ pub unsafe extern "C" fn orient3dadapt(
                 avirt = _k - bvirt;
                 bround = _0 - bvirt;
                 around = _i - avirt;
-                u[1 as libc::c_int as usize] = around + bround;
+                u[1 as i32 as usize] = around + bround;
                 u3 = _j + _k;
                 bvirt = u3 - _j;
-                u[2 as libc::c_int as usize] = _k - bvirt;
-                u[3 as libc::c_int as usize] = u3;
+                u[2 as i32 as usize] = _k - bvirt;
+                u[3 as i32 as usize] = u3;
                 finlength = fast_expansion_sum_zeroelim(
                     finlength,
                     finnow,
-                    4 as libc::c_int,
+                    4 as i32,
                     u.as_mut_ptr(),
                     finother,
                 );
@@ -4918,7 +4918,7 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = _i - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            u[0 as libc::c_int as usize] = alo * blo - err3;
+            u[0 as i32 as usize] = alo * blo - err3;
             _j = cdxt_adyt1 * bdz;
             c = splitter * cdxt_adyt1;
             abig = c - cdxt_adyt1;
@@ -4933,15 +4933,15 @@ pub unsafe extern "C" fn orient3dadapt(
             avirt = _k - bvirt;
             bround = _0 - bvirt;
             around = _i - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _k;
             bvirt = u3 - _j;
-            u[2 as libc::c_int as usize] = _k - bvirt;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = _k - bvirt;
+            u[3 as i32 as usize] = u3;
             finlength = fast_expansion_sum_zeroelim(
                 finlength,
                 finnow,
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
                 finother,
             );
@@ -4961,7 +4961,7 @@ pub unsafe extern "C" fn orient3dadapt(
                 err1 = _i - ahi * bhi;
                 err2 = err1 - alo * bhi;
                 err3 = err2 - ahi * blo;
-                u[0 as libc::c_int as usize] = alo * blo - err3;
+                u[0 as i32 as usize] = alo * blo - err3;
                 _j = cdxt_adyt1 * bdztail;
                 c = splitter * cdxt_adyt1;
                 abig = c - cdxt_adyt1;
@@ -4976,15 +4976,15 @@ pub unsafe extern "C" fn orient3dadapt(
                 avirt = _k - bvirt;
                 bround = _0 - bvirt;
                 around = _i - avirt;
-                u[1 as libc::c_int as usize] = around + bround;
+                u[1 as i32 as usize] = around + bround;
                 u3 = _j + _k;
                 bvirt = u3 - _j;
-                u[2 as libc::c_int as usize] = _k - bvirt;
-                u[3 as libc::c_int as usize] = u3;
+                u[2 as i32 as usize] = _k - bvirt;
+                u[3 as i32 as usize] = u3;
                 finlength = fast_expansion_sum_zeroelim(
                     finlength,
                     finnow,
-                    4 as libc::c_int,
+                    4 as i32,
                     u.as_mut_ptr(),
                     finother,
                 );
@@ -5020,7 +5020,7 @@ pub unsafe extern "C" fn orient3dadapt(
             err1 = _i - ahi * bhi;
             err2 = err1 - alo * bhi;
             err3 = err2 - ahi * blo;
-            u[0 as libc::c_int as usize] = alo * blo - err3;
+            u[0 as i32 as usize] = alo * blo - err3;
             _j = cdxt_bdyt1 * adz;
             c = splitter * cdxt_bdyt1;
             abig = c - cdxt_bdyt1;
@@ -5035,15 +5035,15 @@ pub unsafe extern "C" fn orient3dadapt(
             avirt = _k - bvirt;
             bround = _0 - bvirt;
             around = _i - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _k;
             bvirt = u3 - _j;
-            u[2 as libc::c_int as usize] = _k - bvirt;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = _k - bvirt;
+            u[3 as i32 as usize] = u3;
             finlength = fast_expansion_sum_zeroelim(
                 finlength,
                 finnow,
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
                 finother,
             );
@@ -5063,7 +5063,7 @@ pub unsafe extern "C" fn orient3dadapt(
                 err1 = _i - ahi * bhi;
                 err2 = err1 - alo * bhi;
                 err3 = err2 - ahi * blo;
-                u[0 as libc::c_int as usize] = alo * blo - err3;
+                u[0 as i32 as usize] = alo * blo - err3;
                 _j = cdxt_bdyt1 * adztail;
                 c = splitter * cdxt_bdyt1;
                 abig = c - cdxt_bdyt1;
@@ -5078,15 +5078,15 @@ pub unsafe extern "C" fn orient3dadapt(
                 avirt = _k - bvirt;
                 bround = _0 - bvirt;
                 around = _i - avirt;
-                u[1 as libc::c_int as usize] = around + bround;
+                u[1 as i32 as usize] = around + bround;
                 u3 = _j + _k;
                 bvirt = u3 - _j;
-                u[2 as libc::c_int as usize] = _k - bvirt;
-                u[3 as libc::c_int as usize] = u3;
+                u[2 as i32 as usize] = _k - bvirt;
+                u[3 as i32 as usize] = u3;
                 finlength = fast_expansion_sum_zeroelim(
                     finlength,
                     finnow,
-                    4 as libc::c_int,
+                    4 as i32,
                     u.as_mut_ptr(),
                     finother,
                 );
@@ -5150,7 +5150,7 @@ pub unsafe extern "C" fn orient3dadapt(
         finnow = finother;
         finother = finswap;
     }
-    return *finnow.offset((finlength - 1 as libc::c_int) as isize);
+    return *finnow.offset((finlength - 1 as i32) as isize);
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3d(
@@ -5177,15 +5177,15 @@ pub unsafe extern "C" fn orient3d(
     let mut det: libc::c_double = 0.;
     let mut permanent: libc::c_double = 0.;
     let mut errbound: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    adz = *pa.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    bdz = *pb.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
-    cdz = *pc.offset(2 as libc::c_int as isize) - *pd.offset(2 as libc::c_int as isize);
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    adz = *pa.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    bdz = *pb.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
+    cdz = *pc.offset(2 as i32 as isize) - *pd.offset(2 as i32 as isize);
     bdxcdy = bdx * cdy;
     cdxbdy = cdx * bdy;
     cdxady = cdx * ady;
@@ -5227,12 +5227,12 @@ pub unsafe extern "C" fn incirclefast(
     let mut alift: libc::c_double = 0.;
     let mut blift: libc::c_double = 0.;
     let mut clift: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
     abdet = adx * bdy - bdx * ady;
     bcdet = bdx * cdy - cdx * bdy;
     cadet = cdx * ady - adx * cdy;
@@ -5279,36 +5279,36 @@ pub unsafe extern "C" fn incircleexact(
     let mut ac: [libc::c_double; 4] = [0.; 4];
     let mut bd: [libc::c_double; 4] = [0.; 4];
     let mut temp8: [libc::c_double; 8] = [0.; 8];
-    let mut templen: libc::c_int = 0;
+    let mut templen: i32 = 0;
     let mut abc: [libc::c_double; 12] = [0.; 12];
     let mut bcd: [libc::c_double; 12] = [0.; 12];
     let mut cda: [libc::c_double; 12] = [0.; 12];
     let mut dab: [libc::c_double; 12] = [0.; 12];
-    let mut abclen: libc::c_int = 0;
-    let mut bcdlen: libc::c_int = 0;
-    let mut cdalen: libc::c_int = 0;
-    let mut dablen: libc::c_int = 0;
+    let mut abclen: i32 = 0;
+    let mut bcdlen: i32 = 0;
+    let mut cdalen: i32 = 0;
+    let mut dablen: i32 = 0;
     let mut det24x: [libc::c_double; 24] = [0.; 24];
     let mut det24y: [libc::c_double; 24] = [0.; 24];
     let mut det48x: [libc::c_double; 48] = [0.; 48];
     let mut det48y: [libc::c_double; 48] = [0.; 48];
-    let mut xlen: libc::c_int = 0;
-    let mut ylen: libc::c_int = 0;
+    let mut xlen: i32 = 0;
+    let mut ylen: i32 = 0;
     let mut adet: [libc::c_double; 96] = [0.; 96];
     let mut bdet: [libc::c_double; 96] = [0.; 96];
     let mut cdet: [libc::c_double; 96] = [0.; 96];
     let mut ddet: [libc::c_double; 96] = [0.; 96];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
-    let mut dlen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
+    let mut dlen: i32 = 0;
     let mut abdet: [libc::c_double; 192] = [0.; 192];
     let mut cddet: [libc::c_double; 192] = [0.; 192];
-    let mut ablen: libc::c_int = 0;
-    let mut cdlen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
+    let mut cdlen: i32 = 0;
     let mut deter: [libc::c_double; 384] = [0.; 384];
-    let mut deterlen: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    let mut deterlen: i32 = 0;
+    let mut i: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -5325,30 +5325,30 @@ pub unsafe extern "C" fn incircleexact(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    axby1 = *pa.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axby1 = *pa.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = axby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axby0 = alo * blo - err3;
-    bxay1 = *pb.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    bxay1 = *pb.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = bxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -5358,7 +5358,7 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay0;
     around = axby0 - avirt;
-    ab[0 as libc::c_int as usize] = around + bround;
+    ab[0 as i32 as usize] = around + bround;
     _j = axby1 + _i;
     bvirt = _j - axby1;
     avirt = _j - bvirt;
@@ -5370,37 +5370,37 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay1;
     around = _0 - avirt;
-    ab[1 as libc::c_int as usize] = around + bround;
-    ab[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ab[3 as libc::c_int as usize] - _j;
-    avirt = ab[3 as libc::c_int as usize] - bvirt;
+    ab[1 as i32 as usize] = around + bround;
+    ab[3 as i32 as usize] = _j + _i;
+    bvirt = ab[3 as i32 as usize] - _j;
+    avirt = ab[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ab[2 as libc::c_int as usize] = around + bround;
-    bxcy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    ab[2 as i32 as usize] = around + bround;
+    bxcy1 = *pb.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = bxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxcy0 = alo * blo - err3;
-    cxby1 = *pc.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxby1 = *pc.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = cxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -5410,7 +5410,7 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby0;
     around = bxcy0 - avirt;
-    bc[0 as libc::c_int as usize] = around + bround;
+    bc[0 as i32 as usize] = around + bround;
     _j = bxcy1 + _i;
     bvirt = _j - bxcy1;
     avirt = _j - bvirt;
@@ -5422,37 +5422,37 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby1;
     around = _0 - avirt;
-    bc[1 as libc::c_int as usize] = around + bround;
-    bc[3 as libc::c_int as usize] = _j + _i;
-    bvirt = bc[3 as libc::c_int as usize] - _j;
-    avirt = bc[3 as libc::c_int as usize] - bvirt;
+    bc[1 as i32 as usize] = around + bround;
+    bc[3 as i32 as usize] = _j + _i;
+    bvirt = bc[3 as i32 as usize] - _j;
+    avirt = bc[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bc[2 as libc::c_int as usize] = around + bround;
-    cxdy1 = *pc.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    bc[2 as i32 as usize] = around + bround;
+    cxdy1 = *pc.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = cxdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     cxdy0 = alo * blo - err3;
-    dxcy1 = *pd.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    dxcy1 = *pd.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = dxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -5462,7 +5462,7 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - dxcy0;
     around = cxdy0 - avirt;
-    cd[0 as libc::c_int as usize] = around + bround;
+    cd[0 as i32 as usize] = around + bround;
     _j = cxdy1 + _i;
     bvirt = _j - cxdy1;
     avirt = _j - bvirt;
@@ -5474,37 +5474,37 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - dxcy1;
     around = _0 - avirt;
-    cd[1 as libc::c_int as usize] = around + bround;
-    cd[3 as libc::c_int as usize] = _j + _i;
-    bvirt = cd[3 as libc::c_int as usize] - _j;
-    avirt = cd[3 as libc::c_int as usize] - bvirt;
+    cd[1 as i32 as usize] = around + bround;
+    cd[3 as i32 as usize] = _j + _i;
+    bvirt = cd[3 as i32 as usize] - _j;
+    avirt = cd[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    cd[2 as libc::c_int as usize] = around + bround;
-    dxay1 = *pd.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    cd[2 as i32 as usize] = around + bround;
+    dxay1 = *pd.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = dxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     dxay0 = alo * blo - err3;
-    axdy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axdy1 = *pa.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = axdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -5514,7 +5514,7 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - axdy0;
     around = dxay0 - avirt;
-    da[0 as libc::c_int as usize] = around + bround;
+    da[0 as i32 as usize] = around + bround;
     _j = dxay1 + _i;
     bvirt = _j - dxay1;
     avirt = _j - bvirt;
@@ -5526,37 +5526,37 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - axdy1;
     around = _0 - avirt;
-    da[1 as libc::c_int as usize] = around + bround;
-    da[3 as libc::c_int as usize] = _j + _i;
-    bvirt = da[3 as libc::c_int as usize] - _j;
-    avirt = da[3 as libc::c_int as usize] - bvirt;
+    da[1 as i32 as usize] = around + bround;
+    da[3 as i32 as usize] = _j + _i;
+    bvirt = da[3 as i32 as usize] - _j;
+    avirt = da[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    da[2 as libc::c_int as usize] = around + bround;
-    axcy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    da[2 as i32 as usize] = around + bround;
+    axcy1 = *pa.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = axcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axcy0 = alo * blo - err3;
-    cxay1 = *pc.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxay1 = *pc.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = cxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -5566,7 +5566,7 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - cxay0;
     around = axcy0 - avirt;
-    ac[0 as libc::c_int as usize] = around + bround;
+    ac[0 as i32 as usize] = around + bround;
     _j = axcy1 + _i;
     bvirt = _j - axcy1;
     avirt = _j - bvirt;
@@ -5578,37 +5578,37 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - cxay1;
     around = _0 - avirt;
-    ac[1 as libc::c_int as usize] = around + bround;
-    ac[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ac[3 as libc::c_int as usize] - _j;
-    avirt = ac[3 as libc::c_int as usize] - bvirt;
+    ac[1 as i32 as usize] = around + bround;
+    ac[3 as i32 as usize] = _j + _i;
+    bvirt = ac[3 as i32 as usize] - _j;
+    avirt = ac[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ac[2 as libc::c_int as usize] = around + bround;
-    bxdy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    ac[2 as i32 as usize] = around + bround;
+    bxdy1 = *pb.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = bxdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxdy0 = alo * blo - err3;
-    dxby1 = *pd.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    dxby1 = *pd.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = dxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -5618,7 +5618,7 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - dxby0;
     around = bxdy0 - avirt;
-    bd[0 as libc::c_int as usize] = around + bround;
+    bd[0 as i32 as usize] = around + bround;
     _j = bxdy1 + _i;
     bvirt = _j - bxdy1;
     avirt = _j - bvirt;
@@ -5630,97 +5630,97 @@ pub unsafe extern "C" fn incircleexact(
     avirt = _i + bvirt;
     bround = bvirt - dxby1;
     around = _0 - avirt;
-    bd[1 as libc::c_int as usize] = around + bround;
-    bd[3 as libc::c_int as usize] = _j + _i;
-    bvirt = bd[3 as libc::c_int as usize] - _j;
-    avirt = bd[3 as libc::c_int as usize] - bvirt;
+    bd[1 as i32 as usize] = around + bround;
+    bd[3 as i32 as usize] = _j + _i;
+    bvirt = bd[3 as i32 as usize] - _j;
+    avirt = bd[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bd[2 as libc::c_int as usize] = around + bround;
+    bd[2 as i32 as usize] = around + bround;
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     cdalen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
         cda.as_mut_ptr(),
     );
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     dablen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
         dab.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
-    while i < 4 as libc::c_int {
+    i = 0 as i32;
+    while i < 4 as i32 {
         bd[i as usize] = -bd[i as usize];
         ac[i as usize] = -ac[i as usize];
         i += 1;
     }
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     abclen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
         abc.as_mut_ptr(),
     );
     templen = fast_expansion_sum_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
         temp8.as_mut_ptr(),
     );
     bcdlen = fast_expansion_sum_zeroelim(
         templen,
         temp8.as_mut_ptr(),
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
         bcd.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         bcdlen,
         bcd.as_mut_ptr(),
-        *pa.offset(0 as libc::c_int as isize),
+        *pa.offset(0 as i32 as isize),
         det24x.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         det24x.as_mut_ptr(),
-        *pa.offset(0 as libc::c_int as isize),
+        *pa.offset(0 as i32 as isize),
         det48x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         bcdlen,
         bcd.as_mut_ptr(),
-        *pa.offset(1 as libc::c_int as isize),
+        *pa.offset(1 as i32 as isize),
         det24y.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         det24y.as_mut_ptr(),
-        *pa.offset(1 as libc::c_int as isize),
+        *pa.offset(1 as i32 as isize),
         det48y.as_mut_ptr(),
     );
     alen = fast_expansion_sum_zeroelim(
@@ -5733,25 +5733,25 @@ pub unsafe extern "C" fn incircleexact(
     xlen = scale_expansion_zeroelim(
         cdalen,
         cda.as_mut_ptr(),
-        *pb.offset(0 as libc::c_int as isize),
+        *pb.offset(0 as i32 as isize),
         det24x.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         det24x.as_mut_ptr(),
-        -*pb.offset(0 as libc::c_int as isize),
+        -*pb.offset(0 as i32 as isize),
         det48x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         cdalen,
         cda.as_mut_ptr(),
-        *pb.offset(1 as libc::c_int as isize),
+        *pb.offset(1 as i32 as isize),
         det24y.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         det24y.as_mut_ptr(),
-        -*pb.offset(1 as libc::c_int as isize),
+        -*pb.offset(1 as i32 as isize),
         det48y.as_mut_ptr(),
     );
     blen = fast_expansion_sum_zeroelim(
@@ -5764,25 +5764,25 @@ pub unsafe extern "C" fn incircleexact(
     xlen = scale_expansion_zeroelim(
         dablen,
         dab.as_mut_ptr(),
-        *pc.offset(0 as libc::c_int as isize),
+        *pc.offset(0 as i32 as isize),
         det24x.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         det24x.as_mut_ptr(),
-        *pc.offset(0 as libc::c_int as isize),
+        *pc.offset(0 as i32 as isize),
         det48x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         dablen,
         dab.as_mut_ptr(),
-        *pc.offset(1 as libc::c_int as isize),
+        *pc.offset(1 as i32 as isize),
         det24y.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         det24y.as_mut_ptr(),
-        *pc.offset(1 as libc::c_int as isize),
+        *pc.offset(1 as i32 as isize),
         det48y.as_mut_ptr(),
     );
     clen = fast_expansion_sum_zeroelim(
@@ -5795,25 +5795,25 @@ pub unsafe extern "C" fn incircleexact(
     xlen = scale_expansion_zeroelim(
         abclen,
         abc.as_mut_ptr(),
-        *pd.offset(0 as libc::c_int as isize),
+        *pd.offset(0 as i32 as isize),
         det24x.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         det24x.as_mut_ptr(),
-        -*pd.offset(0 as libc::c_int as isize),
+        -*pd.offset(0 as i32 as isize),
         det48x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         abclen,
         abc.as_mut_ptr(),
-        *pd.offset(1 as libc::c_int as isize),
+        *pd.offset(1 as i32 as isize),
         det24y.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         det24y.as_mut_ptr(),
-        -*pd.offset(1 as libc::c_int as isize),
+        -*pd.offset(1 as i32 as isize),
         det48y.as_mut_ptr(),
     );
     dlen = fast_expansion_sum_zeroelim(
@@ -5844,7 +5844,7 @@ pub unsafe extern "C" fn incircleexact(
         cddet.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircleslow(
@@ -5880,46 +5880,46 @@ pub unsafe extern "C" fn incircleslow(
     let mut cxby: [libc::c_double; 8] = [0.; 8];
     let mut cxay: [libc::c_double; 8] = [0.; 8];
     let mut temp16: [libc::c_double; 16] = [0.; 16];
-    let mut temp16len: libc::c_int = 0;
+    let mut temp16len: i32 = 0;
     let mut detx: [libc::c_double; 32] = [0.; 32];
     let mut detxx: [libc::c_double; 64] = [0.; 64];
     let mut detxt: [libc::c_double; 32] = [0.; 32];
     let mut detxxt: [libc::c_double; 64] = [0.; 64];
     let mut detxtxt: [libc::c_double; 64] = [0.; 64];
-    let mut xlen: libc::c_int = 0;
-    let mut xxlen: libc::c_int = 0;
-    let mut xtlen: libc::c_int = 0;
-    let mut xxtlen: libc::c_int = 0;
-    let mut xtxtlen: libc::c_int = 0;
+    let mut xlen: i32 = 0;
+    let mut xxlen: i32 = 0;
+    let mut xtlen: i32 = 0;
+    let mut xxtlen: i32 = 0;
+    let mut xtxtlen: i32 = 0;
     let mut x1: [libc::c_double; 128] = [0.; 128];
     let mut x2: [libc::c_double; 192] = [0.; 192];
-    let mut x1len: libc::c_int = 0;
-    let mut x2len: libc::c_int = 0;
+    let mut x1len: i32 = 0;
+    let mut x2len: i32 = 0;
     let mut dety: [libc::c_double; 32] = [0.; 32];
     let mut detyy: [libc::c_double; 64] = [0.; 64];
     let mut detyt: [libc::c_double; 32] = [0.; 32];
     let mut detyyt: [libc::c_double; 64] = [0.; 64];
     let mut detytyt: [libc::c_double; 64] = [0.; 64];
-    let mut ylen: libc::c_int = 0;
-    let mut yylen: libc::c_int = 0;
-    let mut ytlen: libc::c_int = 0;
-    let mut yytlen: libc::c_int = 0;
-    let mut ytytlen: libc::c_int = 0;
+    let mut ylen: i32 = 0;
+    let mut yylen: i32 = 0;
+    let mut ytlen: i32 = 0;
+    let mut yytlen: i32 = 0;
+    let mut ytytlen: i32 = 0;
     let mut y1: [libc::c_double; 128] = [0.; 128];
     let mut y2: [libc::c_double; 192] = [0.; 192];
-    let mut y1len: libc::c_int = 0;
-    let mut y2len: libc::c_int = 0;
+    let mut y1len: i32 = 0;
+    let mut y2len: i32 = 0;
     let mut adet: [libc::c_double; 384] = [0.; 384];
     let mut bdet: [libc::c_double; 384] = [0.; 384];
     let mut cdet: [libc::c_double; 384] = [0.; 384];
     let mut abdet: [libc::c_double; 768] = [0.; 768];
     let mut deter: [libc::c_double; 1152] = [0.; 1152];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
-    let mut ablen: libc::c_int = 0;
-    let mut deterlen: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
+    let mut ablen: i32 = 0;
+    let mut deterlen: i32 = 0;
+    let mut i: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -5944,41 +5944,41 @@ pub unsafe extern "C" fn incircleslow(
     let mut _0: libc::c_double = 0.;
     let mut _1: libc::c_double = 0.;
     let mut _2: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bvirt = *pa.offset(0 as libc::c_int as isize) - adx;
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bvirt = *pa.offset(0 as i32 as isize) - adx;
     avirt = adx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     adxtail = around + bround;
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bvirt = *pa.offset(1 as libc::c_int as isize) - ady;
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bvirt = *pa.offset(1 as i32 as isize) - ady;
     avirt = ady + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     adytail = around + bround;
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bdx;
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bvirt = *pb.offset(0 as i32 as isize) - bdx;
     avirt = bdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bdxtail = around + bround;
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bdy;
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bvirt = *pb.offset(1 as i32 as isize) - bdy;
     avirt = bdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     bdytail = around + bround;
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bvirt = *pc.offset(0 as libc::c_int as isize) - cdx;
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bvirt = *pc.offset(0 as i32 as isize) - cdx;
     avirt = cdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pc.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pc.offset(0 as i32 as isize) - avirt;
     cdxtail = around + bround;
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bvirt = *pc.offset(1 as libc::c_int as isize) - cdy;
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bvirt = *pc.offset(1 as i32 as isize) - cdy;
     avirt = cdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pc.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pc.offset(1 as i32 as isize) - avirt;
     cdytail = around + bround;
     c = splitter * adxtail;
     abig = c - adxtail;
@@ -5992,7 +5992,7 @@ pub unsafe extern "C" fn incircleslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * adx;
     abig = c - adx;
     a1hi = c - abig;
@@ -6025,7 +6025,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[1 as libc::c_int as usize] = around + bround;
+    axby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -6054,7 +6054,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[2 as libc::c_int as usize] = around + bround;
+    axby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -6078,7 +6078,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[3 as libc::c_int as usize] = around + bround;
+    axby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -6096,20 +6096,20 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axby[4 as libc::c_int as usize] = around + bround;
+    axby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axby[5 as libc::c_int as usize] = around + bround;
+    axby[5 as i32 as usize] = around + bround;
     axby7 = _m + _k;
     bvirt = axby7 - _m;
     avirt = axby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axby[6 as libc::c_int as usize] = around + bround;
-    axby[7 as libc::c_int as usize] = axby7;
+    axby[6 as i32 as usize] = around + bround;
+    axby[7 as i32 as usize] = axby7;
     negate = -ady;
     negatetail = -adytail;
     c = splitter * bdxtail;
@@ -6124,7 +6124,7 @@ pub unsafe extern "C" fn incircleslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bdx;
     abig = c - bdx;
     a1hi = c - abig;
@@ -6157,7 +6157,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[1 as libc::c_int as usize] = around + bround;
+    bxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -6186,7 +6186,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[2 as libc::c_int as usize] = around + bround;
+    bxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -6210,7 +6210,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[3 as libc::c_int as usize] = around + bround;
+    bxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -6228,20 +6228,20 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxay[4 as libc::c_int as usize] = around + bround;
+    bxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxay[5 as libc::c_int as usize] = around + bround;
+    bxay[5 as i32 as usize] = around + bround;
     bxay7 = _m + _k;
     bvirt = bxay7 - _m;
     avirt = bxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxay[6 as libc::c_int as usize] = around + bround;
-    bxay[7 as libc::c_int as usize] = bxay7;
+    bxay[6 as i32 as usize] = around + bround;
+    bxay[7 as i32 as usize] = bxay7;
     c = splitter * bdxtail;
     abig = c - bdxtail;
     a0hi = c - abig;
@@ -6254,7 +6254,7 @@ pub unsafe extern "C" fn incircleslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bdx;
     abig = c - bdx;
     a1hi = c - abig;
@@ -6287,7 +6287,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[1 as libc::c_int as usize] = around + bround;
+    bxcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -6316,7 +6316,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[2 as libc::c_int as usize] = around + bround;
+    bxcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -6340,7 +6340,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[3 as libc::c_int as usize] = around + bround;
+    bxcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -6358,20 +6358,20 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxcy[4 as libc::c_int as usize] = around + bround;
+    bxcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxcy[5 as libc::c_int as usize] = around + bround;
+    bxcy[5 as i32 as usize] = around + bround;
     bxcy7 = _m + _k;
     bvirt = bxcy7 - _m;
     avirt = bxcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxcy[6 as libc::c_int as usize] = around + bround;
-    bxcy[7 as libc::c_int as usize] = bxcy7;
+    bxcy[6 as i32 as usize] = around + bround;
+    bxcy[7 as i32 as usize] = bxcy7;
     negate = -bdy;
     negatetail = -bdytail;
     c = splitter * cdxtail;
@@ -6386,7 +6386,7 @@ pub unsafe extern "C" fn incircleslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cdx;
     abig = c - cdx;
     a1hi = c - abig;
@@ -6419,7 +6419,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[1 as libc::c_int as usize] = around + bround;
+    cxby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -6448,7 +6448,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[2 as libc::c_int as usize] = around + bround;
+    cxby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -6472,7 +6472,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[3 as libc::c_int as usize] = around + bround;
+    cxby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -6490,20 +6490,20 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxby[4 as libc::c_int as usize] = around + bround;
+    cxby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxby[5 as libc::c_int as usize] = around + bround;
+    cxby[5 as i32 as usize] = around + bround;
     cxby7 = _m + _k;
     bvirt = cxby7 - _m;
     avirt = cxby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxby[6 as libc::c_int as usize] = around + bround;
-    cxby[7 as libc::c_int as usize] = cxby7;
+    cxby[6 as i32 as usize] = around + bround;
+    cxby[7 as i32 as usize] = cxby7;
     c = splitter * cdxtail;
     abig = c - cdxtail;
     a0hi = c - abig;
@@ -6516,7 +6516,7 @@ pub unsafe extern "C" fn incircleslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cdx;
     abig = c - cdx;
     a1hi = c - abig;
@@ -6549,7 +6549,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[1 as libc::c_int as usize] = around + bround;
+    cxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -6578,7 +6578,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[2 as libc::c_int as usize] = around + bround;
+    cxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -6602,7 +6602,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[3 as libc::c_int as usize] = around + bround;
+    cxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -6620,20 +6620,20 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxay[4 as libc::c_int as usize] = around + bround;
+    cxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxay[5 as libc::c_int as usize] = around + bround;
+    cxay[5 as i32 as usize] = around + bround;
     cxay7 = _m + _k;
     bvirt = cxay7 - _m;
     avirt = cxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxay[6 as libc::c_int as usize] = around + bround;
-    cxay[7 as libc::c_int as usize] = cxay7;
+    cxay[6 as i32 as usize] = around + bround;
+    cxay[7 as i32 as usize] = cxay7;
     negate = -cdy;
     negatetail = -cdytail;
     c = splitter * adxtail;
@@ -6648,7 +6648,7 @@ pub unsafe extern "C" fn incircleslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * adx;
     abig = c - adx;
     a1hi = c - abig;
@@ -6681,7 +6681,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[1 as libc::c_int as usize] = around + bround;
+    axcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -6710,7 +6710,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[2 as libc::c_int as usize] = around + bround;
+    axcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -6734,7 +6734,7 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[3 as libc::c_int as usize] = around + bround;
+    axcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -6752,24 +6752,24 @@ pub unsafe extern "C" fn incircleslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axcy[4 as libc::c_int as usize] = around + bround;
+    axcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axcy[5 as libc::c_int as usize] = around + bround;
+    axcy[5 as i32 as usize] = around + bround;
     axcy7 = _m + _k;
     bvirt = axcy7 - _m;
     avirt = axcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axcy[6 as libc::c_int as usize] = around + bround;
-    axcy[7 as libc::c_int as usize] = axcy7;
+    axcy[6 as i32 as usize] = around + bround;
+    axcy[7 as i32 as usize] = axcy7;
     temp16len = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         bxcy.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         cxby.as_mut_ptr(),
         temp16.as_mut_ptr(),
     );
@@ -6792,7 +6792,7 @@ pub unsafe extern "C" fn incircleslow(
         adx,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -6836,7 +6836,7 @@ pub unsafe extern "C" fn incircleslow(
         ady,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -6869,9 +6869,9 @@ pub unsafe extern "C" fn incircleslow(
         adet.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         cxay.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         axcy.as_mut_ptr(),
         temp16.as_mut_ptr(),
     );
@@ -6894,7 +6894,7 @@ pub unsafe extern "C" fn incircleslow(
         bdx,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -6938,7 +6938,7 @@ pub unsafe extern "C" fn incircleslow(
         bdy,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -6971,9 +6971,9 @@ pub unsafe extern "C" fn incircleslow(
         bdet.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         axby.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         bxay.as_mut_ptr(),
         temp16.as_mut_ptr(),
     );
@@ -6996,7 +6996,7 @@ pub unsafe extern "C" fn incircleslow(
         cdx,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -7040,7 +7040,7 @@ pub unsafe extern "C" fn incircleslow(
         cdy,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -7086,7 +7086,7 @@ pub unsafe extern "C" fn incircleslow(
         cdet.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircleadapt(
@@ -7127,39 +7127,39 @@ pub unsafe extern "C" fn incircleadapt(
     let mut aybc: [libc::c_double; 8] = [0.; 8];
     let mut ayybc: [libc::c_double; 16] = [0.; 16];
     let mut adet: [libc::c_double; 32] = [0.; 32];
-    let mut axbclen: libc::c_int = 0;
-    let mut axxbclen: libc::c_int = 0;
-    let mut aybclen: libc::c_int = 0;
-    let mut ayybclen: libc::c_int = 0;
-    let mut alen: libc::c_int = 0;
+    let mut axbclen: i32 = 0;
+    let mut axxbclen: i32 = 0;
+    let mut aybclen: i32 = 0;
+    let mut ayybclen: i32 = 0;
+    let mut alen: i32 = 0;
     let mut bxca: [libc::c_double; 8] = [0.; 8];
     let mut bxxca: [libc::c_double; 16] = [0.; 16];
     let mut byca: [libc::c_double; 8] = [0.; 8];
     let mut byyca: [libc::c_double; 16] = [0.; 16];
     let mut bdet: [libc::c_double; 32] = [0.; 32];
-    let mut bxcalen: libc::c_int = 0;
-    let mut bxxcalen: libc::c_int = 0;
-    let mut bycalen: libc::c_int = 0;
-    let mut byycalen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
+    let mut bxcalen: i32 = 0;
+    let mut bxxcalen: i32 = 0;
+    let mut bycalen: i32 = 0;
+    let mut byycalen: i32 = 0;
+    let mut blen: i32 = 0;
     let mut cxab: [libc::c_double; 8] = [0.; 8];
     let mut cxxab: [libc::c_double; 16] = [0.; 16];
     let mut cyab: [libc::c_double; 8] = [0.; 8];
     let mut cyyab: [libc::c_double; 16] = [0.; 16];
     let mut cdet: [libc::c_double; 32] = [0.; 32];
-    let mut cxablen: libc::c_int = 0;
-    let mut cxxablen: libc::c_int = 0;
-    let mut cyablen: libc::c_int = 0;
-    let mut cyyablen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
+    let mut cxablen: i32 = 0;
+    let mut cxxablen: i32 = 0;
+    let mut cyablen: i32 = 0;
+    let mut cyyablen: i32 = 0;
+    let mut clen: i32 = 0;
     let mut abdet: [libc::c_double; 64] = [0.; 64];
-    let mut ablen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
     let mut fin1: [libc::c_double; 1152] = [0.; 1152];
     let mut fin2: [libc::c_double; 1152] = [0.; 1152];
     let mut finnow: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut finother: *mut libc::c_double = 0 as *mut libc::c_double;
     let mut finswap: *mut libc::c_double = 0 as *mut libc::c_double;
-    let mut finlength: libc::c_int = 0;
+    let mut finlength: i32 = 0;
     let mut adxtail: libc::c_double = 0.;
     let mut bdxtail: libc::c_double = 0.;
     let mut cdxtail: libc::c_double = 0.;
@@ -7200,86 +7200,86 @@ pub unsafe extern "C" fn incircleadapt(
     let mut temp32b: [libc::c_double; 32] = [0.; 32];
     let mut temp48: [libc::c_double; 48] = [0.; 48];
     let mut temp64: [libc::c_double; 64] = [0.; 64];
-    let mut temp8len: libc::c_int = 0;
-    let mut temp16alen: libc::c_int = 0;
-    let mut temp16blen: libc::c_int = 0;
-    let mut temp16clen: libc::c_int = 0;
-    let mut temp32alen: libc::c_int = 0;
-    let mut temp32blen: libc::c_int = 0;
-    let mut temp48len: libc::c_int = 0;
-    let mut temp64len: libc::c_int = 0;
+    let mut temp8len: i32 = 0;
+    let mut temp16alen: i32 = 0;
+    let mut temp16blen: i32 = 0;
+    let mut temp16clen: i32 = 0;
+    let mut temp32alen: i32 = 0;
+    let mut temp32blen: i32 = 0;
+    let mut temp48len: i32 = 0;
+    let mut temp64len: i32 = 0;
     let mut axtbb: [libc::c_double; 8] = [0.; 8];
     let mut axtcc: [libc::c_double; 8] = [0.; 8];
     let mut aytbb: [libc::c_double; 8] = [0.; 8];
     let mut aytcc: [libc::c_double; 8] = [0.; 8];
-    let mut axtbblen: libc::c_int = 0;
-    let mut axtcclen: libc::c_int = 0;
-    let mut aytbblen: libc::c_int = 0;
-    let mut aytcclen: libc::c_int = 0;
+    let mut axtbblen: i32 = 0;
+    let mut axtcclen: i32 = 0;
+    let mut aytbblen: i32 = 0;
+    let mut aytcclen: i32 = 0;
     let mut bxtaa: [libc::c_double; 8] = [0.; 8];
     let mut bxtcc: [libc::c_double; 8] = [0.; 8];
     let mut bytaa: [libc::c_double; 8] = [0.; 8];
     let mut bytcc: [libc::c_double; 8] = [0.; 8];
-    let mut bxtaalen: libc::c_int = 0;
-    let mut bxtcclen: libc::c_int = 0;
-    let mut bytaalen: libc::c_int = 0;
-    let mut bytcclen: libc::c_int = 0;
+    let mut bxtaalen: i32 = 0;
+    let mut bxtcclen: i32 = 0;
+    let mut bytaalen: i32 = 0;
+    let mut bytcclen: i32 = 0;
     let mut cxtaa: [libc::c_double; 8] = [0.; 8];
     let mut cxtbb: [libc::c_double; 8] = [0.; 8];
     let mut cytaa: [libc::c_double; 8] = [0.; 8];
     let mut cytbb: [libc::c_double; 8] = [0.; 8];
-    let mut cxtaalen: libc::c_int = 0;
-    let mut cxtbblen: libc::c_int = 0;
-    let mut cytaalen: libc::c_int = 0;
-    let mut cytbblen: libc::c_int = 0;
+    let mut cxtaalen: i32 = 0;
+    let mut cxtbblen: i32 = 0;
+    let mut cytaalen: i32 = 0;
+    let mut cytbblen: i32 = 0;
     let mut axtbc: [libc::c_double; 8] = [0.; 8];
     let mut aytbc: [libc::c_double; 8] = [0.; 8];
     let mut bxtca: [libc::c_double; 8] = [0.; 8];
     let mut bytca: [libc::c_double; 8] = [0.; 8];
     let mut cxtab: [libc::c_double; 8] = [0.; 8];
     let mut cytab: [libc::c_double; 8] = [0.; 8];
-    let mut axtbclen: libc::c_int = 0;
-    let mut aytbclen: libc::c_int = 0;
-    let mut bxtcalen: libc::c_int = 0;
-    let mut bytcalen: libc::c_int = 0;
-    let mut cxtablen: libc::c_int = 0;
-    let mut cytablen: libc::c_int = 0;
+    let mut axtbclen: i32 = 0;
+    let mut aytbclen: i32 = 0;
+    let mut bxtcalen: i32 = 0;
+    let mut bytcalen: i32 = 0;
+    let mut cxtablen: i32 = 0;
+    let mut cytablen: i32 = 0;
     let mut axtbct: [libc::c_double; 16] = [0.; 16];
     let mut aytbct: [libc::c_double; 16] = [0.; 16];
     let mut bxtcat: [libc::c_double; 16] = [0.; 16];
     let mut bytcat: [libc::c_double; 16] = [0.; 16];
     let mut cxtabt: [libc::c_double; 16] = [0.; 16];
     let mut cytabt: [libc::c_double; 16] = [0.; 16];
-    let mut axtbctlen: libc::c_int = 0;
-    let mut aytbctlen: libc::c_int = 0;
-    let mut bxtcatlen: libc::c_int = 0;
-    let mut bytcatlen: libc::c_int = 0;
-    let mut cxtabtlen: libc::c_int = 0;
-    let mut cytabtlen: libc::c_int = 0;
+    let mut axtbctlen: i32 = 0;
+    let mut aytbctlen: i32 = 0;
+    let mut bxtcatlen: i32 = 0;
+    let mut bytcatlen: i32 = 0;
+    let mut cxtabtlen: i32 = 0;
+    let mut cytabtlen: i32 = 0;
     let mut axtbctt: [libc::c_double; 8] = [0.; 8];
     let mut aytbctt: [libc::c_double; 8] = [0.; 8];
     let mut bxtcatt: [libc::c_double; 8] = [0.; 8];
     let mut bytcatt: [libc::c_double; 8] = [0.; 8];
     let mut cxtabtt: [libc::c_double; 8] = [0.; 8];
     let mut cytabtt: [libc::c_double; 8] = [0.; 8];
-    let mut axtbcttlen: libc::c_int = 0;
-    let mut aytbcttlen: libc::c_int = 0;
-    let mut bxtcattlen: libc::c_int = 0;
-    let mut bytcattlen: libc::c_int = 0;
-    let mut cxtabttlen: libc::c_int = 0;
-    let mut cytabttlen: libc::c_int = 0;
+    let mut axtbcttlen: i32 = 0;
+    let mut aytbcttlen: i32 = 0;
+    let mut bxtcattlen: i32 = 0;
+    let mut bytcattlen: i32 = 0;
+    let mut cxtabttlen: i32 = 0;
+    let mut cytabttlen: i32 = 0;
     let mut abt: [libc::c_double; 8] = [0.; 8];
     let mut bct: [libc::c_double; 8] = [0.; 8];
     let mut cat: [libc::c_double; 8] = [0.; 8];
-    let mut abtlen: libc::c_int = 0;
-    let mut bctlen: libc::c_int = 0;
-    let mut catlen: libc::c_int = 0;
+    let mut abtlen: i32 = 0;
+    let mut bctlen: i32 = 0;
+    let mut catlen: i32 = 0;
     let mut abtt: [libc::c_double; 4] = [0.; 4];
     let mut bctt: [libc::c_double; 4] = [0.; 4];
     let mut catt: [libc::c_double; 4] = [0.; 4];
-    let mut abttlen: libc::c_int = 0;
-    let mut bcttlen: libc::c_int = 0;
-    let mut cattlen: libc::c_int = 0;
+    let mut abttlen: i32 = 0;
+    let mut bcttlen: i32 = 0;
+    let mut cattlen: i32 = 0;
     let mut abtt3: libc::c_double = 0.;
     let mut bctt3: libc::c_double = 0.;
     let mut catt3: libc::c_double = 0.;
@@ -7300,12 +7300,12 @@ pub unsafe extern "C" fn incircleadapt(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
     bdxcdy1 = bdx * cdy;
     c = splitter * bdx;
     abig = c - bdx;
@@ -7337,7 +7337,7 @@ pub unsafe extern "C" fn incircleadapt(
     avirt = _i + bvirt;
     bround = bvirt - cdxbdy0;
     around = bdxcdy0 - avirt;
-    bc[0 as libc::c_int as usize] = around + bround;
+    bc[0 as i32 as usize] = around + bround;
     _j = bdxcdy1 + _i;
     bvirt = _j - bdxcdy1;
     avirt = _j - bvirt;
@@ -7349,16 +7349,16 @@ pub unsafe extern "C" fn incircleadapt(
     avirt = _i + bvirt;
     bround = bvirt - cdxbdy1;
     around = _0 - avirt;
-    bc[1 as libc::c_int as usize] = around + bround;
+    bc[1 as i32 as usize] = around + bround;
     bc3 = _j + _i;
     bvirt = bc3 - _j;
     avirt = bc3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bc[2 as libc::c_int as usize] = around + bround;
-    bc[3 as libc::c_int as usize] = bc3;
+    bc[2 as i32 as usize] = around + bround;
+    bc[3 as i32 as usize] = bc3;
     axbclen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         adx,
         axbc.as_mut_ptr(),
@@ -7370,7 +7370,7 @@ pub unsafe extern "C" fn incircleadapt(
         axxbc.as_mut_ptr(),
     );
     aybclen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         ady,
         aybc.as_mut_ptr(),
@@ -7419,7 +7419,7 @@ pub unsafe extern "C" fn incircleadapt(
     avirt = _i + bvirt;
     bround = bvirt - adxcdy0;
     around = cdxady0 - avirt;
-    ca[0 as libc::c_int as usize] = around + bround;
+    ca[0 as i32 as usize] = around + bround;
     _j = cdxady1 + _i;
     bvirt = _j - cdxady1;
     avirt = _j - bvirt;
@@ -7431,16 +7431,16 @@ pub unsafe extern "C" fn incircleadapt(
     avirt = _i + bvirt;
     bround = bvirt - adxcdy1;
     around = _0 - avirt;
-    ca[1 as libc::c_int as usize] = around + bround;
+    ca[1 as i32 as usize] = around + bround;
     ca3 = _j + _i;
     bvirt = ca3 - _j;
     avirt = ca3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ca[2 as libc::c_int as usize] = around + bround;
-    ca[3 as libc::c_int as usize] = ca3;
+    ca[2 as i32 as usize] = around + bround;
+    ca[3 as i32 as usize] = ca3;
     bxcalen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ca.as_mut_ptr(),
         bdx,
         bxca.as_mut_ptr(),
@@ -7452,7 +7452,7 @@ pub unsafe extern "C" fn incircleadapt(
         bxxca.as_mut_ptr(),
     );
     bycalen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ca.as_mut_ptr(),
         bdy,
         byca.as_mut_ptr(),
@@ -7501,7 +7501,7 @@ pub unsafe extern "C" fn incircleadapt(
     avirt = _i + bvirt;
     bround = bvirt - bdxady0;
     around = adxbdy0 - avirt;
-    ab[0 as libc::c_int as usize] = around + bround;
+    ab[0 as i32 as usize] = around + bround;
     _j = adxbdy1 + _i;
     bvirt = _j - adxbdy1;
     avirt = _j - bvirt;
@@ -7513,16 +7513,16 @@ pub unsafe extern "C" fn incircleadapt(
     avirt = _i + bvirt;
     bround = bvirt - bdxady1;
     around = _0 - avirt;
-    ab[1 as libc::c_int as usize] = around + bround;
+    ab[1 as i32 as usize] = around + bround;
     ab3 = _j + _i;
     bvirt = ab3 - _j;
     avirt = ab3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ab[2 as libc::c_int as usize] = around + bround;
-    ab[3 as libc::c_int as usize] = ab3;
+    ab[2 as i32 as usize] = around + bround;
+    ab[3 as i32 as usize] = ab3;
     cxablen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         cdx,
         cxab.as_mut_ptr(),
@@ -7534,7 +7534,7 @@ pub unsafe extern "C" fn incircleadapt(
         cxxab.as_mut_ptr(),
     );
     cyablen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         cdy,
         cyab.as_mut_ptr(),
@@ -7571,35 +7571,35 @@ pub unsafe extern "C" fn incircleadapt(
     if det >= errbound || -det >= errbound {
         return det;
     }
-    bvirt = *pa.offset(0 as libc::c_int as isize) - adx;
+    bvirt = *pa.offset(0 as i32 as isize) - adx;
     avirt = adx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     adxtail = around + bround;
-    bvirt = *pa.offset(1 as libc::c_int as isize) - ady;
+    bvirt = *pa.offset(1 as i32 as isize) - ady;
     avirt = ady + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     adytail = around + bround;
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bdx;
+    bvirt = *pb.offset(0 as i32 as isize) - bdx;
     avirt = bdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bdxtail = around + bround;
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bdy;
+    bvirt = *pb.offset(1 as i32 as isize) - bdy;
     avirt = bdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     bdytail = around + bround;
-    bvirt = *pc.offset(0 as libc::c_int as isize) - cdx;
+    bvirt = *pc.offset(0 as i32 as isize) - cdx;
     avirt = cdx + bvirt;
-    bround = bvirt - *pd.offset(0 as libc::c_int as isize);
-    around = *pc.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(0 as i32 as isize);
+    around = *pc.offset(0 as i32 as isize) - avirt;
     cdxtail = around + bround;
-    bvirt = *pc.offset(1 as libc::c_int as isize) - cdy;
+    bvirt = *pc.offset(1 as i32 as isize) - cdy;
     avirt = cdy + bvirt;
-    bround = bvirt - *pd.offset(1 as libc::c_int as isize);
-    around = *pc.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pd.offset(1 as i32 as isize);
+    around = *pc.offset(1 as i32 as isize) - avirt;
     cdytail = around + bround;
     if adxtail == 0.0f64 && bdxtail == 0.0f64 && cdxtail == 0.0f64 && adytail == 0.0f64
         && bdytail == 0.0f64 && cdytail == 0.0f64
@@ -7645,7 +7645,7 @@ pub unsafe extern "C" fn incircleadapt(
         avirt = _i - bvirt;
         bround = adyady0 - bvirt;
         around = adxadx0 - avirt;
-        aa[0 as libc::c_int as usize] = around + bround;
+        aa[0 as i32 as usize] = around + bround;
         _j = adxadx1 + _i;
         bvirt = _j - adxadx1;
         avirt = _j - bvirt;
@@ -7657,14 +7657,14 @@ pub unsafe extern "C" fn incircleadapt(
         avirt = _i - bvirt;
         bround = adyady1 - bvirt;
         around = _0 - avirt;
-        aa[1 as libc::c_int as usize] = around + bround;
+        aa[1 as i32 as usize] = around + bround;
         aa3 = _j + _i;
         bvirt = aa3 - _j;
         avirt = aa3 - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        aa[2 as libc::c_int as usize] = around + bround;
-        aa[3 as libc::c_int as usize] = aa3;
+        aa[2 as i32 as usize] = around + bround;
+        aa[3 as i32 as usize] = aa3;
     }
     if cdxtail != 0.0f64 || cdytail != 0.0f64 || adxtail != 0.0f64 || adytail != 0.0f64 {
         bdxbdx1 = bdx * bdx;
@@ -7688,7 +7688,7 @@ pub unsafe extern "C" fn incircleadapt(
         avirt = _i - bvirt;
         bround = bdybdy0 - bvirt;
         around = bdxbdx0 - avirt;
-        bb[0 as libc::c_int as usize] = around + bround;
+        bb[0 as i32 as usize] = around + bround;
         _j = bdxbdx1 + _i;
         bvirt = _j - bdxbdx1;
         avirt = _j - bvirt;
@@ -7700,14 +7700,14 @@ pub unsafe extern "C" fn incircleadapt(
         avirt = _i - bvirt;
         bround = bdybdy1 - bvirt;
         around = _0 - avirt;
-        bb[1 as libc::c_int as usize] = around + bround;
+        bb[1 as i32 as usize] = around + bround;
         bb3 = _j + _i;
         bvirt = bb3 - _j;
         avirt = bb3 - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        bb[2 as libc::c_int as usize] = around + bround;
-        bb[3 as libc::c_int as usize] = bb3;
+        bb[2 as i32 as usize] = around + bround;
+        bb[3 as i32 as usize] = bb3;
     }
     if adxtail != 0.0f64 || adytail != 0.0f64 || bdxtail != 0.0f64 || bdytail != 0.0f64 {
         cdxcdx1 = cdx * cdx;
@@ -7731,7 +7731,7 @@ pub unsafe extern "C" fn incircleadapt(
         avirt = _i - bvirt;
         bround = cdycdy0 - bvirt;
         around = cdxcdx0 - avirt;
-        cc[0 as libc::c_int as usize] = around + bround;
+        cc[0 as i32 as usize] = around + bround;
         _j = cdxcdx1 + _i;
         bvirt = _j - cdxcdx1;
         avirt = _j - bvirt;
@@ -7743,18 +7743,18 @@ pub unsafe extern "C" fn incircleadapt(
         avirt = _i - bvirt;
         bround = cdycdy1 - bvirt;
         around = _0 - avirt;
-        cc[1 as libc::c_int as usize] = around + bround;
+        cc[1 as i32 as usize] = around + bround;
         cc3 = _j + _i;
         bvirt = cc3 - _j;
         avirt = cc3 - bvirt;
         bround = _i - bvirt;
         around = _j - avirt;
-        cc[2 as libc::c_int as usize] = around + bround;
-        cc[3 as libc::c_int as usize] = cc3;
+        cc[2 as i32 as usize] = around + bround;
+        cc[3 as i32 as usize] = cc3;
     }
     if adxtail != 0.0f64 {
         axtbclen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bc.as_mut_ptr(),
             adxtail,
             axtbc.as_mut_ptr(),
@@ -7766,7 +7766,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16a.as_mut_ptr(),
         );
         axtcclen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             cc.as_mut_ptr(),
             adxtail,
             axtcc.as_mut_ptr(),
@@ -7778,7 +7778,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16b.as_mut_ptr(),
         );
         axtbblen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bb.as_mut_ptr(),
             adxtail,
             axtbb.as_mut_ptr(),
@@ -7816,7 +7816,7 @@ pub unsafe extern "C" fn incircleadapt(
     }
     if adytail != 0.0f64 {
         aytbclen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bc.as_mut_ptr(),
             adytail,
             aytbc.as_mut_ptr(),
@@ -7828,7 +7828,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16a.as_mut_ptr(),
         );
         aytbblen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bb.as_mut_ptr(),
             adytail,
             aytbb.as_mut_ptr(),
@@ -7840,7 +7840,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16b.as_mut_ptr(),
         );
         aytcclen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             cc.as_mut_ptr(),
             adytail,
             aytcc.as_mut_ptr(),
@@ -7878,7 +7878,7 @@ pub unsafe extern "C" fn incircleadapt(
     }
     if bdxtail != 0.0f64 {
         bxtcalen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             ca.as_mut_ptr(),
             bdxtail,
             bxtca.as_mut_ptr(),
@@ -7890,7 +7890,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16a.as_mut_ptr(),
         );
         bxtaalen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             aa.as_mut_ptr(),
             bdxtail,
             bxtaa.as_mut_ptr(),
@@ -7902,7 +7902,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16b.as_mut_ptr(),
         );
         bxtcclen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             cc.as_mut_ptr(),
             bdxtail,
             bxtcc.as_mut_ptr(),
@@ -7940,7 +7940,7 @@ pub unsafe extern "C" fn incircleadapt(
     }
     if bdytail != 0.0f64 {
         bytcalen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             ca.as_mut_ptr(),
             bdytail,
             bytca.as_mut_ptr(),
@@ -7952,7 +7952,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16a.as_mut_ptr(),
         );
         bytcclen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             cc.as_mut_ptr(),
             bdytail,
             bytcc.as_mut_ptr(),
@@ -7964,7 +7964,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16b.as_mut_ptr(),
         );
         bytaalen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             aa.as_mut_ptr(),
             bdytail,
             bytaa.as_mut_ptr(),
@@ -8002,7 +8002,7 @@ pub unsafe extern "C" fn incircleadapt(
     }
     if cdxtail != 0.0f64 {
         cxtablen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             ab.as_mut_ptr(),
             cdxtail,
             cxtab.as_mut_ptr(),
@@ -8014,7 +8014,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16a.as_mut_ptr(),
         );
         cxtbblen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bb.as_mut_ptr(),
             cdxtail,
             cxtbb.as_mut_ptr(),
@@ -8026,7 +8026,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16b.as_mut_ptr(),
         );
         cxtaalen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             aa.as_mut_ptr(),
             cdxtail,
             cxtaa.as_mut_ptr(),
@@ -8064,7 +8064,7 @@ pub unsafe extern "C" fn incircleadapt(
     }
     if cdytail != 0.0f64 {
         cytablen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             ab.as_mut_ptr(),
             cdytail,
             cytab.as_mut_ptr(),
@@ -8076,7 +8076,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16a.as_mut_ptr(),
         );
         cytaalen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             aa.as_mut_ptr(),
             cdytail,
             cytaa.as_mut_ptr(),
@@ -8088,7 +8088,7 @@ pub unsafe extern "C" fn incircleadapt(
             temp16b.as_mut_ptr(),
         );
         cytbblen = scale_expansion_zeroelim(
-            4 as libc::c_int,
+            4 as i32,
             bb.as_mut_ptr(),
             cdytail,
             cytbb.as_mut_ptr(),
@@ -8159,7 +8159,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj0 - bvirt;
             around = ti0 - avirt;
-            u[0 as libc::c_int as usize] = around + bround;
+            u[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8171,14 +8171,14 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj1 - bvirt;
             around = _0 - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _i;
             bvirt = u3 - _j;
             avirt = u3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            u[2 as libc::c_int as usize] = around + bround;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = around + bround;
+            u[3 as i32 as usize] = u3;
             negate = -bdy;
             ti1 = cdxtail * negate;
             c = splitter * cdxtail;
@@ -8212,7 +8212,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj0 - bvirt;
             around = ti0 - avirt;
-            v[0 as libc::c_int as usize] = around + bround;
+            v[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8224,18 +8224,18 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj1 - bvirt;
             around = _0 - avirt;
-            v[1 as libc::c_int as usize] = around + bround;
+            v[1 as i32 as usize] = around + bround;
             v3 = _j + _i;
             bvirt = v3 - _j;
             avirt = v3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            v[2 as libc::c_int as usize] = around + bround;
-            v[3 as libc::c_int as usize] = v3;
+            v[2 as i32 as usize] = around + bround;
+            v[3 as i32 as usize] = v3;
             bctlen = fast_expansion_sum_zeroelim(
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
-                4 as libc::c_int,
+                4 as i32,
                 v.as_mut_ptr(),
                 bct.as_mut_ptr(),
             );
@@ -8270,7 +8270,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i + bvirt;
             bround = bvirt - tj0;
             around = ti0 - avirt;
-            bctt[0 as libc::c_int as usize] = around + bround;
+            bctt[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8282,20 +8282,20 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i + bvirt;
             bround = bvirt - tj1;
             around = _0 - avirt;
-            bctt[1 as libc::c_int as usize] = around + bround;
+            bctt[1 as i32 as usize] = around + bround;
             bctt3 = _j + _i;
             bvirt = bctt3 - _j;
             avirt = bctt3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            bctt[2 as libc::c_int as usize] = around + bround;
-            bctt[3 as libc::c_int as usize] = bctt3;
-            bcttlen = 4 as libc::c_int;
+            bctt[2 as i32 as usize] = around + bround;
+            bctt[3 as i32 as usize] = bctt3;
+            bcttlen = 4 as i32;
         } else {
-            bct[0 as libc::c_int as usize] = 0.0f64;
-            bctlen = 1 as libc::c_int;
-            bctt[0 as libc::c_int as usize] = 0.0f64;
-            bcttlen = 1 as libc::c_int;
+            bct[0 as i32 as usize] = 0.0f64;
+            bctlen = 1 as i32;
+            bctt[0 as i32 as usize] = 0.0f64;
+            bcttlen = 1 as i32;
         }
         if adxtail != 0.0f64 {
             temp16alen = scale_expansion_zeroelim(
@@ -8335,7 +8335,7 @@ pub unsafe extern "C" fn incircleadapt(
             finother = finswap;
             if bdytail != 0.0f64 {
                 temp8len = scale_expansion_zeroelim(
-                    4 as libc::c_int,
+                    4 as i32,
                     cc.as_mut_ptr(),
                     adxtail,
                     temp8.as_mut_ptr(),
@@ -8359,7 +8359,7 @@ pub unsafe extern "C" fn incircleadapt(
             }
             if cdytail != 0.0f64 {
                 temp8len = scale_expansion_zeroelim(
-                    4 as libc::c_int,
+                    4 as i32,
                     bb.as_mut_ptr(),
                     -adxtail,
                     temp8.as_mut_ptr(),
@@ -8551,7 +8551,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj0 - bvirt;
             around = ti0 - avirt;
-            u[0 as libc::c_int as usize] = around + bround;
+            u[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8563,14 +8563,14 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj1 - bvirt;
             around = _0 - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _i;
             bvirt = u3 - _j;
             avirt = u3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            u[2 as libc::c_int as usize] = around + bround;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = around + bround;
+            u[3 as i32 as usize] = u3;
             negate = -cdy;
             ti1 = adxtail * negate;
             c = splitter * adxtail;
@@ -8604,7 +8604,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj0 - bvirt;
             around = ti0 - avirt;
-            v[0 as libc::c_int as usize] = around + bround;
+            v[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8616,18 +8616,18 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj1 - bvirt;
             around = _0 - avirt;
-            v[1 as libc::c_int as usize] = around + bround;
+            v[1 as i32 as usize] = around + bround;
             v3 = _j + _i;
             bvirt = v3 - _j;
             avirt = v3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            v[2 as libc::c_int as usize] = around + bround;
-            v[3 as libc::c_int as usize] = v3;
+            v[2 as i32 as usize] = around + bround;
+            v[3 as i32 as usize] = v3;
             catlen = fast_expansion_sum_zeroelim(
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
-                4 as libc::c_int,
+                4 as i32,
                 v.as_mut_ptr(),
                 cat.as_mut_ptr(),
             );
@@ -8662,7 +8662,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i + bvirt;
             bround = bvirt - tj0;
             around = ti0 - avirt;
-            catt[0 as libc::c_int as usize] = around + bround;
+            catt[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8674,20 +8674,20 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i + bvirt;
             bround = bvirt - tj1;
             around = _0 - avirt;
-            catt[1 as libc::c_int as usize] = around + bround;
+            catt[1 as i32 as usize] = around + bround;
             catt3 = _j + _i;
             bvirt = catt3 - _j;
             avirt = catt3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            catt[2 as libc::c_int as usize] = around + bround;
-            catt[3 as libc::c_int as usize] = catt3;
-            cattlen = 4 as libc::c_int;
+            catt[2 as i32 as usize] = around + bround;
+            catt[3 as i32 as usize] = catt3;
+            cattlen = 4 as i32;
         } else {
-            cat[0 as libc::c_int as usize] = 0.0f64;
-            catlen = 1 as libc::c_int;
-            catt[0 as libc::c_int as usize] = 0.0f64;
-            cattlen = 1 as libc::c_int;
+            cat[0 as i32 as usize] = 0.0f64;
+            catlen = 1 as i32;
+            catt[0 as i32 as usize] = 0.0f64;
+            cattlen = 1 as i32;
         }
         if bdxtail != 0.0f64 {
             temp16alen = scale_expansion_zeroelim(
@@ -8727,7 +8727,7 @@ pub unsafe extern "C" fn incircleadapt(
             finother = finswap;
             if cdytail != 0.0f64 {
                 temp8len = scale_expansion_zeroelim(
-                    4 as libc::c_int,
+                    4 as i32,
                     aa.as_mut_ptr(),
                     bdxtail,
                     temp8.as_mut_ptr(),
@@ -8751,7 +8751,7 @@ pub unsafe extern "C" fn incircleadapt(
             }
             if adytail != 0.0f64 {
                 temp8len = scale_expansion_zeroelim(
-                    4 as libc::c_int,
+                    4 as i32,
                     cc.as_mut_ptr(),
                     -bdxtail,
                     temp8.as_mut_ptr(),
@@ -8943,7 +8943,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj0 - bvirt;
             around = ti0 - avirt;
-            u[0 as libc::c_int as usize] = around + bround;
+            u[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -8955,14 +8955,14 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj1 - bvirt;
             around = _0 - avirt;
-            u[1 as libc::c_int as usize] = around + bround;
+            u[1 as i32 as usize] = around + bround;
             u3 = _j + _i;
             bvirt = u3 - _j;
             avirt = u3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            u[2 as libc::c_int as usize] = around + bround;
-            u[3 as libc::c_int as usize] = u3;
+            u[2 as i32 as usize] = around + bround;
+            u[3 as i32 as usize] = u3;
             negate = -ady;
             ti1 = bdxtail * negate;
             c = splitter * bdxtail;
@@ -8996,7 +8996,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj0 - bvirt;
             around = ti0 - avirt;
-            v[0 as libc::c_int as usize] = around + bround;
+            v[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -9008,18 +9008,18 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i - bvirt;
             bround = tj1 - bvirt;
             around = _0 - avirt;
-            v[1 as libc::c_int as usize] = around + bround;
+            v[1 as i32 as usize] = around + bround;
             v3 = _j + _i;
             bvirt = v3 - _j;
             avirt = v3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            v[2 as libc::c_int as usize] = around + bround;
-            v[3 as libc::c_int as usize] = v3;
+            v[2 as i32 as usize] = around + bround;
+            v[3 as i32 as usize] = v3;
             abtlen = fast_expansion_sum_zeroelim(
-                4 as libc::c_int,
+                4 as i32,
                 u.as_mut_ptr(),
-                4 as libc::c_int,
+                4 as i32,
                 v.as_mut_ptr(),
                 abt.as_mut_ptr(),
             );
@@ -9054,7 +9054,7 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i + bvirt;
             bround = bvirt - tj0;
             around = ti0 - avirt;
-            abtt[0 as libc::c_int as usize] = around + bround;
+            abtt[0 as i32 as usize] = around + bround;
             _j = ti1 + _i;
             bvirt = _j - ti1;
             avirt = _j - bvirt;
@@ -9066,20 +9066,20 @@ pub unsafe extern "C" fn incircleadapt(
             avirt = _i + bvirt;
             bround = bvirt - tj1;
             around = _0 - avirt;
-            abtt[1 as libc::c_int as usize] = around + bround;
+            abtt[1 as i32 as usize] = around + bround;
             abtt3 = _j + _i;
             bvirt = abtt3 - _j;
             avirt = abtt3 - bvirt;
             bround = _i - bvirt;
             around = _j - avirt;
-            abtt[2 as libc::c_int as usize] = around + bround;
-            abtt[3 as libc::c_int as usize] = abtt3;
-            abttlen = 4 as libc::c_int;
+            abtt[2 as i32 as usize] = around + bround;
+            abtt[3 as i32 as usize] = abtt3;
+            abttlen = 4 as i32;
         } else {
-            abt[0 as libc::c_int as usize] = 0.0f64;
-            abtlen = 1 as libc::c_int;
-            abtt[0 as libc::c_int as usize] = 0.0f64;
-            abttlen = 1 as libc::c_int;
+            abt[0 as i32 as usize] = 0.0f64;
+            abtlen = 1 as i32;
+            abtt[0 as i32 as usize] = 0.0f64;
+            abttlen = 1 as i32;
         }
         if cdxtail != 0.0f64 {
             temp16alen = scale_expansion_zeroelim(
@@ -9119,7 +9119,7 @@ pub unsafe extern "C" fn incircleadapt(
             finother = finswap;
             if adytail != 0.0f64 {
                 temp8len = scale_expansion_zeroelim(
-                    4 as libc::c_int,
+                    4 as i32,
                     bb.as_mut_ptr(),
                     cdxtail,
                     temp8.as_mut_ptr(),
@@ -9143,7 +9143,7 @@ pub unsafe extern "C" fn incircleadapt(
             }
             if bdytail != 0.0f64 {
                 temp8len = scale_expansion_zeroelim(
-                    4 as libc::c_int,
+                    4 as i32,
                     aa.as_mut_ptr(),
                     -cdxtail,
                     temp8.as_mut_ptr(),
@@ -9300,7 +9300,7 @@ pub unsafe extern "C" fn incircleadapt(
             finother = finswap;
         }
     }
-    return *finnow.offset((finlength - 1 as libc::c_int) as isize);
+    return *finnow.offset((finlength - 1 as i32) as isize);
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircle(
@@ -9327,12 +9327,12 @@ pub unsafe extern "C" fn incircle(
     let mut det: libc::c_double = 0.;
     let mut permanent: libc::c_double = 0.;
     let mut errbound: libc::c_double = 0.;
-    adx = *pa.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    bdx = *pb.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    cdx = *pc.offset(0 as libc::c_int as isize) - *pd.offset(0 as libc::c_int as isize);
-    ady = *pa.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    bdy = *pb.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
-    cdy = *pc.offset(1 as libc::c_int as isize) - *pd.offset(1 as libc::c_int as isize);
+    adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
+    ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    bdy = *pb.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
+    cdy = *pc.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
     bdxcdy = bdx * cdy;
     cdxbdy = cdx * bdy;
     alift = adx * adx + ady * ady;
@@ -9390,18 +9390,18 @@ pub unsafe extern "C" fn inspherefast(
     let mut bcd: libc::c_double = 0.;
     let mut cda: libc::c_double = 0.;
     let mut dab: libc::c_double = 0.;
-    aex = *pa.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bex = *pb.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    cex = *pc.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    dex = *pd.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    aey = *pa.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bey = *pb.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    cey = *pc.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    dey = *pd.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    aez = *pa.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bez = *pb.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    cez = *pc.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    dez = *pd.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
+    aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    dex = *pd.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    aey = *pa.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bey = *pb.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    cey = *pc.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    dey = *pd.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    aez = *pa.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bez = *pb.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    cez = *pc.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    dez = *pd.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
     ab = aex * bey - bex * aey;
     bc = bex * cey - cex * bey;
     cd = cex * dey - dex * cey;
@@ -9479,9 +9479,9 @@ pub unsafe extern "C" fn insphereexact(
     let mut temp8a: [libc::c_double; 8] = [0.; 8];
     let mut temp8b: [libc::c_double; 8] = [0.; 8];
     let mut temp16: [libc::c_double; 16] = [0.; 16];
-    let mut temp8alen: libc::c_int = 0;
-    let mut temp8blen: libc::c_int = 0;
-    let mut temp16len: libc::c_int = 0;
+    let mut temp8alen: i32 = 0;
+    let mut temp8blen: i32 = 0;
+    let mut temp16len: i32 = 0;
     let mut abc: [libc::c_double; 24] = [0.; 24];
     let mut bcd: [libc::c_double; 24] = [0.; 24];
     let mut cde: [libc::c_double; 24] = [0.; 24];
@@ -9492,57 +9492,57 @@ pub unsafe extern "C" fn insphereexact(
     let mut cda: [libc::c_double; 24] = [0.; 24];
     let mut deb: [libc::c_double; 24] = [0.; 24];
     let mut eac: [libc::c_double; 24] = [0.; 24];
-    let mut abclen: libc::c_int = 0;
-    let mut bcdlen: libc::c_int = 0;
-    let mut cdelen: libc::c_int = 0;
-    let mut dealen: libc::c_int = 0;
-    let mut eablen: libc::c_int = 0;
-    let mut abdlen: libc::c_int = 0;
-    let mut bcelen: libc::c_int = 0;
-    let mut cdalen: libc::c_int = 0;
-    let mut deblen: libc::c_int = 0;
-    let mut eaclen: libc::c_int = 0;
+    let mut abclen: i32 = 0;
+    let mut bcdlen: i32 = 0;
+    let mut cdelen: i32 = 0;
+    let mut dealen: i32 = 0;
+    let mut eablen: i32 = 0;
+    let mut abdlen: i32 = 0;
+    let mut bcelen: i32 = 0;
+    let mut cdalen: i32 = 0;
+    let mut deblen: i32 = 0;
+    let mut eaclen: i32 = 0;
     let mut temp48a: [libc::c_double; 48] = [0.; 48];
     let mut temp48b: [libc::c_double; 48] = [0.; 48];
-    let mut temp48alen: libc::c_int = 0;
-    let mut temp48blen: libc::c_int = 0;
+    let mut temp48alen: i32 = 0;
+    let mut temp48blen: i32 = 0;
     let mut abcd: [libc::c_double; 96] = [0.; 96];
     let mut bcde: [libc::c_double; 96] = [0.; 96];
     let mut cdea: [libc::c_double; 96] = [0.; 96];
     let mut deab: [libc::c_double; 96] = [0.; 96];
     let mut eabc: [libc::c_double; 96] = [0.; 96];
-    let mut abcdlen: libc::c_int = 0;
-    let mut bcdelen: libc::c_int = 0;
-    let mut cdealen: libc::c_int = 0;
-    let mut deablen: libc::c_int = 0;
-    let mut eabclen: libc::c_int = 0;
+    let mut abcdlen: i32 = 0;
+    let mut bcdelen: i32 = 0;
+    let mut cdealen: i32 = 0;
+    let mut deablen: i32 = 0;
+    let mut eabclen: i32 = 0;
     let mut temp192: [libc::c_double; 192] = [0.; 192];
     let mut det384x: [libc::c_double; 384] = [0.; 384];
     let mut det384y: [libc::c_double; 384] = [0.; 384];
     let mut det384z: [libc::c_double; 384] = [0.; 384];
-    let mut xlen: libc::c_int = 0;
-    let mut ylen: libc::c_int = 0;
-    let mut zlen: libc::c_int = 0;
+    let mut xlen: i32 = 0;
+    let mut ylen: i32 = 0;
+    let mut zlen: i32 = 0;
     let mut detxy: [libc::c_double; 768] = [0.; 768];
-    let mut xylen: libc::c_int = 0;
+    let mut xylen: i32 = 0;
     let mut adet: [libc::c_double; 1152] = [0.; 1152];
     let mut bdet: [libc::c_double; 1152] = [0.; 1152];
     let mut cdet: [libc::c_double; 1152] = [0.; 1152];
     let mut ddet: [libc::c_double; 1152] = [0.; 1152];
     let mut edet: [libc::c_double; 1152] = [0.; 1152];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
-    let mut dlen: libc::c_int = 0;
-    let mut elen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
+    let mut dlen: i32 = 0;
+    let mut elen: i32 = 0;
     let mut abdet: [libc::c_double; 2304] = [0.; 2304];
     let mut cddet: [libc::c_double; 2304] = [0.; 2304];
     let mut cdedet: [libc::c_double; 3456] = [0.; 3456];
-    let mut ablen: libc::c_int = 0;
-    let mut cdlen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
+    let mut cdlen: i32 = 0;
     let mut deter: [libc::c_double; 5760] = [0.; 5760];
-    let mut deterlen: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    let mut deterlen: i32 = 0;
+    let mut i: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -9559,30 +9559,30 @@ pub unsafe extern "C" fn insphereexact(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    axby1 = *pa.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axby1 = *pa.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = axby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axby0 = alo * blo - err3;
-    bxay1 = *pb.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    bxay1 = *pb.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = bxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9592,7 +9592,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay0;
     around = axby0 - avirt;
-    ab[0 as libc::c_int as usize] = around + bround;
+    ab[0 as i32 as usize] = around + bround;
     _j = axby1 + _i;
     bvirt = _j - axby1;
     avirt = _j - bvirt;
@@ -9604,37 +9604,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - bxay1;
     around = _0 - avirt;
-    ab[1 as libc::c_int as usize] = around + bround;
-    ab[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ab[3 as libc::c_int as usize] - _j;
-    avirt = ab[3 as libc::c_int as usize] - bvirt;
+    ab[1 as i32 as usize] = around + bround;
+    ab[3 as i32 as usize] = _j + _i;
+    bvirt = ab[3 as i32 as usize] - _j;
+    avirt = ab[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ab[2 as libc::c_int as usize] = around + bround;
-    bxcy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    ab[2 as i32 as usize] = around + bround;
+    bxcy1 = *pb.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = bxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxcy0 = alo * blo - err3;
-    cxby1 = *pc.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxby1 = *pc.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = cxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9644,7 +9644,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby0;
     around = bxcy0 - avirt;
-    bc[0 as libc::c_int as usize] = around + bround;
+    bc[0 as i32 as usize] = around + bround;
     _j = bxcy1 + _i;
     bvirt = _j - bxcy1;
     avirt = _j - bvirt;
@@ -9656,37 +9656,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - cxby1;
     around = _0 - avirt;
-    bc[1 as libc::c_int as usize] = around + bround;
-    bc[3 as libc::c_int as usize] = _j + _i;
-    bvirt = bc[3 as libc::c_int as usize] - _j;
-    avirt = bc[3 as libc::c_int as usize] - bvirt;
+    bc[1 as i32 as usize] = around + bround;
+    bc[3 as i32 as usize] = _j + _i;
+    bvirt = bc[3 as i32 as usize] - _j;
+    avirt = bc[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bc[2 as libc::c_int as usize] = around + bround;
-    cxdy1 = *pc.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    bc[2 as i32 as usize] = around + bround;
+    cxdy1 = *pc.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = cxdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     cxdy0 = alo * blo - err3;
-    dxcy1 = *pd.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    dxcy1 = *pd.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = dxcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9696,7 +9696,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - dxcy0;
     around = cxdy0 - avirt;
-    cd[0 as libc::c_int as usize] = around + bround;
+    cd[0 as i32 as usize] = around + bround;
     _j = cxdy1 + _i;
     bvirt = _j - cxdy1;
     avirt = _j - bvirt;
@@ -9708,37 +9708,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - dxcy1;
     around = _0 - avirt;
-    cd[1 as libc::c_int as usize] = around + bround;
-    cd[3 as libc::c_int as usize] = _j + _i;
-    bvirt = cd[3 as libc::c_int as usize] - _j;
-    avirt = cd[3 as libc::c_int as usize] - bvirt;
+    cd[1 as i32 as usize] = around + bround;
+    cd[3 as i32 as usize] = _j + _i;
+    bvirt = cd[3 as i32 as usize] - _j;
+    avirt = cd[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    cd[2 as libc::c_int as usize] = around + bround;
-    dxey1 = *pd.offset(0 as libc::c_int as isize)
-        * *pe.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    cd[2 as i32 as usize] = around + bround;
+    dxey1 = *pd.offset(0 as i32 as isize)
+        * *pe.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pe.offset(1 as libc::c_int as isize);
-    abig = c - *pe.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pe.offset(1 as i32 as isize);
+    abig = c - *pe.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pe.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pe.offset(1 as i32 as isize) - bhi;
     err1 = dxey1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     dxey0 = alo * blo - err3;
-    exdy1 = *pe.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pe.offset(0 as libc::c_int as isize);
-    abig = c - *pe.offset(0 as libc::c_int as isize);
+    exdy1 = *pe.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pe.offset(0 as i32 as isize);
+    abig = c - *pe.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pe.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pe.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = exdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9748,7 +9748,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - exdy0;
     around = dxey0 - avirt;
-    de[0 as libc::c_int as usize] = around + bround;
+    de[0 as i32 as usize] = around + bround;
     _j = dxey1 + _i;
     bvirt = _j - dxey1;
     avirt = _j - bvirt;
@@ -9760,37 +9760,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - exdy1;
     around = _0 - avirt;
-    de[1 as libc::c_int as usize] = around + bround;
-    de[3 as libc::c_int as usize] = _j + _i;
-    bvirt = de[3 as libc::c_int as usize] - _j;
-    avirt = de[3 as libc::c_int as usize] - bvirt;
+    de[1 as i32 as usize] = around + bround;
+    de[3 as i32 as usize] = _j + _i;
+    bvirt = de[3 as i32 as usize] - _j;
+    avirt = de[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    de[2 as libc::c_int as usize] = around + bround;
-    exay1 = *pe.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pe.offset(0 as libc::c_int as isize);
-    abig = c - *pe.offset(0 as libc::c_int as isize);
+    de[2 as i32 as usize] = around + bround;
+    exay1 = *pe.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pe.offset(0 as i32 as isize);
+    abig = c - *pe.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pe.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pe.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = exay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     exay0 = alo * blo - err3;
-    axey1 = *pa.offset(0 as libc::c_int as isize)
-        * *pe.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axey1 = *pa.offset(0 as i32 as isize)
+        * *pe.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pe.offset(1 as libc::c_int as isize);
-    abig = c - *pe.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pe.offset(1 as i32 as isize);
+    abig = c - *pe.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pe.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pe.offset(1 as i32 as isize) - bhi;
     err1 = axey1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9800,7 +9800,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - axey0;
     around = exay0 - avirt;
-    ea[0 as libc::c_int as usize] = around + bround;
+    ea[0 as i32 as usize] = around + bround;
     _j = exay1 + _i;
     bvirt = _j - exay1;
     avirt = _j - bvirt;
@@ -9812,37 +9812,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - axey1;
     around = _0 - avirt;
-    ea[1 as libc::c_int as usize] = around + bround;
-    ea[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ea[3 as libc::c_int as usize] - _j;
-    avirt = ea[3 as libc::c_int as usize] - bvirt;
+    ea[1 as i32 as usize] = around + bround;
+    ea[3 as i32 as usize] = _j + _i;
+    bvirt = ea[3 as i32 as usize] - _j;
+    avirt = ea[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ea[2 as libc::c_int as usize] = around + bround;
-    axcy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    ea[2 as i32 as usize] = around + bround;
+    axcy1 = *pa.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = axcy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     axcy0 = alo * blo - err3;
-    cxay1 = *pc.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    cxay1 = *pc.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = cxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9852,7 +9852,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - cxay0;
     around = axcy0 - avirt;
-    ac[0 as libc::c_int as usize] = around + bround;
+    ac[0 as i32 as usize] = around + bround;
     _j = axcy1 + _i;
     bvirt = _j - axcy1;
     avirt = _j - bvirt;
@@ -9864,37 +9864,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - cxay1;
     around = _0 - avirt;
-    ac[1 as libc::c_int as usize] = around + bround;
-    ac[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ac[3 as libc::c_int as usize] - _j;
-    avirt = ac[3 as libc::c_int as usize] - bvirt;
+    ac[1 as i32 as usize] = around + bround;
+    ac[3 as i32 as usize] = _j + _i;
+    bvirt = ac[3 as i32 as usize] - _j;
+    avirt = ac[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ac[2 as libc::c_int as usize] = around + bround;
-    bxdy1 = *pb.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    ac[2 as i32 as usize] = around + bround;
+    bxdy1 = *pb.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = bxdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     bxdy0 = alo * blo - err3;
-    dxby1 = *pd.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    dxby1 = *pd.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = dxby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9904,7 +9904,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - dxby0;
     around = bxdy0 - avirt;
-    bd[0 as libc::c_int as usize] = around + bround;
+    bd[0 as i32 as usize] = around + bround;
     _j = bxdy1 + _i;
     bvirt = _j - bxdy1;
     avirt = _j - bvirt;
@@ -9916,37 +9916,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - dxby1;
     around = _0 - avirt;
-    bd[1 as libc::c_int as usize] = around + bround;
-    bd[3 as libc::c_int as usize] = _j + _i;
-    bvirt = bd[3 as libc::c_int as usize] - _j;
-    avirt = bd[3 as libc::c_int as usize] - bvirt;
+    bd[1 as i32 as usize] = around + bround;
+    bd[3 as i32 as usize] = _j + _i;
+    bvirt = bd[3 as i32 as usize] - _j;
+    avirt = bd[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bd[2 as libc::c_int as usize] = around + bround;
-    cxey1 = *pc.offset(0 as libc::c_int as isize)
-        * *pe.offset(1 as libc::c_int as isize);
-    c = splitter * *pc.offset(0 as libc::c_int as isize);
-    abig = c - *pc.offset(0 as libc::c_int as isize);
+    bd[2 as i32 as usize] = around + bround;
+    cxey1 = *pc.offset(0 as i32 as isize)
+        * *pe.offset(1 as i32 as isize);
+    c = splitter * *pc.offset(0 as i32 as isize);
+    abig = c - *pc.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pc.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pe.offset(1 as libc::c_int as isize);
-    abig = c - *pe.offset(1 as libc::c_int as isize);
+    alo = *pc.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pe.offset(1 as i32 as isize);
+    abig = c - *pe.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pe.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pe.offset(1 as i32 as isize) - bhi;
     err1 = cxey1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     cxey0 = alo * blo - err3;
-    excy1 = *pe.offset(0 as libc::c_int as isize)
-        * *pc.offset(1 as libc::c_int as isize);
-    c = splitter * *pe.offset(0 as libc::c_int as isize);
-    abig = c - *pe.offset(0 as libc::c_int as isize);
+    excy1 = *pe.offset(0 as i32 as isize)
+        * *pc.offset(1 as i32 as isize);
+    c = splitter * *pe.offset(0 as i32 as isize);
+    abig = c - *pe.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pe.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pc.offset(1 as libc::c_int as isize);
-    abig = c - *pc.offset(1 as libc::c_int as isize);
+    alo = *pe.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pc.offset(1 as i32 as isize);
+    abig = c - *pc.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pc.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pc.offset(1 as i32 as isize) - bhi;
     err1 = excy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -9956,7 +9956,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - excy0;
     around = cxey0 - avirt;
-    ce[0 as libc::c_int as usize] = around + bround;
+    ce[0 as i32 as usize] = around + bround;
     _j = cxey1 + _i;
     bvirt = _j - cxey1;
     avirt = _j - bvirt;
@@ -9968,37 +9968,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - excy1;
     around = _0 - avirt;
-    ce[1 as libc::c_int as usize] = around + bround;
-    ce[3 as libc::c_int as usize] = _j + _i;
-    bvirt = ce[3 as libc::c_int as usize] - _j;
-    avirt = ce[3 as libc::c_int as usize] - bvirt;
+    ce[1 as i32 as usize] = around + bround;
+    ce[3 as i32 as usize] = _j + _i;
+    bvirt = ce[3 as i32 as usize] - _j;
+    avirt = ce[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ce[2 as libc::c_int as usize] = around + bround;
-    dxay1 = *pd.offset(0 as libc::c_int as isize)
-        * *pa.offset(1 as libc::c_int as isize);
-    c = splitter * *pd.offset(0 as libc::c_int as isize);
-    abig = c - *pd.offset(0 as libc::c_int as isize);
+    ce[2 as i32 as usize] = around + bround;
+    dxay1 = *pd.offset(0 as i32 as isize)
+        * *pa.offset(1 as i32 as isize);
+    c = splitter * *pd.offset(0 as i32 as isize);
+    abig = c - *pd.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pd.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pa.offset(1 as libc::c_int as isize);
-    abig = c - *pa.offset(1 as libc::c_int as isize);
+    alo = *pd.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pa.offset(1 as i32 as isize);
+    abig = c - *pa.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pa.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pa.offset(1 as i32 as isize) - bhi;
     err1 = dxay1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     dxay0 = alo * blo - err3;
-    axdy1 = *pa.offset(0 as libc::c_int as isize)
-        * *pd.offset(1 as libc::c_int as isize);
-    c = splitter * *pa.offset(0 as libc::c_int as isize);
-    abig = c - *pa.offset(0 as libc::c_int as isize);
+    axdy1 = *pa.offset(0 as i32 as isize)
+        * *pd.offset(1 as i32 as isize);
+    c = splitter * *pa.offset(0 as i32 as isize);
+    abig = c - *pa.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pa.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pd.offset(1 as libc::c_int as isize);
-    abig = c - *pd.offset(1 as libc::c_int as isize);
+    alo = *pa.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pd.offset(1 as i32 as isize);
+    abig = c - *pd.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pd.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pd.offset(1 as i32 as isize) - bhi;
     err1 = axdy1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -10008,7 +10008,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - axdy0;
     around = dxay0 - avirt;
-    da[0 as libc::c_int as usize] = around + bround;
+    da[0 as i32 as usize] = around + bround;
     _j = dxay1 + _i;
     bvirt = _j - dxay1;
     avirt = _j - bvirt;
@@ -10020,37 +10020,37 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - axdy1;
     around = _0 - avirt;
-    da[1 as libc::c_int as usize] = around + bround;
-    da[3 as libc::c_int as usize] = _j + _i;
-    bvirt = da[3 as libc::c_int as usize] - _j;
-    avirt = da[3 as libc::c_int as usize] - bvirt;
+    da[1 as i32 as usize] = around + bround;
+    da[3 as i32 as usize] = _j + _i;
+    bvirt = da[3 as i32 as usize] - _j;
+    avirt = da[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    da[2 as libc::c_int as usize] = around + bround;
-    exby1 = *pe.offset(0 as libc::c_int as isize)
-        * *pb.offset(1 as libc::c_int as isize);
-    c = splitter * *pe.offset(0 as libc::c_int as isize);
-    abig = c - *pe.offset(0 as libc::c_int as isize);
+    da[2 as i32 as usize] = around + bround;
+    exby1 = *pe.offset(0 as i32 as isize)
+        * *pb.offset(1 as i32 as isize);
+    c = splitter * *pe.offset(0 as i32 as isize);
+    abig = c - *pe.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pe.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pb.offset(1 as libc::c_int as isize);
-    abig = c - *pb.offset(1 as libc::c_int as isize);
+    alo = *pe.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pb.offset(1 as i32 as isize);
+    abig = c - *pb.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pb.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pb.offset(1 as i32 as isize) - bhi;
     err1 = exby1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
     exby0 = alo * blo - err3;
-    bxey1 = *pb.offset(0 as libc::c_int as isize)
-        * *pe.offset(1 as libc::c_int as isize);
-    c = splitter * *pb.offset(0 as libc::c_int as isize);
-    abig = c - *pb.offset(0 as libc::c_int as isize);
+    bxey1 = *pb.offset(0 as i32 as isize)
+        * *pe.offset(1 as i32 as isize);
+    c = splitter * *pb.offset(0 as i32 as isize);
+    abig = c - *pb.offset(0 as i32 as isize);
     ahi = c - abig;
-    alo = *pb.offset(0 as libc::c_int as isize) - ahi;
-    c = splitter * *pe.offset(1 as libc::c_int as isize);
-    abig = c - *pe.offset(1 as libc::c_int as isize);
+    alo = *pb.offset(0 as i32 as isize) - ahi;
+    c = splitter * *pe.offset(1 as i32 as isize);
+    abig = c - *pe.offset(1 as i32 as isize);
     bhi = c - abig;
-    blo = *pe.offset(1 as libc::c_int as isize) - bhi;
+    blo = *pe.offset(1 as i32 as isize) - bhi;
     err1 = bxey1 - ahi * bhi;
     err2 = err1 - alo * bhi;
     err3 = err2 - ahi * blo;
@@ -10060,7 +10060,7 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - bxey0;
     around = exby0 - avirt;
-    eb[0 as libc::c_int as usize] = around + bround;
+    eb[0 as i32 as usize] = around + bround;
     _j = exby1 + _i;
     bvirt = _j - exby1;
     avirt = _j - bvirt;
@@ -10072,23 +10072,23 @@ pub unsafe extern "C" fn insphereexact(
     avirt = _i + bvirt;
     bround = bvirt - bxey1;
     around = _0 - avirt;
-    eb[1 as libc::c_int as usize] = around + bround;
-    eb[3 as libc::c_int as usize] = _j + _i;
-    bvirt = eb[3 as libc::c_int as usize] - _j;
-    avirt = eb[3 as libc::c_int as usize] - bvirt;
+    eb[1 as i32 as usize] = around + bround;
+    eb[3 as i32 as usize] = _j + _i;
+    bvirt = eb[3 as i32 as usize] - _j;
+    avirt = eb[3 as i32 as usize] - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    eb[2 as libc::c_int as usize] = around + bround;
+    eb[2 as i32 as usize] = around + bround;
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
-        -*pb.offset(2 as libc::c_int as isize),
+        -*pb.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10099,9 +10099,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     abclen = fast_expansion_sum_zeroelim(
@@ -10112,15 +10112,15 @@ pub unsafe extern "C" fn insphereexact(
         abc.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
-        -*pc.offset(2 as libc::c_int as isize),
+        -*pc.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10131,9 +10131,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     bcdlen = fast_expansion_sum_zeroelim(
@@ -10144,15 +10144,15 @@ pub unsafe extern "C" fn insphereexact(
         bcd.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         de.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ce.as_mut_ptr(),
-        -*pd.offset(2 as libc::c_int as isize),
+        -*pd.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10163,9 +10163,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     cdelen = fast_expansion_sum_zeroelim(
@@ -10176,15 +10176,15 @@ pub unsafe extern "C" fn insphereexact(
         cde.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ea.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
-        -*pe.offset(2 as libc::c_int as isize),
+        -*pe.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10195,9 +10195,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         de.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     dealen = fast_expansion_sum_zeroelim(
@@ -10208,15 +10208,15 @@ pub unsafe extern "C" fn insphereexact(
         dea.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         eb.as_mut_ptr(),
-        -*pa.offset(2 as libc::c_int as isize),
+        -*pa.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10227,9 +10227,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ea.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     eablen = fast_expansion_sum_zeroelim(
@@ -10240,15 +10240,15 @@ pub unsafe extern "C" fn insphereexact(
         eab.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10259,9 +10259,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     abdlen = fast_expansion_sum_zeroelim(
@@ -10272,15 +10272,15 @@ pub unsafe extern "C" fn insphereexact(
         abd.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ce.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         eb.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10291,9 +10291,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     bcelen = fast_expansion_sum_zeroelim(
@@ -10304,15 +10304,15 @@ pub unsafe extern "C" fn insphereexact(
         bce.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10323,9 +10323,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     cdalen = fast_expansion_sum_zeroelim(
@@ -10336,15 +10336,15 @@ pub unsafe extern "C" fn insphereexact(
         cda.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         eb.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10355,9 +10355,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         de.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     deblen = fast_expansion_sum_zeroelim(
@@ -10368,15 +10368,15 @@ pub unsafe extern "C" fn insphereexact(
         deb.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ce.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         temp8b.as_mut_ptr(),
     );
     temp16len = fast_expansion_sum_zeroelim(
@@ -10387,9 +10387,9 @@ pub unsafe extern "C" fn insphereexact(
         temp16.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ea.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         temp8a.as_mut_ptr(),
     );
     eaclen = fast_expansion_sum_zeroelim(
@@ -10413,7 +10413,7 @@ pub unsafe extern "C" fn insphereexact(
         bcd.as_mut_ptr(),
         temp48b.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < temp48blen {
         temp48b[i as usize] = -temp48b[i as usize];
         i += 1;
@@ -10428,37 +10428,37 @@ pub unsafe extern "C" fn insphereexact(
     xlen = scale_expansion_zeroelim(
         bcdelen,
         bcde.as_mut_ptr(),
-        *pa.offset(0 as libc::c_int as isize),
+        *pa.offset(0 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         temp192.as_mut_ptr(),
-        *pa.offset(0 as libc::c_int as isize),
+        *pa.offset(0 as i32 as isize),
         det384x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         bcdelen,
         bcde.as_mut_ptr(),
-        *pa.offset(1 as libc::c_int as isize),
+        *pa.offset(1 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         temp192.as_mut_ptr(),
-        *pa.offset(1 as libc::c_int as isize),
+        *pa.offset(1 as i32 as isize),
         det384y.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         bcdelen,
         bcde.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         zlen,
         temp192.as_mut_ptr(),
-        *pa.offset(2 as libc::c_int as isize),
+        *pa.offset(2 as i32 as isize),
         det384z.as_mut_ptr(),
     );
     xylen = fast_expansion_sum_zeroelim(
@@ -10489,7 +10489,7 @@ pub unsafe extern "C" fn insphereexact(
         cde.as_mut_ptr(),
         temp48b.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < temp48blen {
         temp48b[i as usize] = -temp48b[i as usize];
         i += 1;
@@ -10504,37 +10504,37 @@ pub unsafe extern "C" fn insphereexact(
     xlen = scale_expansion_zeroelim(
         cdealen,
         cdea.as_mut_ptr(),
-        *pb.offset(0 as libc::c_int as isize),
+        *pb.offset(0 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         temp192.as_mut_ptr(),
-        *pb.offset(0 as libc::c_int as isize),
+        *pb.offset(0 as i32 as isize),
         det384x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         cdealen,
         cdea.as_mut_ptr(),
-        *pb.offset(1 as libc::c_int as isize),
+        *pb.offset(1 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         temp192.as_mut_ptr(),
-        *pb.offset(1 as libc::c_int as isize),
+        *pb.offset(1 as i32 as isize),
         det384y.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         cdealen,
         cdea.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         zlen,
         temp192.as_mut_ptr(),
-        *pb.offset(2 as libc::c_int as isize),
+        *pb.offset(2 as i32 as isize),
         det384z.as_mut_ptr(),
     );
     xylen = fast_expansion_sum_zeroelim(
@@ -10565,7 +10565,7 @@ pub unsafe extern "C" fn insphereexact(
         dea.as_mut_ptr(),
         temp48b.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < temp48blen {
         temp48b[i as usize] = -temp48b[i as usize];
         i += 1;
@@ -10580,37 +10580,37 @@ pub unsafe extern "C" fn insphereexact(
     xlen = scale_expansion_zeroelim(
         deablen,
         deab.as_mut_ptr(),
-        *pc.offset(0 as libc::c_int as isize),
+        *pc.offset(0 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         temp192.as_mut_ptr(),
-        *pc.offset(0 as libc::c_int as isize),
+        *pc.offset(0 as i32 as isize),
         det384x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         deablen,
         deab.as_mut_ptr(),
-        *pc.offset(1 as libc::c_int as isize),
+        *pc.offset(1 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         temp192.as_mut_ptr(),
-        *pc.offset(1 as libc::c_int as isize),
+        *pc.offset(1 as i32 as isize),
         det384y.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         deablen,
         deab.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         zlen,
         temp192.as_mut_ptr(),
-        *pc.offset(2 as libc::c_int as isize),
+        *pc.offset(2 as i32 as isize),
         det384z.as_mut_ptr(),
     );
     xylen = fast_expansion_sum_zeroelim(
@@ -10641,7 +10641,7 @@ pub unsafe extern "C" fn insphereexact(
         eab.as_mut_ptr(),
         temp48b.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < temp48blen {
         temp48b[i as usize] = -temp48b[i as usize];
         i += 1;
@@ -10656,37 +10656,37 @@ pub unsafe extern "C" fn insphereexact(
     xlen = scale_expansion_zeroelim(
         eabclen,
         eabc.as_mut_ptr(),
-        *pd.offset(0 as libc::c_int as isize),
+        *pd.offset(0 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         temp192.as_mut_ptr(),
-        *pd.offset(0 as libc::c_int as isize),
+        *pd.offset(0 as i32 as isize),
         det384x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         eabclen,
         eabc.as_mut_ptr(),
-        *pd.offset(1 as libc::c_int as isize),
+        *pd.offset(1 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         temp192.as_mut_ptr(),
-        *pd.offset(1 as libc::c_int as isize),
+        *pd.offset(1 as i32 as isize),
         det384y.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         eabclen,
         eabc.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         zlen,
         temp192.as_mut_ptr(),
-        *pd.offset(2 as libc::c_int as isize),
+        *pd.offset(2 as i32 as isize),
         det384z.as_mut_ptr(),
     );
     xylen = fast_expansion_sum_zeroelim(
@@ -10717,7 +10717,7 @@ pub unsafe extern "C" fn insphereexact(
         abc.as_mut_ptr(),
         temp48b.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < temp48blen {
         temp48b[i as usize] = -temp48b[i as usize];
         i += 1;
@@ -10732,37 +10732,37 @@ pub unsafe extern "C" fn insphereexact(
     xlen = scale_expansion_zeroelim(
         abcdlen,
         abcd.as_mut_ptr(),
-        *pe.offset(0 as libc::c_int as isize),
+        *pe.offset(0 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     xlen = scale_expansion_zeroelim(
         xlen,
         temp192.as_mut_ptr(),
-        *pe.offset(0 as libc::c_int as isize),
+        *pe.offset(0 as i32 as isize),
         det384x.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         abcdlen,
         abcd.as_mut_ptr(),
-        *pe.offset(1 as libc::c_int as isize),
+        *pe.offset(1 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     ylen = scale_expansion_zeroelim(
         ylen,
         temp192.as_mut_ptr(),
-        *pe.offset(1 as libc::c_int as isize),
+        *pe.offset(1 as i32 as isize),
         det384y.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         abcdlen,
         abcd.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         temp192.as_mut_ptr(),
     );
     zlen = scale_expansion_zeroelim(
         zlen,
         temp192.as_mut_ptr(),
-        *pe.offset(2 as libc::c_int as isize),
+        *pe.offset(2 as i32 as isize),
         det384z.as_mut_ptr(),
     );
     xylen = fast_expansion_sum_zeroelim(
@@ -10807,7 +10807,7 @@ pub unsafe extern "C" fn insphereexact(
         cdedet.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereslow(
@@ -10873,83 +10873,83 @@ pub unsafe extern "C" fn insphereslow(
     let mut da: [libc::c_double; 16] = [0.; 16];
     let mut ac: [libc::c_double; 16] = [0.; 16];
     let mut bd: [libc::c_double; 16] = [0.; 16];
-    let mut ablen: libc::c_int = 0;
-    let mut bclen: libc::c_int = 0;
-    let mut cdlen: libc::c_int = 0;
-    let mut dalen: libc::c_int = 0;
-    let mut aclen: libc::c_int = 0;
-    let mut bdlen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
+    let mut bclen: i32 = 0;
+    let mut cdlen: i32 = 0;
+    let mut dalen: i32 = 0;
+    let mut aclen: i32 = 0;
+    let mut bdlen: i32 = 0;
     let mut temp32a: [libc::c_double; 32] = [0.; 32];
     let mut temp32b: [libc::c_double; 32] = [0.; 32];
     let mut temp64a: [libc::c_double; 64] = [0.; 64];
     let mut temp64b: [libc::c_double; 64] = [0.; 64];
     let mut temp64c: [libc::c_double; 64] = [0.; 64];
-    let mut temp32alen: libc::c_int = 0;
-    let mut temp32blen: libc::c_int = 0;
-    let mut temp64alen: libc::c_int = 0;
-    let mut temp64blen: libc::c_int = 0;
-    let mut temp64clen: libc::c_int = 0;
+    let mut temp32alen: i32 = 0;
+    let mut temp32blen: i32 = 0;
+    let mut temp64alen: i32 = 0;
+    let mut temp64blen: i32 = 0;
+    let mut temp64clen: i32 = 0;
     let mut temp128: [libc::c_double; 128] = [0.; 128];
     let mut temp192: [libc::c_double; 192] = [0.; 192];
-    let mut temp128len: libc::c_int = 0;
-    let mut temp192len: libc::c_int = 0;
+    let mut temp128len: i32 = 0;
+    let mut temp192len: i32 = 0;
     let mut detx: [libc::c_double; 384] = [0.; 384];
     let mut detxx: [libc::c_double; 768] = [0.; 768];
     let mut detxt: [libc::c_double; 384] = [0.; 384];
     let mut detxxt: [libc::c_double; 768] = [0.; 768];
     let mut detxtxt: [libc::c_double; 768] = [0.; 768];
-    let mut xlen: libc::c_int = 0;
-    let mut xxlen: libc::c_int = 0;
-    let mut xtlen: libc::c_int = 0;
-    let mut xxtlen: libc::c_int = 0;
-    let mut xtxtlen: libc::c_int = 0;
+    let mut xlen: i32 = 0;
+    let mut xxlen: i32 = 0;
+    let mut xtlen: i32 = 0;
+    let mut xxtlen: i32 = 0;
+    let mut xtxtlen: i32 = 0;
     let mut x1: [libc::c_double; 1536] = [0.; 1536];
     let mut x2: [libc::c_double; 2304] = [0.; 2304];
-    let mut x1len: libc::c_int = 0;
-    let mut x2len: libc::c_int = 0;
+    let mut x1len: i32 = 0;
+    let mut x2len: i32 = 0;
     let mut dety: [libc::c_double; 384] = [0.; 384];
     let mut detyy: [libc::c_double; 768] = [0.; 768];
     let mut detyt: [libc::c_double; 384] = [0.; 384];
     let mut detyyt: [libc::c_double; 768] = [0.; 768];
     let mut detytyt: [libc::c_double; 768] = [0.; 768];
-    let mut ylen: libc::c_int = 0;
-    let mut yylen: libc::c_int = 0;
-    let mut ytlen: libc::c_int = 0;
-    let mut yytlen: libc::c_int = 0;
-    let mut ytytlen: libc::c_int = 0;
+    let mut ylen: i32 = 0;
+    let mut yylen: i32 = 0;
+    let mut ytlen: i32 = 0;
+    let mut yytlen: i32 = 0;
+    let mut ytytlen: i32 = 0;
     let mut y1: [libc::c_double; 1536] = [0.; 1536];
     let mut y2: [libc::c_double; 2304] = [0.; 2304];
-    let mut y1len: libc::c_int = 0;
-    let mut y2len: libc::c_int = 0;
+    let mut y1len: i32 = 0;
+    let mut y2len: i32 = 0;
     let mut detz: [libc::c_double; 384] = [0.; 384];
     let mut detzz: [libc::c_double; 768] = [0.; 768];
     let mut detzt: [libc::c_double; 384] = [0.; 384];
     let mut detzzt: [libc::c_double; 768] = [0.; 768];
     let mut detztzt: [libc::c_double; 768] = [0.; 768];
-    let mut zlen: libc::c_int = 0;
-    let mut zzlen: libc::c_int = 0;
-    let mut ztlen: libc::c_int = 0;
-    let mut zztlen: libc::c_int = 0;
-    let mut ztztlen: libc::c_int = 0;
+    let mut zlen: i32 = 0;
+    let mut zzlen: i32 = 0;
+    let mut ztlen: i32 = 0;
+    let mut zztlen: i32 = 0;
+    let mut ztztlen: i32 = 0;
     let mut z1: [libc::c_double; 1536] = [0.; 1536];
     let mut z2: [libc::c_double; 2304] = [0.; 2304];
-    let mut z1len: libc::c_int = 0;
-    let mut z2len: libc::c_int = 0;
+    let mut z1len: i32 = 0;
+    let mut z2len: i32 = 0;
     let mut detxy: [libc::c_double; 4608] = [0.; 4608];
-    let mut xylen: libc::c_int = 0;
+    let mut xylen: i32 = 0;
     let mut adet: [libc::c_double; 6912] = [0.; 6912];
     let mut bdet: [libc::c_double; 6912] = [0.; 6912];
     let mut cdet: [libc::c_double; 6912] = [0.; 6912];
     let mut ddet: [libc::c_double; 6912] = [0.; 6912];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
-    let mut dlen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
+    let mut dlen: i32 = 0;
     let mut abdet: [libc::c_double; 13824] = [0.; 13824];
     let mut cddet: [libc::c_double; 13824] = [0.; 13824];
     let mut deter: [libc::c_double; 27648] = [0.; 27648];
-    let mut deterlen: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    let mut deterlen: i32 = 0;
+    let mut i: i32 = 0;
     let mut bvirt: libc::c_double = 0.;
     let mut avirt: libc::c_double = 0.;
     let mut bround: libc::c_double = 0.;
@@ -10974,77 +10974,77 @@ pub unsafe extern "C" fn insphereslow(
     let mut _0: libc::c_double = 0.;
     let mut _1: libc::c_double = 0.;
     let mut _2: libc::c_double = 0.;
-    aex = *pa.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bvirt = *pa.offset(0 as libc::c_int as isize) - aex;
+    aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bvirt = *pa.offset(0 as i32 as isize) - aex;
     avirt = aex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     aextail = around + bround;
-    aey = *pa.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bvirt = *pa.offset(1 as libc::c_int as isize) - aey;
+    aey = *pa.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bvirt = *pa.offset(1 as i32 as isize) - aey;
     avirt = aey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     aeytail = around + bround;
-    aez = *pa.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bvirt = *pa.offset(2 as libc::c_int as isize) - aez;
+    aez = *pa.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bvirt = *pa.offset(2 as i32 as isize) - aez;
     avirt = aez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pa.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pa.offset(2 as i32 as isize) - avirt;
     aeztail = around + bround;
-    bex = *pb.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bex;
+    bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bvirt = *pb.offset(0 as i32 as isize) - bex;
     avirt = bex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bextail = around + bround;
-    bey = *pb.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bey;
+    bey = *pb.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bvirt = *pb.offset(1 as i32 as isize) - bey;
     avirt = bey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     beytail = around + bround;
-    bez = *pb.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bvirt = *pb.offset(2 as libc::c_int as isize) - bez;
+    bez = *pb.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bvirt = *pb.offset(2 as i32 as isize) - bez;
     avirt = bez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pb.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pb.offset(2 as i32 as isize) - avirt;
     beztail = around + bround;
-    cex = *pc.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bvirt = *pc.offset(0 as libc::c_int as isize) - cex;
+    cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bvirt = *pc.offset(0 as i32 as isize) - cex;
     avirt = cex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pc.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pc.offset(0 as i32 as isize) - avirt;
     cextail = around + bround;
-    cey = *pc.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bvirt = *pc.offset(1 as libc::c_int as isize) - cey;
+    cey = *pc.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bvirt = *pc.offset(1 as i32 as isize) - cey;
     avirt = cey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pc.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pc.offset(1 as i32 as isize) - avirt;
     ceytail = around + bround;
-    cez = *pc.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bvirt = *pc.offset(2 as libc::c_int as isize) - cez;
+    cez = *pc.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bvirt = *pc.offset(2 as i32 as isize) - cez;
     avirt = cez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pc.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pc.offset(2 as i32 as isize) - avirt;
     ceztail = around + bround;
-    dex = *pd.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bvirt = *pd.offset(0 as libc::c_int as isize) - dex;
+    dex = *pd.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bvirt = *pd.offset(0 as i32 as isize) - dex;
     avirt = dex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pd.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pd.offset(0 as i32 as isize) - avirt;
     dextail = around + bround;
-    dey = *pd.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bvirt = *pd.offset(1 as libc::c_int as isize) - dey;
+    dey = *pd.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bvirt = *pd.offset(1 as i32 as isize) - dey;
     avirt = dey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pd.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pd.offset(1 as i32 as isize) - avirt;
     deytail = around + bround;
-    dez = *pd.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bvirt = *pd.offset(2 as libc::c_int as isize) - dez;
+    dez = *pd.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bvirt = *pd.offset(2 as i32 as isize) - dez;
     avirt = dez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pd.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pd.offset(2 as i32 as isize) - avirt;
     deztail = around + bround;
     c = splitter * aextail;
     abig = c - aextail;
@@ -11058,7 +11058,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * aex;
     abig = c - aex;
     a1hi = c - abig;
@@ -11091,7 +11091,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[1 as libc::c_int as usize] = around + bround;
+    axby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11120,7 +11120,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[2 as libc::c_int as usize] = around + bround;
+    axby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11144,7 +11144,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axby[3 as libc::c_int as usize] = around + bround;
+    axby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11162,20 +11162,20 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axby[4 as libc::c_int as usize] = around + bround;
+    axby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axby[5 as libc::c_int as usize] = around + bround;
+    axby[5 as i32 as usize] = around + bround;
     axby7 = _m + _k;
     bvirt = axby7 - _m;
     avirt = axby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axby[6 as libc::c_int as usize] = around + bround;
-    axby[7 as libc::c_int as usize] = axby7;
+    axby[6 as i32 as usize] = around + bround;
+    axby[7 as i32 as usize] = axby7;
     negate = -aey;
     negatetail = -aeytail;
     c = splitter * bextail;
@@ -11190,7 +11190,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bex;
     abig = c - bex;
     a1hi = c - abig;
@@ -11223,7 +11223,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[1 as libc::c_int as usize] = around + bround;
+    bxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11252,7 +11252,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[2 as libc::c_int as usize] = around + bround;
+    bxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11276,7 +11276,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxay[3 as libc::c_int as usize] = around + bround;
+    bxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11294,24 +11294,24 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxay[4 as libc::c_int as usize] = around + bround;
+    bxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxay[5 as libc::c_int as usize] = around + bround;
+    bxay[5 as i32 as usize] = around + bround;
     bxay7 = _m + _k;
     bvirt = bxay7 - _m;
     avirt = bxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxay[6 as libc::c_int as usize] = around + bround;
-    bxay[7 as libc::c_int as usize] = bxay7;
+    bxay[6 as i32 as usize] = around + bround;
+    bxay[7 as i32 as usize] = bxay7;
     ablen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         axby.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         bxay.as_mut_ptr(),
         ab.as_mut_ptr(),
     );
@@ -11327,7 +11327,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bex;
     abig = c - bex;
     a1hi = c - abig;
@@ -11360,7 +11360,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[1 as libc::c_int as usize] = around + bround;
+    bxcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11389,7 +11389,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[2 as libc::c_int as usize] = around + bround;
+    bxcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11413,7 +11413,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxcy[3 as libc::c_int as usize] = around + bround;
+    bxcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11431,20 +11431,20 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxcy[4 as libc::c_int as usize] = around + bround;
+    bxcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxcy[5 as libc::c_int as usize] = around + bround;
+    bxcy[5 as i32 as usize] = around + bround;
     bxcy7 = _m + _k;
     bvirt = bxcy7 - _m;
     avirt = bxcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxcy[6 as libc::c_int as usize] = around + bround;
-    bxcy[7 as libc::c_int as usize] = bxcy7;
+    bxcy[6 as i32 as usize] = around + bround;
+    bxcy[7 as i32 as usize] = bxcy7;
     negate = -bey;
     negatetail = -beytail;
     c = splitter * cextail;
@@ -11459,7 +11459,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cex;
     abig = c - cex;
     a1hi = c - abig;
@@ -11492,7 +11492,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[1 as libc::c_int as usize] = around + bround;
+    cxby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11521,7 +11521,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[2 as libc::c_int as usize] = around + bround;
+    cxby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11545,7 +11545,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxby[3 as libc::c_int as usize] = around + bround;
+    cxby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11563,24 +11563,24 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxby[4 as libc::c_int as usize] = around + bround;
+    cxby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxby[5 as libc::c_int as usize] = around + bround;
+    cxby[5 as i32 as usize] = around + bround;
     cxby7 = _m + _k;
     bvirt = cxby7 - _m;
     avirt = cxby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxby[6 as libc::c_int as usize] = around + bround;
-    cxby[7 as libc::c_int as usize] = cxby7;
+    cxby[6 as i32 as usize] = around + bround;
+    cxby[7 as i32 as usize] = cxby7;
     bclen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         bxcy.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         cxby.as_mut_ptr(),
         bc.as_mut_ptr(),
     );
@@ -11596,7 +11596,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxdy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxdy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cex;
     abig = c - cex;
     a1hi = c - abig;
@@ -11629,7 +11629,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxdy[1 as libc::c_int as usize] = around + bround;
+    cxdy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11658,7 +11658,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxdy[2 as libc::c_int as usize] = around + bround;
+    cxdy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11682,7 +11682,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxdy[3 as libc::c_int as usize] = around + bround;
+    cxdy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11700,20 +11700,20 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxdy[4 as libc::c_int as usize] = around + bround;
+    cxdy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxdy[5 as libc::c_int as usize] = around + bround;
+    cxdy[5 as i32 as usize] = around + bround;
     cxdy7 = _m + _k;
     bvirt = cxdy7 - _m;
     avirt = cxdy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxdy[6 as libc::c_int as usize] = around + bround;
-    cxdy[7 as libc::c_int as usize] = cxdy7;
+    cxdy[6 as i32 as usize] = around + bround;
+    cxdy[7 as i32 as usize] = cxdy7;
     negate = -cey;
     negatetail = -ceytail;
     c = splitter * dextail;
@@ -11728,7 +11728,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    dxcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    dxcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * dex;
     abig = c - dex;
     a1hi = c - abig;
@@ -11761,7 +11761,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxcy[1 as libc::c_int as usize] = around + bround;
+    dxcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11790,7 +11790,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxcy[2 as libc::c_int as usize] = around + bround;
+    dxcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11814,7 +11814,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxcy[3 as libc::c_int as usize] = around + bround;
+    dxcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11832,24 +11832,24 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    dxcy[4 as libc::c_int as usize] = around + bround;
+    dxcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    dxcy[5 as libc::c_int as usize] = around + bround;
+    dxcy[5 as i32 as usize] = around + bround;
     dxcy7 = _m + _k;
     bvirt = dxcy7 - _m;
     avirt = dxcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    dxcy[6 as libc::c_int as usize] = around + bround;
-    dxcy[7 as libc::c_int as usize] = dxcy7;
+    dxcy[6 as i32 as usize] = around + bround;
+    dxcy[7 as i32 as usize] = dxcy7;
     cdlen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         cxdy.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         dxcy.as_mut_ptr(),
         cd.as_mut_ptr(),
     );
@@ -11865,7 +11865,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    dxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    dxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * dex;
     abig = c - dex;
     a1hi = c - abig;
@@ -11898,7 +11898,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxay[1 as libc::c_int as usize] = around + bround;
+    dxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -11927,7 +11927,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxay[2 as libc::c_int as usize] = around + bround;
+    dxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -11951,7 +11951,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxay[3 as libc::c_int as usize] = around + bround;
+    dxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -11969,20 +11969,20 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    dxay[4 as libc::c_int as usize] = around + bround;
+    dxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    dxay[5 as libc::c_int as usize] = around + bround;
+    dxay[5 as i32 as usize] = around + bround;
     dxay7 = _m + _k;
     bvirt = dxay7 - _m;
     avirt = dxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    dxay[6 as libc::c_int as usize] = around + bround;
-    dxay[7 as libc::c_int as usize] = dxay7;
+    dxay[6 as i32 as usize] = around + bround;
+    dxay[7 as i32 as usize] = dxay7;
     negate = -dey;
     negatetail = -deytail;
     c = splitter * aextail;
@@ -11997,7 +11997,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axdy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axdy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * aex;
     abig = c - aex;
     a1hi = c - abig;
@@ -12030,7 +12030,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axdy[1 as libc::c_int as usize] = around + bround;
+    axdy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -12059,7 +12059,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axdy[2 as libc::c_int as usize] = around + bround;
+    axdy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -12083,7 +12083,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axdy[3 as libc::c_int as usize] = around + bround;
+    axdy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -12101,24 +12101,24 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axdy[4 as libc::c_int as usize] = around + bround;
+    axdy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axdy[5 as libc::c_int as usize] = around + bround;
+    axdy[5 as i32 as usize] = around + bround;
     axdy7 = _m + _k;
     bvirt = axdy7 - _m;
     avirt = axdy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axdy[6 as libc::c_int as usize] = around + bround;
-    axdy[7 as libc::c_int as usize] = axdy7;
+    axdy[6 as i32 as usize] = around + bround;
+    axdy[7 as i32 as usize] = axdy7;
     dalen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         dxay.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         axdy.as_mut_ptr(),
         da.as_mut_ptr(),
     );
@@ -12134,7 +12134,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    axcy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    axcy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * aex;
     abig = c - aex;
     a1hi = c - abig;
@@ -12167,7 +12167,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[1 as libc::c_int as usize] = around + bround;
+    axcy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -12196,7 +12196,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[2 as libc::c_int as usize] = around + bround;
+    axcy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -12220,7 +12220,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    axcy[3 as libc::c_int as usize] = around + bround;
+    axcy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -12238,20 +12238,20 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    axcy[4 as libc::c_int as usize] = around + bround;
+    axcy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    axcy[5 as libc::c_int as usize] = around + bround;
+    axcy[5 as i32 as usize] = around + bround;
     axcy7 = _m + _k;
     bvirt = axcy7 - _m;
     avirt = axcy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    axcy[6 as libc::c_int as usize] = around + bround;
-    axcy[7 as libc::c_int as usize] = axcy7;
+    axcy[6 as i32 as usize] = around + bround;
+    axcy[7 as i32 as usize] = axcy7;
     negate = -aey;
     negatetail = -aeytail;
     c = splitter * cextail;
@@ -12266,7 +12266,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    cxay[0 as libc::c_int as usize] = a0lo * blo - err3;
+    cxay[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * cex;
     abig = c - cex;
     a1hi = c - abig;
@@ -12299,7 +12299,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[1 as libc::c_int as usize] = around + bround;
+    cxay[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -12328,7 +12328,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[2 as libc::c_int as usize] = around + bround;
+    cxay[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -12352,7 +12352,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    cxay[3 as libc::c_int as usize] = around + bround;
+    cxay[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -12370,24 +12370,24 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    cxay[4 as libc::c_int as usize] = around + bround;
+    cxay[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    cxay[5 as libc::c_int as usize] = around + bround;
+    cxay[5 as i32 as usize] = around + bround;
     cxay7 = _m + _k;
     bvirt = cxay7 - _m;
     avirt = cxay7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    cxay[6 as libc::c_int as usize] = around + bround;
-    cxay[7 as libc::c_int as usize] = cxay7;
+    cxay[6 as i32 as usize] = around + bround;
+    cxay[7 as i32 as usize] = cxay7;
     aclen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         axcy.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         cxay.as_mut_ptr(),
         ac.as_mut_ptr(),
     );
@@ -12403,7 +12403,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    bxdy[0 as libc::c_int as usize] = a0lo * blo - err3;
+    bxdy[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * bex;
     abig = c - bex;
     a1hi = c - abig;
@@ -12436,7 +12436,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxdy[1 as libc::c_int as usize] = around + bround;
+    bxdy[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -12465,7 +12465,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxdy[2 as libc::c_int as usize] = around + bround;
+    bxdy[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -12489,7 +12489,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    bxdy[3 as libc::c_int as usize] = around + bround;
+    bxdy[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -12507,20 +12507,20 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    bxdy[4 as libc::c_int as usize] = around + bround;
+    bxdy[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    bxdy[5 as libc::c_int as usize] = around + bround;
+    bxdy[5 as i32 as usize] = around + bround;
     bxdy7 = _m + _k;
     bvirt = bxdy7 - _m;
     avirt = bxdy7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    bxdy[6 as libc::c_int as usize] = around + bround;
-    bxdy[7 as libc::c_int as usize] = bxdy7;
+    bxdy[6 as i32 as usize] = around + bround;
+    bxdy[7 as i32 as usize] = bxdy7;
     negate = -bey;
     negatetail = -beytail;
     c = splitter * dextail;
@@ -12535,7 +12535,7 @@ pub unsafe extern "C" fn insphereslow(
     err1 = _i - a0hi * bhi;
     err2 = err1 - a0lo * bhi;
     err3 = err2 - a0hi * blo;
-    dxby[0 as libc::c_int as usize] = a0lo * blo - err3;
+    dxby[0 as i32 as usize] = a0lo * blo - err3;
     c = splitter * dex;
     abig = c - dex;
     a1hi = c - abig;
@@ -12568,7 +12568,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _k - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxby[1 as libc::c_int as usize] = around + bround;
+    dxby[1 as i32 as usize] = around + bround;
     _j = _2 + _k;
     bvirt = _j - _2;
     avirt = _j - bvirt;
@@ -12597,7 +12597,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxby[2 as libc::c_int as usize] = around + bround;
+    dxby[2 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
@@ -12621,7 +12621,7 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _j - bvirt;
     bround = _0 - bvirt;
     around = _1 - avirt;
-    dxby[3 as libc::c_int as usize] = around + bround;
+    dxby[3 as i32 as usize] = around + bround;
     _i = _2 + _j;
     bvirt = _i - _2;
     avirt = _i - bvirt;
@@ -12639,24 +12639,24 @@ pub unsafe extern "C" fn insphereslow(
     avirt = _i - bvirt;
     bround = _k - bvirt;
     around = _1 - avirt;
-    dxby[4 as libc::c_int as usize] = around + bround;
+    dxby[4 as i32 as usize] = around + bround;
     _k = _2 + _i;
     bvirt = _k - _2;
     avirt = _k - bvirt;
     bround = _i - bvirt;
     around = _2 - avirt;
-    dxby[5 as libc::c_int as usize] = around + bround;
+    dxby[5 as i32 as usize] = around + bround;
     dxby7 = _m + _k;
     bvirt = dxby7 - _m;
     avirt = dxby7 - bvirt;
     bround = _k - bvirt;
     around = _m - avirt;
-    dxby[6 as libc::c_int as usize] = around + bround;
-    dxby[7 as libc::c_int as usize] = dxby7;
+    dxby[6 as i32 as usize] = around + bround;
+    dxby[7 as i32 as usize] = dxby7;
     bdlen = fast_expansion_sum_zeroelim(
-        8 as libc::c_int,
+        8 as i32,
         bxdy.as_mut_ptr(),
-        8 as libc::c_int,
+        8 as i32,
         dxby.as_mut_ptr(),
         bd.as_mut_ptr(),
     );
@@ -12750,7 +12750,7 @@ pub unsafe extern "C" fn insphereslow(
         aex,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -12794,7 +12794,7 @@ pub unsafe extern "C" fn insphereslow(
         aey,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -12838,7 +12838,7 @@ pub unsafe extern "C" fn insphereslow(
         aez,
         detzzt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < zztlen {
         detzzt[i as usize] *= 2.0f64;
         i += 1;
@@ -12967,7 +12967,7 @@ pub unsafe extern "C" fn insphereslow(
         bex,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -13011,7 +13011,7 @@ pub unsafe extern "C" fn insphereslow(
         bey,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -13055,7 +13055,7 @@ pub unsafe extern "C" fn insphereslow(
         bez,
         detzzt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < zztlen {
         detzzt[i as usize] *= 2.0f64;
         i += 1;
@@ -13184,7 +13184,7 @@ pub unsafe extern "C" fn insphereslow(
         cex,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -13228,7 +13228,7 @@ pub unsafe extern "C" fn insphereslow(
         cey,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -13272,7 +13272,7 @@ pub unsafe extern "C" fn insphereslow(
         cez,
         detzzt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < zztlen {
         detzzt[i as usize] *= 2.0f64;
         i += 1;
@@ -13401,7 +13401,7 @@ pub unsafe extern "C" fn insphereslow(
         dex,
         detxxt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < xxtlen {
         detxxt[i as usize] *= 2.0f64;
         i += 1;
@@ -13445,7 +13445,7 @@ pub unsafe extern "C" fn insphereslow(
         dey,
         detyyt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < yytlen {
         detyyt[i as usize] *= 2.0f64;
         i += 1;
@@ -13489,7 +13489,7 @@ pub unsafe extern "C" fn insphereslow(
         dez,
         detzzt.as_mut_ptr(),
     );
-    i = 0 as libc::c_int;
+    i = 0 as i32;
     while i < zztlen {
         detzzt[i as usize] *= 2.0f64;
         i += 1;
@@ -13549,7 +13549,7 @@ pub unsafe extern "C" fn insphereslow(
         cddet.as_mut_ptr(),
         deter.as_mut_ptr(),
     );
-    return deter[(deterlen - 1 as libc::c_int) as usize];
+    return deter[(deterlen - 1 as i32) as usize];
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereadapt(
@@ -13622,34 +13622,34 @@ pub unsafe extern "C" fn insphereadapt(
     let mut temp16: [libc::c_double; 16] = [0.; 16];
     let mut temp24: [libc::c_double; 24] = [0.; 24];
     let mut temp48: [libc::c_double; 48] = [0.; 48];
-    let mut temp8alen: libc::c_int = 0;
-    let mut temp8blen: libc::c_int = 0;
-    let mut temp8clen: libc::c_int = 0;
-    let mut temp16len: libc::c_int = 0;
-    let mut temp24len: libc::c_int = 0;
-    let mut temp48len: libc::c_int = 0;
+    let mut temp8alen: i32 = 0;
+    let mut temp8blen: i32 = 0;
+    let mut temp8clen: i32 = 0;
+    let mut temp16len: i32 = 0;
+    let mut temp24len: i32 = 0;
+    let mut temp48len: i32 = 0;
     let mut xdet: [libc::c_double; 96] = [0.; 96];
     let mut ydet: [libc::c_double; 96] = [0.; 96];
     let mut zdet: [libc::c_double; 96] = [0.; 96];
     let mut xydet: [libc::c_double; 192] = [0.; 192];
-    let mut xlen: libc::c_int = 0;
-    let mut ylen: libc::c_int = 0;
-    let mut zlen: libc::c_int = 0;
-    let mut xylen: libc::c_int = 0;
+    let mut xlen: i32 = 0;
+    let mut ylen: i32 = 0;
+    let mut zlen: i32 = 0;
+    let mut xylen: i32 = 0;
     let mut adet: [libc::c_double; 288] = [0.; 288];
     let mut bdet: [libc::c_double; 288] = [0.; 288];
     let mut cdet: [libc::c_double; 288] = [0.; 288];
     let mut ddet: [libc::c_double; 288] = [0.; 288];
-    let mut alen: libc::c_int = 0;
-    let mut blen: libc::c_int = 0;
-    let mut clen: libc::c_int = 0;
-    let mut dlen: libc::c_int = 0;
+    let mut alen: i32 = 0;
+    let mut blen: i32 = 0;
+    let mut clen: i32 = 0;
+    let mut dlen: i32 = 0;
     let mut abdet: [libc::c_double; 576] = [0.; 576];
     let mut cddet: [libc::c_double; 576] = [0.; 576];
-    let mut ablen: libc::c_int = 0;
-    let mut cdlen: libc::c_int = 0;
+    let mut ablen: i32 = 0;
+    let mut cdlen: i32 = 0;
     let mut fin1: [libc::c_double; 1152] = [0.; 1152];
-    let mut finlength: libc::c_int = 0;
+    let mut finlength: i32 = 0;
     let mut aextail: libc::c_double = 0.;
     let mut bextail: libc::c_double = 0.;
     let mut cextail: libc::c_double = 0.;
@@ -13678,18 +13678,18 @@ pub unsafe extern "C" fn insphereadapt(
     let mut _i: libc::c_double = 0.;
     let mut _j: libc::c_double = 0.;
     let mut _0: libc::c_double = 0.;
-    aex = *pa.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bex = *pb.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    cex = *pc.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    dex = *pd.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    aey = *pa.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bey = *pb.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    cey = *pc.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    dey = *pd.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    aez = *pa.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bez = *pb.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    cez = *pc.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    dez = *pd.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
+    aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    dex = *pd.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    aey = *pa.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bey = *pb.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    cey = *pc.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    dey = *pd.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    aez = *pa.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bez = *pb.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    cez = *pc.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    dez = *pd.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
     aexbey1 = aex * bey;
     c = splitter * aex;
     abig = c - aex;
@@ -13721,7 +13721,7 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - bexaey0;
     around = aexbey0 - avirt;
-    ab[0 as libc::c_int as usize] = around + bround;
+    ab[0 as i32 as usize] = around + bround;
     _j = aexbey1 + _i;
     bvirt = _j - aexbey1;
     avirt = _j - bvirt;
@@ -13733,14 +13733,14 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - bexaey1;
     around = _0 - avirt;
-    ab[1 as libc::c_int as usize] = around + bround;
+    ab[1 as i32 as usize] = around + bround;
     ab3 = _j + _i;
     bvirt = ab3 - _j;
     avirt = ab3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ab[2 as libc::c_int as usize] = around + bround;
-    ab[3 as libc::c_int as usize] = ab3;
+    ab[2 as i32 as usize] = around + bround;
+    ab[3 as i32 as usize] = ab3;
     bexcey1 = bex * cey;
     c = splitter * bex;
     abig = c - bex;
@@ -13772,7 +13772,7 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - cexbey0;
     around = bexcey0 - avirt;
-    bc[0 as libc::c_int as usize] = around + bround;
+    bc[0 as i32 as usize] = around + bround;
     _j = bexcey1 + _i;
     bvirt = _j - bexcey1;
     avirt = _j - bvirt;
@@ -13784,14 +13784,14 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - cexbey1;
     around = _0 - avirt;
-    bc[1 as libc::c_int as usize] = around + bround;
+    bc[1 as i32 as usize] = around + bround;
     bc3 = _j + _i;
     bvirt = bc3 - _j;
     avirt = bc3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bc[2 as libc::c_int as usize] = around + bround;
-    bc[3 as libc::c_int as usize] = bc3;
+    bc[2 as i32 as usize] = around + bround;
+    bc[3 as i32 as usize] = bc3;
     cexdey1 = cex * dey;
     c = splitter * cex;
     abig = c - cex;
@@ -13823,7 +13823,7 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - dexcey0;
     around = cexdey0 - avirt;
-    cd[0 as libc::c_int as usize] = around + bround;
+    cd[0 as i32 as usize] = around + bround;
     _j = cexdey1 + _i;
     bvirt = _j - cexdey1;
     avirt = _j - bvirt;
@@ -13835,14 +13835,14 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - dexcey1;
     around = _0 - avirt;
-    cd[1 as libc::c_int as usize] = around + bround;
+    cd[1 as i32 as usize] = around + bround;
     cd3 = _j + _i;
     bvirt = cd3 - _j;
     avirt = cd3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    cd[2 as libc::c_int as usize] = around + bround;
-    cd[3 as libc::c_int as usize] = cd3;
+    cd[2 as i32 as usize] = around + bround;
+    cd[3 as i32 as usize] = cd3;
     dexaey1 = dex * aey;
     c = splitter * dex;
     abig = c - dex;
@@ -13874,7 +13874,7 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - aexdey0;
     around = dexaey0 - avirt;
-    da[0 as libc::c_int as usize] = around + bround;
+    da[0 as i32 as usize] = around + bround;
     _j = dexaey1 + _i;
     bvirt = _j - dexaey1;
     avirt = _j - bvirt;
@@ -13886,14 +13886,14 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - aexdey1;
     around = _0 - avirt;
-    da[1 as libc::c_int as usize] = around + bround;
+    da[1 as i32 as usize] = around + bround;
     da3 = _j + _i;
     bvirt = da3 - _j;
     avirt = da3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    da[2 as libc::c_int as usize] = around + bround;
-    da[3 as libc::c_int as usize] = da3;
+    da[2 as i32 as usize] = around + bround;
+    da[3 as i32 as usize] = da3;
     aexcey1 = aex * cey;
     c = splitter * aex;
     abig = c - aex;
@@ -13925,7 +13925,7 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - cexaey0;
     around = aexcey0 - avirt;
-    ac[0 as libc::c_int as usize] = around + bround;
+    ac[0 as i32 as usize] = around + bround;
     _j = aexcey1 + _i;
     bvirt = _j - aexcey1;
     avirt = _j - bvirt;
@@ -13937,14 +13937,14 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - cexaey1;
     around = _0 - avirt;
-    ac[1 as libc::c_int as usize] = around + bround;
+    ac[1 as i32 as usize] = around + bround;
     ac3 = _j + _i;
     bvirt = ac3 - _j;
     avirt = ac3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    ac[2 as libc::c_int as usize] = around + bround;
-    ac[3 as libc::c_int as usize] = ac3;
+    ac[2 as i32 as usize] = around + bround;
+    ac[3 as i32 as usize] = ac3;
     bexdey1 = bex * dey;
     c = splitter * bex;
     abig = c - bex;
@@ -13976,7 +13976,7 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - dexbey0;
     around = bexdey0 - avirt;
-    bd[0 as libc::c_int as usize] = around + bround;
+    bd[0 as i32 as usize] = around + bround;
     _j = bexdey1 + _i;
     bvirt = _j - bexdey1;
     avirt = _j - bvirt;
@@ -13988,28 +13988,28 @@ pub unsafe extern "C" fn insphereadapt(
     avirt = _i + bvirt;
     bround = bvirt - dexbey1;
     around = _0 - avirt;
-    bd[1 as libc::c_int as usize] = around + bround;
+    bd[1 as i32 as usize] = around + bround;
     bd3 = _j + _i;
     bvirt = bd3 - _j;
     avirt = bd3 - bvirt;
     bround = _i - bvirt;
     around = _j - avirt;
-    bd[2 as libc::c_int as usize] = around + bround;
-    bd[3 as libc::c_int as usize] = bd3;
+    bd[2 as i32 as usize] = around + bround;
+    bd[3 as i32 as usize] = bd3;
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
         bez,
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
         -cez,
         temp8b.as_mut_ptr(),
     );
     temp8clen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         dez,
         temp8c.as_mut_ptr(),
@@ -14079,19 +14079,19 @@ pub unsafe extern "C" fn insphereadapt(
         adet.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
         cez,
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
         dez,
         temp8b.as_mut_ptr(),
     );
     temp8clen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         cd.as_mut_ptr(),
         aez,
         temp8c.as_mut_ptr(),
@@ -14161,19 +14161,19 @@ pub unsafe extern "C" fn insphereadapt(
         bdet.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         dez,
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bd.as_mut_ptr(),
         aez,
         temp8b.as_mut_ptr(),
     );
     temp8clen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         da.as_mut_ptr(),
         bez,
         temp8c.as_mut_ptr(),
@@ -14243,19 +14243,19 @@ pub unsafe extern "C" fn insphereadapt(
         cdet.as_mut_ptr(),
     );
     temp8alen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         bc.as_mut_ptr(),
         aez,
         temp8a.as_mut_ptr(),
     );
     temp8blen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ac.as_mut_ptr(),
         -bez,
         temp8b.as_mut_ptr(),
     );
     temp8clen = scale_expansion_zeroelim(
-        4 as libc::c_int,
+        4 as i32,
         ab.as_mut_ptr(),
         cez,
         temp8c.as_mut_ptr(),
@@ -14350,65 +14350,65 @@ pub unsafe extern "C" fn insphereadapt(
     if det >= errbound || -det >= errbound {
         return det;
     }
-    bvirt = *pa.offset(0 as libc::c_int as isize) - aex;
+    bvirt = *pa.offset(0 as i32 as isize) - aex;
     avirt = aex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pa.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pa.offset(0 as i32 as isize) - avirt;
     aextail = around + bround;
-    bvirt = *pa.offset(1 as libc::c_int as isize) - aey;
+    bvirt = *pa.offset(1 as i32 as isize) - aey;
     avirt = aey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pa.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pa.offset(1 as i32 as isize) - avirt;
     aeytail = around + bround;
-    bvirt = *pa.offset(2 as libc::c_int as isize) - aez;
+    bvirt = *pa.offset(2 as i32 as isize) - aez;
     avirt = aez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pa.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pa.offset(2 as i32 as isize) - avirt;
     aeztail = around + bround;
-    bvirt = *pb.offset(0 as libc::c_int as isize) - bex;
+    bvirt = *pb.offset(0 as i32 as isize) - bex;
     avirt = bex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pb.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pb.offset(0 as i32 as isize) - avirt;
     bextail = around + bround;
-    bvirt = *pb.offset(1 as libc::c_int as isize) - bey;
+    bvirt = *pb.offset(1 as i32 as isize) - bey;
     avirt = bey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pb.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pb.offset(1 as i32 as isize) - avirt;
     beytail = around + bround;
-    bvirt = *pb.offset(2 as libc::c_int as isize) - bez;
+    bvirt = *pb.offset(2 as i32 as isize) - bez;
     avirt = bez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pb.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pb.offset(2 as i32 as isize) - avirt;
     beztail = around + bround;
-    bvirt = *pc.offset(0 as libc::c_int as isize) - cex;
+    bvirt = *pc.offset(0 as i32 as isize) - cex;
     avirt = cex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pc.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pc.offset(0 as i32 as isize) - avirt;
     cextail = around + bround;
-    bvirt = *pc.offset(1 as libc::c_int as isize) - cey;
+    bvirt = *pc.offset(1 as i32 as isize) - cey;
     avirt = cey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pc.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pc.offset(1 as i32 as isize) - avirt;
     ceytail = around + bround;
-    bvirt = *pc.offset(2 as libc::c_int as isize) - cez;
+    bvirt = *pc.offset(2 as i32 as isize) - cez;
     avirt = cez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pc.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pc.offset(2 as i32 as isize) - avirt;
     ceztail = around + bround;
-    bvirt = *pd.offset(0 as libc::c_int as isize) - dex;
+    bvirt = *pd.offset(0 as i32 as isize) - dex;
     avirt = dex + bvirt;
-    bround = bvirt - *pe.offset(0 as libc::c_int as isize);
-    around = *pd.offset(0 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(0 as i32 as isize);
+    around = *pd.offset(0 as i32 as isize) - avirt;
     dextail = around + bround;
-    bvirt = *pd.offset(1 as libc::c_int as isize) - dey;
+    bvirt = *pd.offset(1 as i32 as isize) - dey;
     avirt = dey + bvirt;
-    bround = bvirt - *pe.offset(1 as libc::c_int as isize);
-    around = *pd.offset(1 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(1 as i32 as isize);
+    around = *pd.offset(1 as i32 as isize) - avirt;
     deytail = around + bround;
-    bvirt = *pd.offset(2 as libc::c_int as isize) - dez;
+    bvirt = *pd.offset(2 as i32 as isize) - dez;
     avirt = dez + bvirt;
-    bround = bvirt - *pe.offset(2 as libc::c_int as isize);
-    around = *pd.offset(2 as libc::c_int as isize) - avirt;
+    bround = bvirt - *pe.offset(2 as i32 as isize);
+    around = *pd.offset(2 as i32 as isize) - avirt;
     deztail = around + bround;
     if aextail == 0.0f64 && aeytail == 0.0f64 && aeztail == 0.0f64 && bextail == 0.0f64
         && beytail == 0.0f64 && beztail == 0.0f64 && cextail == 0.0f64
@@ -14517,18 +14517,18 @@ pub unsafe extern "C" fn insphere(
     let mut det: libc::c_double = 0.;
     let mut permanent: libc::c_double = 0.;
     let mut errbound: libc::c_double = 0.;
-    aex = *pa.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    bex = *pb.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    cex = *pc.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    dex = *pd.offset(0 as libc::c_int as isize) - *pe.offset(0 as libc::c_int as isize);
-    aey = *pa.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    bey = *pb.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    cey = *pc.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    dey = *pd.offset(1 as libc::c_int as isize) - *pe.offset(1 as libc::c_int as isize);
-    aez = *pa.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    bez = *pb.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    cez = *pc.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
-    dez = *pd.offset(2 as libc::c_int as isize) - *pe.offset(2 as libc::c_int as isize);
+    aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    dex = *pd.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
+    aey = *pa.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    bey = *pb.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    cey = *pc.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    dey = *pd.offset(1 as i32 as isize) - *pe.offset(1 as i32 as isize);
+    aez = *pa.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    bez = *pb.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    cez = *pc.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
+    dez = *pd.offset(2 as i32 as isize) - *pe.offset(2 as i32 as isize);
     aexbey = aex * bey;
     bexaey = bex * aey;
     ab = aexbey - bexaey;
