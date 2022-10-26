@@ -1539,9 +1539,9 @@ pub unsafe extern "C" fn orient2dslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dadapt(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
     mut detsum: libc::c_double,
 ) -> libc::c_double {
     let mut acx: libc::c_double = 0.;
@@ -1855,9 +1855,9 @@ pub unsafe extern "C" fn orient2dadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2d(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
 ) -> libc::c_double {
     let mut detleft: libc::c_double = 0.;
     let mut detright: libc::c_double = 0.;
@@ -3436,10 +3436,10 @@ pub unsafe extern "C" fn orient3dslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dadapt(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
     mut permanent: libc::c_double,
 ) -> libc::c_double {
     let mut adx: libc::c_double = 0.;
@@ -5154,10 +5154,10 @@ pub unsafe extern "C" fn orient3dadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3d(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
 ) -> libc::c_double {
     let mut adx: libc::c_double = 0.;
     let mut bdx: libc::c_double = 0.;
@@ -7090,10 +7090,10 @@ pub unsafe extern "C" fn incircleslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircleadapt(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
     mut permanent: libc::c_double,
 ) -> libc::c_double {
     let mut adx: libc::c_double = 0.;
@@ -9304,10 +9304,10 @@ pub unsafe extern "C" fn incircleadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircle(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
 ) -> libc::c_double {
     let mut adx: libc::c_double = 0.;
     let mut bdx: libc::c_double = 0.;
@@ -9420,11 +9420,11 @@ pub unsafe extern "C" fn inspherefast(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereexact(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-    mut pe: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
+    mut pe: *const libc::c_double,
 ) -> libc::c_double {
     let mut axby1: libc::c_double = 0.;
     let mut bxcy1: libc::c_double = 0.;
@@ -13553,11 +13553,11 @@ pub unsafe extern "C" fn insphereslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereadapt(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-    mut pe: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
+    mut pe: *const libc::c_double,
     mut permanent: libc::c_double,
 ) -> libc::c_double {
     let mut aex: libc::c_double = 0.;
@@ -14454,11 +14454,11 @@ pub unsafe extern "C" fn insphereadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphere(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-    mut pe: *mut libc::c_double,
+    mut pa: *const libc::c_double,
+    mut pb: *const libc::c_double,
+    mut pc: *const libc::c_double,
+    mut pd: *const libc::c_double,
+    mut pe: *const libc::c_double,
 ) -> libc::c_double {
     let mut aex: libc::c_double = 0.;
     let mut bex: libc::c_double = 0.;
