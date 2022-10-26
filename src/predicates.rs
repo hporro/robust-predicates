@@ -1,39 +1,39 @@
 #![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
 #[no_mangle]
-pub static mut splitter: libc::c_double = 0.;
+pub static mut splitter: f64 = 0.;
 #[no_mangle]
-pub static mut epsilon: libc::c_double = 0.;
+pub static mut epsilon: f64 = 0.;
 #[no_mangle]
-pub static mut resulterrbound: libc::c_double = 0.;
+pub static mut resulterrbound: f64 = 0.;
 #[no_mangle]
-pub static mut ccwerrboundA: libc::c_double = 0.;
+pub static mut ccwerrboundA: f64 = 0.;
 #[no_mangle]
-pub static mut ccwerrboundB: libc::c_double = 0.;
+pub static mut ccwerrboundB: f64 = 0.;
 #[no_mangle]
-pub static mut ccwerrboundC: libc::c_double = 0.;
+pub static mut ccwerrboundC: f64 = 0.;
 #[no_mangle]
-pub static mut o3derrboundA: libc::c_double = 0.;
+pub static mut o3derrboundA: f64 = 0.;
 #[no_mangle]
-pub static mut o3derrboundB: libc::c_double = 0.;
+pub static mut o3derrboundB: f64 = 0.;
 #[no_mangle]
-pub static mut o3derrboundC: libc::c_double = 0.;
+pub static mut o3derrboundC: f64 = 0.;
 #[no_mangle]
-pub static mut iccerrboundA: libc::c_double = 0.;
+pub static mut iccerrboundA: f64 = 0.;
 #[no_mangle]
-pub static mut iccerrboundB: libc::c_double = 0.;
+pub static mut iccerrboundB: f64 = 0.;
 #[no_mangle]
-pub static mut iccerrboundC: libc::c_double = 0.;
+pub static mut iccerrboundC: f64 = 0.;
 #[no_mangle]
-pub static mut isperrboundA: libc::c_double = 0.;
+pub static mut isperrboundA: f64 = 0.;
 #[no_mangle]
-pub static mut isperrboundB: libc::c_double = 0.;
+pub static mut isperrboundB: f64 = 0.;
 #[no_mangle]
-pub static mut isperrboundC: libc::c_double = 0.;
+pub static mut isperrboundC: f64 = 0.;
 #[no_mangle]
 pub unsafe extern "C" fn exactinit() {
-    let mut half: libc::c_double = 0.;
-    let mut check: libc::c_double = 0.;
-    let mut lastcheck: libc::c_double = 0.;
+    let mut half: f64 = 0.;
+    let mut check: f64 = 0.;
+    let mut lastcheck: f64 = 0.;
     let mut every_other: i32 = 0;
     every_other = 1 as i32;
     half = 0.5f64;
@@ -70,18 +70,18 @@ pub unsafe extern "C" fn exactinit() {
 #[no_mangle]
 pub unsafe extern "C" fn grow_expansion(
     mut elen: i32,
-    mut e: *mut libc::c_double,
-    mut b: libc::c_double,
-    mut h: *mut libc::c_double,
+    mut e: *mut f64,
+    mut b: f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
     let mut eindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     Q = b;
     eindex = 0 as i32;
     while eindex < elen {
@@ -101,20 +101,20 @@ pub unsafe extern "C" fn grow_expansion(
 #[no_mangle]
 pub unsafe extern "C" fn grow_expansion_zeroelim(
     mut elen: i32,
-    mut e: *mut libc::c_double,
-    mut b: libc::c_double,
-    mut h: *mut libc::c_double,
+    mut e: *mut f64,
+    mut b: f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut hh: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut hh: f64 = 0.;
+    let mut Qnew: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     hindex = 0 as i32;
     Q = b;
     eindex = 0 as i32;
@@ -144,21 +144,21 @@ pub unsafe extern "C" fn grow_expansion_zeroelim(
 #[no_mangle]
 pub unsafe extern "C" fn expansion_sum(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
     let mut hlast: i32 = 0;
-    let mut hnow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut hnow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     Q = *f.offset(0 as i32 as isize);
     hindex = 0 as i32;
     while hindex < elen {
@@ -198,22 +198,22 @@ pub unsafe extern "C" fn expansion_sum(
 #[no_mangle]
 pub unsafe extern "C" fn expansion_sum_zeroelim1(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
     let mut index: i32 = 0;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
     let mut hlast: i32 = 0;
-    let mut hnow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut hnow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     Q = *f.offset(0 as i32 as isize);
     hindex = 0 as i32;
     while hindex < elen {
@@ -267,23 +267,23 @@ pub unsafe extern "C" fn expansion_sum_zeroelim1(
 #[no_mangle]
 pub unsafe extern "C" fn expansion_sum_zeroelim2(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut hh: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut hh: f64 = 0.;
+    let mut Qnew: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
     let mut hlast: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     hindex = 0 as i32;
     Q = *f.offset(0 as i32 as isize);
     eindex = 0 as i32;
@@ -319,7 +319,7 @@ pub unsafe extern "C" fn expansion_sum_zeroelim2(
             around = Q - avirt;
             hh = around + bround;
             Q = Qnew;
-            if hh != 0 as i32 as libc::c_double {
+            if hh != 0 as i32 as f64 {
                 let fresh3 = hindex;
                 hindex = hindex + 1;
                 *h.offset(fresh3 as isize) = hh;
@@ -335,22 +335,22 @@ pub unsafe extern "C" fn expansion_sum_zeroelim2(
 #[no_mangle]
 pub unsafe extern "C" fn fast_expansion_sum(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut fnow: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut fnow: f64 = 0.;
     enow = *e.offset(0 as i32 as isize);
     fnow = *f.offset(0 as i32 as isize);
     findex = 0 as i32;
@@ -435,23 +435,23 @@ pub unsafe extern "C" fn fast_expansion_sum(
 #[no_mangle]
 pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
-    let mut hh: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
+    let mut hh: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut fnow: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut fnow: f64 = 0.;
     enow = *e.offset(0 as i32 as isize);
     fnow = *f.offset(0 as i32 as isize);
     findex = 0 as i32;
@@ -556,25 +556,25 @@ pub unsafe extern "C" fn fast_expansion_sum_zeroelim(
 #[no_mangle]
 pub unsafe extern "C" fn linear_expansion_sum(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
-    let mut R: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
+    let mut R: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut fnow: libc::c_double = 0.;
-    let mut g0: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut fnow: f64 = 0.;
+    let mut g0: f64 = 0.;
     enow = *e.offset(0 as i32 as isize);
     fnow = *f.offset(0 as i32 as isize);
     findex = 0 as i32;
@@ -639,27 +639,27 @@ pub unsafe extern "C" fn linear_expansion_sum(
 #[no_mangle]
 pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
     mut elen: i32,
-    mut e: *mut libc::c_double,
+    mut e: *mut f64,
     mut flen: i32,
-    mut f: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut f: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut q: libc::c_double = 0.;
-    let mut hh: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
-    let mut R: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut q: f64 = 0.;
+    let mut hh: f64 = 0.;
+    let mut Qnew: f64 = 0.;
+    let mut R: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut findex: i32 = 0;
     let mut hindex: i32 = 0;
     let mut count: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut fnow: libc::c_double = 0.;
-    let mut g0: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut fnow: f64 = 0.;
+    let mut g0: f64 = 0.;
     enow = *e.offset(0 as i32 as isize);
     fnow = *f.offset(0 as i32 as isize);
     findex = 0 as i32;
@@ -716,14 +716,14 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
         around = Q - avirt;
         q = around + bround;
         Q = Qnew;
-        if hh != 0 as i32 as libc::c_double {
+        if hh != 0 as i32 as f64 {
             let fresh9 = hindex;
             hindex = hindex + 1;
             *h.offset(fresh9 as isize) = hh;
         }
         count += 1;
     }
-    if q != 0 as i32 as libc::c_double {
+    if q != 0 as i32 as f64 {
         let fresh10 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh10 as isize) = q;
@@ -738,30 +738,30 @@ pub unsafe extern "C" fn linear_expansion_sum_zeroelim(
 #[no_mangle]
 pub unsafe extern "C" fn scale_expansion(
     mut elen: i32,
-    mut e: *mut libc::c_double,
-    mut b: libc::c_double,
-    mut h: *mut libc::c_double,
+    mut e: *mut f64,
+    mut b: f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut sum: libc::c_double = 0.;
-    let mut product1: libc::c_double = 0.;
-    let mut product0: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut sum: f64 = 0.;
+    let mut product1: f64 = 0.;
+    let mut product0: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
     c = splitter * b;
     abig = c - b;
     bhi = c - abig;
@@ -810,31 +810,31 @@ pub unsafe extern "C" fn scale_expansion(
 #[no_mangle]
 pub unsafe extern "C" fn scale_expansion_zeroelim(
     mut elen: i32,
-    mut e: *mut libc::c_double,
-    mut b: libc::c_double,
-    mut h: *mut libc::c_double,
+    mut e: *mut f64,
+    mut b: f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut sum: libc::c_double = 0.;
-    let mut hh: libc::c_double = 0.;
-    let mut product1: libc::c_double = 0.;
-    let mut product0: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut sum: f64 = 0.;
+    let mut hh: f64 = 0.;
+    let mut product1: f64 = 0.;
+    let mut product0: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut enow: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
+    let mut enow: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
     c = splitter * b;
     abig = c - b;
     bhi = c - abig;
@@ -849,7 +849,7 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
     err3 = err2 - ahi * blo;
     hh = alo * blo - err3;
     hindex = 0 as i32;
-    if hh != 0 as i32 as libc::c_double {
+    if hh != 0 as i32 as f64 {
         let fresh12 = hindex;
         hindex = hindex + 1;
         *h.offset(fresh12 as isize) = hh;
@@ -872,7 +872,7 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
         bround = product0 - bvirt;
         around = Q - avirt;
         hh = around + bround;
-        if hh != 0 as i32 as libc::c_double {
+        if hh != 0 as i32 as f64 {
             let fresh13 = hindex;
             hindex = hindex + 1;
             *h.offset(fresh13 as isize) = hh;
@@ -880,7 +880,7 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
         Q = product1 + sum;
         bvirt = Q - product1;
         hh = sum - bvirt;
-        if hh != 0 as i32 as libc::c_double {
+        if hh != 0 as i32 as f64 {
             let fresh14 = hindex;
             hindex = hindex + 1;
             *h.offset(fresh14 as isize) = hh;
@@ -897,17 +897,17 @@ pub unsafe extern "C" fn scale_expansion_zeroelim(
 #[no_mangle]
 pub unsafe extern "C" fn compress(
     mut elen: i32,
-    mut e: *mut libc::c_double,
-    mut h: *mut libc::c_double,
+    mut e: *mut f64,
+    mut h: *mut f64,
 ) -> i32 {
-    let mut Q: libc::c_double = 0.;
-    let mut q: libc::c_double = 0.;
-    let mut Qnew: libc::c_double = 0.;
+    let mut Q: f64 = 0.;
+    let mut q: f64 = 0.;
+    let mut Qnew: f64 = 0.;
     let mut eindex: i32 = 0;
     let mut hindex: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut enow: libc::c_double = 0.;
-    let mut hnow: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut enow: f64 = 0.;
+    let mut hnow: f64 = 0.;
     let mut top: i32 = 0;
     let mut bottom: i32 = 0;
     bottom = elen - 1 as i32;
@@ -918,7 +918,7 @@ pub unsafe extern "C" fn compress(
         Qnew = Q + enow;
         bvirt = Qnew - Q;
         q = enow - bvirt;
-        if q != 0 as i32 as libc::c_double {
+        if q != 0 as i32 as f64 {
             let fresh16 = bottom;
             bottom = bottom - 1;
             *h.offset(fresh16 as isize) = Qnew;
@@ -935,7 +935,7 @@ pub unsafe extern "C" fn compress(
         Qnew = hnow + Q;
         bvirt = Qnew - hnow;
         q = Q - bvirt;
-        if q != 0 as i32 as libc::c_double {
+        if q != 0 as i32 as f64 {
             let fresh17 = top;
             top = top + 1;
             *h.offset(fresh17 as isize) = q;
@@ -949,9 +949,9 @@ pub unsafe extern "C" fn compress(
 #[no_mangle]
 pub unsafe extern "C" fn estimate(
     mut elen: i32,
-    mut e: *mut libc::c_double,
-) -> libc::c_double {
-    let mut Q: libc::c_double = 0.;
+    mut e: *mut f64,
+) -> f64 {
+    let mut Q: f64 = 0.;
     let mut eindex: i32 = 0;
     Q = *e.offset(0 as i32 as isize);
     eindex = 1 as i32;
@@ -963,14 +963,14 @@ pub unsafe extern "C" fn estimate(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dfast(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-) -> libc::c_double {
-    let mut acx: libc::c_double = 0.;
-    let mut bcx: libc::c_double = 0.;
-    let mut acy: libc::c_double = 0.;
-    let mut bcy: libc::c_double = 0.;
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+) -> f64 {
+    let mut acx: f64 = 0.;
+    let mut bcx: f64 = 0.;
+    let mut acy: f64 = 0.;
+    let mut bcy: f64 = 0.;
     acx = *pa.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
     bcx = *pb.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
     acy = *pa.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
@@ -979,48 +979,48 @@ pub unsafe extern "C" fn orient2dfast(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dexact(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-) -> libc::c_double {
-    let mut axby1: libc::c_double = 0.;
-    let mut axcy1: libc::c_double = 0.;
-    let mut bxcy1: libc::c_double = 0.;
-    let mut bxay1: libc::c_double = 0.;
-    let mut cxay1: libc::c_double = 0.;
-    let mut cxby1: libc::c_double = 0.;
-    let mut axby0: libc::c_double = 0.;
-    let mut axcy0: libc::c_double = 0.;
-    let mut bxcy0: libc::c_double = 0.;
-    let mut bxay0: libc::c_double = 0.;
-    let mut cxay0: libc::c_double = 0.;
-    let mut cxby0: libc::c_double = 0.;
-    let mut aterms: [libc::c_double; 4] = [0.; 4];
-    let mut bterms: [libc::c_double; 4] = [0.; 4];
-    let mut cterms: [libc::c_double; 4] = [0.; 4];
-    let mut aterms3: libc::c_double = 0.;
-    let mut bterms3: libc::c_double = 0.;
-    let mut cterms3: libc::c_double = 0.;
-    let mut v: [libc::c_double; 8] = [0.; 8];
-    let mut w: [libc::c_double; 12] = [0.; 12];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+) -> f64 {
+    let mut axby1: f64 = 0.;
+    let mut axcy1: f64 = 0.;
+    let mut bxcy1: f64 = 0.;
+    let mut bxay1: f64 = 0.;
+    let mut cxay1: f64 = 0.;
+    let mut cxby1: f64 = 0.;
+    let mut axby0: f64 = 0.;
+    let mut axcy0: f64 = 0.;
+    let mut bxcy0: f64 = 0.;
+    let mut bxay0: f64 = 0.;
+    let mut cxay0: f64 = 0.;
+    let mut cxby0: f64 = 0.;
+    let mut aterms: [f64; 4] = [0.; 4];
+    let mut bterms: [f64; 4] = [0.; 4];
+    let mut cterms: [f64; 4] = [0.; 4];
+    let mut aterms3: f64 = 0.;
+    let mut bterms3: f64 = 0.;
+    let mut cterms3: f64 = 0.;
+    let mut v: [f64; 8] = [0.; 8];
+    let mut w: [f64; 12] = [0.; 12];
     let mut vlength: i32 = 0;
     let mut wlength: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     axby1 = *pa.offset(0 as i32 as isize)
         * *pb.offset(1 as i32 as isize);
     c = splitter * *pa.offset(0 as i32 as isize);
@@ -1198,50 +1198,50 @@ pub unsafe extern "C" fn orient2dexact(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dslow(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-) -> libc::c_double {
-    let mut acx: libc::c_double = 0.;
-    let mut acy: libc::c_double = 0.;
-    let mut bcx: libc::c_double = 0.;
-    let mut bcy: libc::c_double = 0.;
-    let mut acxtail: libc::c_double = 0.;
-    let mut acytail: libc::c_double = 0.;
-    let mut bcxtail: libc::c_double = 0.;
-    let mut bcytail: libc::c_double = 0.;
-    let mut negate: libc::c_double = 0.;
-    let mut negatetail: libc::c_double = 0.;
-    let mut axby: [libc::c_double; 8] = [0.; 8];
-    let mut bxay: [libc::c_double; 8] = [0.; 8];
-    let mut axby7: libc::c_double = 0.;
-    let mut bxay7: libc::c_double = 0.;
-    let mut deter: [libc::c_double; 16] = [0.; 16];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+) -> f64 {
+    let mut acx: f64 = 0.;
+    let mut acy: f64 = 0.;
+    let mut bcx: f64 = 0.;
+    let mut bcy: f64 = 0.;
+    let mut acxtail: f64 = 0.;
+    let mut acytail: f64 = 0.;
+    let mut bcxtail: f64 = 0.;
+    let mut bcytail: f64 = 0.;
+    let mut negate: f64 = 0.;
+    let mut negatetail: f64 = 0.;
+    let mut axby: [f64; 8] = [0.; 8];
+    let mut bxay: [f64; 8] = [0.; 8];
+    let mut axby7: f64 = 0.;
+    let mut bxay7: f64 = 0.;
+    let mut deter: [f64; 16] = [0.; 16];
     let mut deterlen: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut a0hi: libc::c_double = 0.;
-    let mut a0lo: libc::c_double = 0.;
-    let mut a1hi: libc::c_double = 0.;
-    let mut a1lo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _k: libc::c_double = 0.;
-    let mut _l: libc::c_double = 0.;
-    let mut _m: libc::c_double = 0.;
-    let mut _n: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
-    let mut _1: libc::c_double = 0.;
-    let mut _2: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut a0hi: f64 = 0.;
+    let mut a0lo: f64 = 0.;
+    let mut a1hi: f64 = 0.;
+    let mut a1lo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _k: f64 = 0.;
+    let mut _l: f64 = 0.;
+    let mut _m: f64 = 0.;
+    let mut _n: f64 = 0.;
+    let mut _0: f64 = 0.;
+    let mut _1: f64 = 0.;
+    let mut _2: f64 = 0.;
     acx = *pa.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
     bvirt = *pa.offset(0 as i32 as isize) - acx;
     avirt = acx + bvirt;
@@ -1539,55 +1539,55 @@ pub unsafe extern "C" fn orient2dslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2dadapt(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut detsum: libc::c_double,
-) -> libc::c_double {
-    let mut acx: libc::c_double = 0.;
-    let mut acy: libc::c_double = 0.;
-    let mut bcx: libc::c_double = 0.;
-    let mut bcy: libc::c_double = 0.;
-    let mut acxtail: libc::c_double = 0.;
-    let mut acytail: libc::c_double = 0.;
-    let mut bcxtail: libc::c_double = 0.;
-    let mut bcytail: libc::c_double = 0.;
-    let mut detleft: libc::c_double = 0.;
-    let mut detright: libc::c_double = 0.;
-    let mut detlefttail: libc::c_double = 0.;
-    let mut detrighttail: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
-    let mut B: [libc::c_double; 4] = [0.; 4];
-    let mut C1: [libc::c_double; 8] = [0.; 8];
-    let mut C2: [libc::c_double; 12] = [0.; 12];
-    let mut D: [libc::c_double; 16] = [0.; 16];
-    let mut B3: libc::c_double = 0.;
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut detsum: f64,
+) -> f64 {
+    let mut acx: f64 = 0.;
+    let mut acy: f64 = 0.;
+    let mut bcx: f64 = 0.;
+    let mut bcy: f64 = 0.;
+    let mut acxtail: f64 = 0.;
+    let mut acytail: f64 = 0.;
+    let mut bcxtail: f64 = 0.;
+    let mut bcytail: f64 = 0.;
+    let mut detleft: f64 = 0.;
+    let mut detright: f64 = 0.;
+    let mut detlefttail: f64 = 0.;
+    let mut detrighttail: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut errbound: f64 = 0.;
+    let mut B: [f64; 4] = [0.; 4];
+    let mut C1: [f64; 8] = [0.; 8];
+    let mut C2: [f64; 12] = [0.; 12];
+    let mut D: [f64; 16] = [0.; 16];
+    let mut B3: f64 = 0.;
     let mut C1length: i32 = 0;
     let mut C2length: i32 = 0;
     let mut Dlength: i32 = 0;
-    let mut u: [libc::c_double; 4] = [0.; 4];
-    let mut u3: libc::c_double = 0.;
-    let mut s1: libc::c_double = 0.;
-    let mut t1: libc::c_double = 0.;
-    let mut s0: libc::c_double = 0.;
-    let mut t0: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut u: [f64; 4] = [0.; 4];
+    let mut u3: f64 = 0.;
+    let mut s1: f64 = 0.;
+    let mut t1: f64 = 0.;
+    let mut s0: f64 = 0.;
+    let mut t0: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     acx = *pa.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
     bcx = *pb.offset(0 as i32 as isize) - *pc.offset(0 as i32 as isize);
     acy = *pa.offset(1 as i32 as isize) - *pc.offset(1 as i32 as isize);
@@ -1855,15 +1855,15 @@ pub unsafe extern "C" fn orient2dadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient2d(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-) -> libc::c_double {
-    let mut detleft: libc::c_double = 0.;
-    let mut detright: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut detsum: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+) -> f64 {
+    let mut detleft: f64 = 0.;
+    let mut detright: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut detsum: f64 = 0.;
+    let mut errbound: f64 = 0.;
     detleft = (*pa.offset(0 as i32 as isize)
         - *pc.offset(0 as i32 as isize))
         * (*pb.offset(1 as i32 as isize)
@@ -1896,20 +1896,20 @@ pub unsafe extern "C" fn orient2d(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dfast(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut adz: libc::c_double = 0.;
-    let mut bdz: libc::c_double = 0.;
-    let mut cdz: libc::c_double = 0.;
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut adz: f64 = 0.;
+    let mut bdz: f64 = 0.;
+    let mut cdz: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
@@ -1924,82 +1924,82 @@ pub unsafe extern "C" fn orient3dfast(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dexact(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-) -> libc::c_double {
-    let mut axby1: libc::c_double = 0.;
-    let mut bxcy1: libc::c_double = 0.;
-    let mut cxdy1: libc::c_double = 0.;
-    let mut dxay1: libc::c_double = 0.;
-    let mut axcy1: libc::c_double = 0.;
-    let mut bxdy1: libc::c_double = 0.;
-    let mut bxay1: libc::c_double = 0.;
-    let mut cxby1: libc::c_double = 0.;
-    let mut dxcy1: libc::c_double = 0.;
-    let mut axdy1: libc::c_double = 0.;
-    let mut cxay1: libc::c_double = 0.;
-    let mut dxby1: libc::c_double = 0.;
-    let mut axby0: libc::c_double = 0.;
-    let mut bxcy0: libc::c_double = 0.;
-    let mut cxdy0: libc::c_double = 0.;
-    let mut dxay0: libc::c_double = 0.;
-    let mut axcy0: libc::c_double = 0.;
-    let mut bxdy0: libc::c_double = 0.;
-    let mut bxay0: libc::c_double = 0.;
-    let mut cxby0: libc::c_double = 0.;
-    let mut dxcy0: libc::c_double = 0.;
-    let mut axdy0: libc::c_double = 0.;
-    let mut cxay0: libc::c_double = 0.;
-    let mut dxby0: libc::c_double = 0.;
-    let mut ab: [libc::c_double; 4] = [0.; 4];
-    let mut bc: [libc::c_double; 4] = [0.; 4];
-    let mut cd: [libc::c_double; 4] = [0.; 4];
-    let mut da: [libc::c_double; 4] = [0.; 4];
-    let mut ac: [libc::c_double; 4] = [0.; 4];
-    let mut bd: [libc::c_double; 4] = [0.; 4];
-    let mut temp8: [libc::c_double; 8] = [0.; 8];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+) -> f64 {
+    let mut axby1: f64 = 0.;
+    let mut bxcy1: f64 = 0.;
+    let mut cxdy1: f64 = 0.;
+    let mut dxay1: f64 = 0.;
+    let mut axcy1: f64 = 0.;
+    let mut bxdy1: f64 = 0.;
+    let mut bxay1: f64 = 0.;
+    let mut cxby1: f64 = 0.;
+    let mut dxcy1: f64 = 0.;
+    let mut axdy1: f64 = 0.;
+    let mut cxay1: f64 = 0.;
+    let mut dxby1: f64 = 0.;
+    let mut axby0: f64 = 0.;
+    let mut bxcy0: f64 = 0.;
+    let mut cxdy0: f64 = 0.;
+    let mut dxay0: f64 = 0.;
+    let mut axcy0: f64 = 0.;
+    let mut bxdy0: f64 = 0.;
+    let mut bxay0: f64 = 0.;
+    let mut cxby0: f64 = 0.;
+    let mut dxcy0: f64 = 0.;
+    let mut axdy0: f64 = 0.;
+    let mut cxay0: f64 = 0.;
+    let mut dxby0: f64 = 0.;
+    let mut ab: [f64; 4] = [0.; 4];
+    let mut bc: [f64; 4] = [0.; 4];
+    let mut cd: [f64; 4] = [0.; 4];
+    let mut da: [f64; 4] = [0.; 4];
+    let mut ac: [f64; 4] = [0.; 4];
+    let mut bd: [f64; 4] = [0.; 4];
+    let mut temp8: [f64; 8] = [0.; 8];
     let mut templen: i32 = 0;
-    let mut abc: [libc::c_double; 12] = [0.; 12];
-    let mut bcd: [libc::c_double; 12] = [0.; 12];
-    let mut cda: [libc::c_double; 12] = [0.; 12];
-    let mut dab: [libc::c_double; 12] = [0.; 12];
+    let mut abc: [f64; 12] = [0.; 12];
+    let mut bcd: [f64; 12] = [0.; 12];
+    let mut cda: [f64; 12] = [0.; 12];
+    let mut dab: [f64; 12] = [0.; 12];
     let mut abclen: i32 = 0;
     let mut bcdlen: i32 = 0;
     let mut cdalen: i32 = 0;
     let mut dablen: i32 = 0;
-    let mut adet: [libc::c_double; 24] = [0.; 24];
-    let mut bdet: [libc::c_double; 24] = [0.; 24];
-    let mut cdet: [libc::c_double; 24] = [0.; 24];
-    let mut ddet: [libc::c_double; 24] = [0.; 24];
+    let mut adet: [f64; 24] = [0.; 24];
+    let mut bdet: [f64; 24] = [0.; 24];
+    let mut cdet: [f64; 24] = [0.; 24];
+    let mut ddet: [f64; 24] = [0.; 24];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
     let mut dlen: i32 = 0;
-    let mut abdet: [libc::c_double; 48] = [0.; 48];
-    let mut cddet: [libc::c_double; 48] = [0.; 48];
+    let mut abdet: [f64; 48] = [0.; 48];
+    let mut cddet: [f64; 48] = [0.; 48];
     let mut ablen: i32 = 0;
     let mut cdlen: i32 = 0;
-    let mut deter: [libc::c_double; 96] = [0.; 96];
+    let mut deter: [f64; 96] = [0.; 96];
     let mut deterlen: i32 = 0;
     let mut i: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     axby1 = *pa.offset(0 as i32 as isize)
         * *pb.offset(1 as i32 as isize);
     c = splitter * *pa.offset(0 as i32 as isize);
@@ -2423,83 +2423,83 @@ pub unsafe extern "C" fn orient3dexact(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dslow(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut adz: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut bdz: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut cdz: libc::c_double = 0.;
-    let mut adxtail: libc::c_double = 0.;
-    let mut adytail: libc::c_double = 0.;
-    let mut adztail: libc::c_double = 0.;
-    let mut bdxtail: libc::c_double = 0.;
-    let mut bdytail: libc::c_double = 0.;
-    let mut bdztail: libc::c_double = 0.;
-    let mut cdxtail: libc::c_double = 0.;
-    let mut cdytail: libc::c_double = 0.;
-    let mut cdztail: libc::c_double = 0.;
-    let mut negate: libc::c_double = 0.;
-    let mut negatetail: libc::c_double = 0.;
-    let mut axby7: libc::c_double = 0.;
-    let mut bxcy7: libc::c_double = 0.;
-    let mut axcy7: libc::c_double = 0.;
-    let mut bxay7: libc::c_double = 0.;
-    let mut cxby7: libc::c_double = 0.;
-    let mut cxay7: libc::c_double = 0.;
-    let mut axby: [libc::c_double; 8] = [0.; 8];
-    let mut bxcy: [libc::c_double; 8] = [0.; 8];
-    let mut axcy: [libc::c_double; 8] = [0.; 8];
-    let mut bxay: [libc::c_double; 8] = [0.; 8];
-    let mut cxby: [libc::c_double; 8] = [0.; 8];
-    let mut cxay: [libc::c_double; 8] = [0.; 8];
-    let mut temp16: [libc::c_double; 16] = [0.; 16];
-    let mut temp32: [libc::c_double; 32] = [0.; 32];
-    let mut temp32t: [libc::c_double; 32] = [0.; 32];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut adz: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut bdz: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut cdz: f64 = 0.;
+    let mut adxtail: f64 = 0.;
+    let mut adytail: f64 = 0.;
+    let mut adztail: f64 = 0.;
+    let mut bdxtail: f64 = 0.;
+    let mut bdytail: f64 = 0.;
+    let mut bdztail: f64 = 0.;
+    let mut cdxtail: f64 = 0.;
+    let mut cdytail: f64 = 0.;
+    let mut cdztail: f64 = 0.;
+    let mut negate: f64 = 0.;
+    let mut negatetail: f64 = 0.;
+    let mut axby7: f64 = 0.;
+    let mut bxcy7: f64 = 0.;
+    let mut axcy7: f64 = 0.;
+    let mut bxay7: f64 = 0.;
+    let mut cxby7: f64 = 0.;
+    let mut cxay7: f64 = 0.;
+    let mut axby: [f64; 8] = [0.; 8];
+    let mut bxcy: [f64; 8] = [0.; 8];
+    let mut axcy: [f64; 8] = [0.; 8];
+    let mut bxay: [f64; 8] = [0.; 8];
+    let mut cxby: [f64; 8] = [0.; 8];
+    let mut cxay: [f64; 8] = [0.; 8];
+    let mut temp16: [f64; 16] = [0.; 16];
+    let mut temp32: [f64; 32] = [0.; 32];
+    let mut temp32t: [f64; 32] = [0.; 32];
     let mut temp16len: i32 = 0;
     let mut temp32len: i32 = 0;
     let mut temp32tlen: i32 = 0;
-    let mut adet: [libc::c_double; 64] = [0.; 64];
-    let mut bdet: [libc::c_double; 64] = [0.; 64];
-    let mut cdet: [libc::c_double; 64] = [0.; 64];
+    let mut adet: [f64; 64] = [0.; 64];
+    let mut bdet: [f64; 64] = [0.; 64];
+    let mut cdet: [f64; 64] = [0.; 64];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
-    let mut abdet: [libc::c_double; 128] = [0.; 128];
+    let mut abdet: [f64; 128] = [0.; 128];
     let mut ablen: i32 = 0;
-    let mut deter: [libc::c_double; 192] = [0.; 192];
+    let mut deter: [f64; 192] = [0.; 192];
     let mut deterlen: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut a0hi: libc::c_double = 0.;
-    let mut a0lo: libc::c_double = 0.;
-    let mut a1hi: libc::c_double = 0.;
-    let mut a1lo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _k: libc::c_double = 0.;
-    let mut _l: libc::c_double = 0.;
-    let mut _m: libc::c_double = 0.;
-    let mut _n: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
-    let mut _1: libc::c_double = 0.;
-    let mut _2: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut a0hi: f64 = 0.;
+    let mut a0lo: f64 = 0.;
+    let mut a1hi: f64 = 0.;
+    let mut a1lo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _k: f64 = 0.;
+    let mut _l: f64 = 0.;
+    let mut _m: f64 = 0.;
+    let mut _n: f64 = 0.;
+    let mut _0: f64 = 0.;
+    let mut _1: f64 = 0.;
+    let mut _2: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bvirt = *pa.offset(0 as i32 as isize) - adx;
     avirt = adx + bvirt;
@@ -3436,148 +3436,148 @@ pub unsafe extern "C" fn orient3dslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3dadapt(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-    mut permanent: libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut adz: libc::c_double = 0.;
-    let mut bdz: libc::c_double = 0.;
-    let mut cdz: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
-    let mut bdxcdy1: libc::c_double = 0.;
-    let mut cdxbdy1: libc::c_double = 0.;
-    let mut cdxady1: libc::c_double = 0.;
-    let mut adxcdy1: libc::c_double = 0.;
-    let mut adxbdy1: libc::c_double = 0.;
-    let mut bdxady1: libc::c_double = 0.;
-    let mut bdxcdy0: libc::c_double = 0.;
-    let mut cdxbdy0: libc::c_double = 0.;
-    let mut cdxady0: libc::c_double = 0.;
-    let mut adxcdy0: libc::c_double = 0.;
-    let mut adxbdy0: libc::c_double = 0.;
-    let mut bdxady0: libc::c_double = 0.;
-    let mut bc: [libc::c_double; 4] = [0.; 4];
-    let mut ca: [libc::c_double; 4] = [0.; 4];
-    let mut ab: [libc::c_double; 4] = [0.; 4];
-    let mut bc3: libc::c_double = 0.;
-    let mut ca3: libc::c_double = 0.;
-    let mut ab3: libc::c_double = 0.;
-    let mut adet: [libc::c_double; 8] = [0.; 8];
-    let mut bdet: [libc::c_double; 8] = [0.; 8];
-    let mut cdet: [libc::c_double; 8] = [0.; 8];
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+    mut permanent: f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut adz: f64 = 0.;
+    let mut bdz: f64 = 0.;
+    let mut cdz: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut errbound: f64 = 0.;
+    let mut bdxcdy1: f64 = 0.;
+    let mut cdxbdy1: f64 = 0.;
+    let mut cdxady1: f64 = 0.;
+    let mut adxcdy1: f64 = 0.;
+    let mut adxbdy1: f64 = 0.;
+    let mut bdxady1: f64 = 0.;
+    let mut bdxcdy0: f64 = 0.;
+    let mut cdxbdy0: f64 = 0.;
+    let mut cdxady0: f64 = 0.;
+    let mut adxcdy0: f64 = 0.;
+    let mut adxbdy0: f64 = 0.;
+    let mut bdxady0: f64 = 0.;
+    let mut bc: [f64; 4] = [0.; 4];
+    let mut ca: [f64; 4] = [0.; 4];
+    let mut ab: [f64; 4] = [0.; 4];
+    let mut bc3: f64 = 0.;
+    let mut ca3: f64 = 0.;
+    let mut ab3: f64 = 0.;
+    let mut adet: [f64; 8] = [0.; 8];
+    let mut bdet: [f64; 8] = [0.; 8];
+    let mut cdet: [f64; 8] = [0.; 8];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
-    let mut abdet: [libc::c_double; 16] = [0.; 16];
+    let mut abdet: [f64; 16] = [0.; 16];
     let mut ablen: i32 = 0;
-    let mut finnow: *mut libc::c_double = 0 as *mut libc::c_double;
-    let mut finother: *mut libc::c_double = 0 as *mut libc::c_double;
-    let mut finswap: *mut libc::c_double = 0 as *mut libc::c_double;
-    let mut fin1: [libc::c_double; 192] = [0.; 192];
-    let mut fin2: [libc::c_double; 192] = [0.; 192];
+    let mut finnow: *mut f64 = 0 as *mut f64;
+    let mut finother: *mut f64 = 0 as *mut f64;
+    let mut finswap: *mut f64 = 0 as *mut f64;
+    let mut fin1: [f64; 192] = [0.; 192];
+    let mut fin2: [f64; 192] = [0.; 192];
     let mut finlength: i32 = 0;
-    let mut adxtail: libc::c_double = 0.;
-    let mut bdxtail: libc::c_double = 0.;
-    let mut cdxtail: libc::c_double = 0.;
-    let mut adytail: libc::c_double = 0.;
-    let mut bdytail: libc::c_double = 0.;
-    let mut cdytail: libc::c_double = 0.;
-    let mut adztail: libc::c_double = 0.;
-    let mut bdztail: libc::c_double = 0.;
-    let mut cdztail: libc::c_double = 0.;
-    let mut at_blarge: libc::c_double = 0.;
-    let mut at_clarge: libc::c_double = 0.;
-    let mut bt_clarge: libc::c_double = 0.;
-    let mut bt_alarge: libc::c_double = 0.;
-    let mut ct_alarge: libc::c_double = 0.;
-    let mut ct_blarge: libc::c_double = 0.;
-    let mut at_b: [libc::c_double; 4] = [0.; 4];
-    let mut at_c: [libc::c_double; 4] = [0.; 4];
-    let mut bt_c: [libc::c_double; 4] = [0.; 4];
-    let mut bt_a: [libc::c_double; 4] = [0.; 4];
-    let mut ct_a: [libc::c_double; 4] = [0.; 4];
-    let mut ct_b: [libc::c_double; 4] = [0.; 4];
+    let mut adxtail: f64 = 0.;
+    let mut bdxtail: f64 = 0.;
+    let mut cdxtail: f64 = 0.;
+    let mut adytail: f64 = 0.;
+    let mut bdytail: f64 = 0.;
+    let mut cdytail: f64 = 0.;
+    let mut adztail: f64 = 0.;
+    let mut bdztail: f64 = 0.;
+    let mut cdztail: f64 = 0.;
+    let mut at_blarge: f64 = 0.;
+    let mut at_clarge: f64 = 0.;
+    let mut bt_clarge: f64 = 0.;
+    let mut bt_alarge: f64 = 0.;
+    let mut ct_alarge: f64 = 0.;
+    let mut ct_blarge: f64 = 0.;
+    let mut at_b: [f64; 4] = [0.; 4];
+    let mut at_c: [f64; 4] = [0.; 4];
+    let mut bt_c: [f64; 4] = [0.; 4];
+    let mut bt_a: [f64; 4] = [0.; 4];
+    let mut ct_a: [f64; 4] = [0.; 4];
+    let mut ct_b: [f64; 4] = [0.; 4];
     let mut at_blen: i32 = 0;
     let mut at_clen: i32 = 0;
     let mut bt_clen: i32 = 0;
     let mut bt_alen: i32 = 0;
     let mut ct_alen: i32 = 0;
     let mut ct_blen: i32 = 0;
-    let mut bdxt_cdy1: libc::c_double = 0.;
-    let mut cdxt_bdy1: libc::c_double = 0.;
-    let mut cdxt_ady1: libc::c_double = 0.;
-    let mut adxt_cdy1: libc::c_double = 0.;
-    let mut adxt_bdy1: libc::c_double = 0.;
-    let mut bdxt_ady1: libc::c_double = 0.;
-    let mut bdxt_cdy0: libc::c_double = 0.;
-    let mut cdxt_bdy0: libc::c_double = 0.;
-    let mut cdxt_ady0: libc::c_double = 0.;
-    let mut adxt_cdy0: libc::c_double = 0.;
-    let mut adxt_bdy0: libc::c_double = 0.;
-    let mut bdxt_ady0: libc::c_double = 0.;
-    let mut bdyt_cdx1: libc::c_double = 0.;
-    let mut cdyt_bdx1: libc::c_double = 0.;
-    let mut cdyt_adx1: libc::c_double = 0.;
-    let mut adyt_cdx1: libc::c_double = 0.;
-    let mut adyt_bdx1: libc::c_double = 0.;
-    let mut bdyt_adx1: libc::c_double = 0.;
-    let mut bdyt_cdx0: libc::c_double = 0.;
-    let mut cdyt_bdx0: libc::c_double = 0.;
-    let mut cdyt_adx0: libc::c_double = 0.;
-    let mut adyt_cdx0: libc::c_double = 0.;
-    let mut adyt_bdx0: libc::c_double = 0.;
-    let mut bdyt_adx0: libc::c_double = 0.;
-    let mut bct: [libc::c_double; 8] = [0.; 8];
-    let mut cat: [libc::c_double; 8] = [0.; 8];
-    let mut abt: [libc::c_double; 8] = [0.; 8];
+    let mut bdxt_cdy1: f64 = 0.;
+    let mut cdxt_bdy1: f64 = 0.;
+    let mut cdxt_ady1: f64 = 0.;
+    let mut adxt_cdy1: f64 = 0.;
+    let mut adxt_bdy1: f64 = 0.;
+    let mut bdxt_ady1: f64 = 0.;
+    let mut bdxt_cdy0: f64 = 0.;
+    let mut cdxt_bdy0: f64 = 0.;
+    let mut cdxt_ady0: f64 = 0.;
+    let mut adxt_cdy0: f64 = 0.;
+    let mut adxt_bdy0: f64 = 0.;
+    let mut bdxt_ady0: f64 = 0.;
+    let mut bdyt_cdx1: f64 = 0.;
+    let mut cdyt_bdx1: f64 = 0.;
+    let mut cdyt_adx1: f64 = 0.;
+    let mut adyt_cdx1: f64 = 0.;
+    let mut adyt_bdx1: f64 = 0.;
+    let mut bdyt_adx1: f64 = 0.;
+    let mut bdyt_cdx0: f64 = 0.;
+    let mut cdyt_bdx0: f64 = 0.;
+    let mut cdyt_adx0: f64 = 0.;
+    let mut adyt_cdx0: f64 = 0.;
+    let mut adyt_bdx0: f64 = 0.;
+    let mut bdyt_adx0: f64 = 0.;
+    let mut bct: [f64; 8] = [0.; 8];
+    let mut cat: [f64; 8] = [0.; 8];
+    let mut abt: [f64; 8] = [0.; 8];
     let mut bctlen: i32 = 0;
     let mut catlen: i32 = 0;
     let mut abtlen: i32 = 0;
-    let mut bdxt_cdyt1: libc::c_double = 0.;
-    let mut cdxt_bdyt1: libc::c_double = 0.;
-    let mut cdxt_adyt1: libc::c_double = 0.;
-    let mut adxt_cdyt1: libc::c_double = 0.;
-    let mut adxt_bdyt1: libc::c_double = 0.;
-    let mut bdxt_adyt1: libc::c_double = 0.;
-    let mut bdxt_cdyt0: libc::c_double = 0.;
-    let mut cdxt_bdyt0: libc::c_double = 0.;
-    let mut cdxt_adyt0: libc::c_double = 0.;
-    let mut adxt_cdyt0: libc::c_double = 0.;
-    let mut adxt_bdyt0: libc::c_double = 0.;
-    let mut bdxt_adyt0: libc::c_double = 0.;
-    let mut u: [libc::c_double; 4] = [0.; 4];
-    let mut v: [libc::c_double; 12] = [0.; 12];
-    let mut w: [libc::c_double; 16] = [0.; 16];
-    let mut u3: libc::c_double = 0.;
+    let mut bdxt_cdyt1: f64 = 0.;
+    let mut cdxt_bdyt1: f64 = 0.;
+    let mut cdxt_adyt1: f64 = 0.;
+    let mut adxt_cdyt1: f64 = 0.;
+    let mut adxt_bdyt1: f64 = 0.;
+    let mut bdxt_adyt1: f64 = 0.;
+    let mut bdxt_cdyt0: f64 = 0.;
+    let mut cdxt_bdyt0: f64 = 0.;
+    let mut cdxt_adyt0: f64 = 0.;
+    let mut adxt_cdyt0: f64 = 0.;
+    let mut adxt_bdyt0: f64 = 0.;
+    let mut bdxt_adyt0: f64 = 0.;
+    let mut u: [f64; 4] = [0.; 4];
+    let mut v: [f64; 12] = [0.; 12];
+    let mut w: [f64; 16] = [0.; 16];
+    let mut u3: f64 = 0.;
     let mut vlength: i32 = 0;
     let mut wlength: i32 = 0;
-    let mut negate: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _k: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut negate: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _k: f64 = 0.;
+    let mut _0: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
@@ -5154,29 +5154,29 @@ pub unsafe extern "C" fn orient3dadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn orient3d(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut adz: libc::c_double = 0.;
-    let mut bdz: libc::c_double = 0.;
-    let mut cdz: libc::c_double = 0.;
-    let mut bdxcdy: libc::c_double = 0.;
-    let mut cdxbdy: libc::c_double = 0.;
-    let mut cdxady: libc::c_double = 0.;
-    let mut adxcdy: libc::c_double = 0.;
-    let mut adxbdy: libc::c_double = 0.;
-    let mut bdxady: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut permanent: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut adz: f64 = 0.;
+    let mut bdz: f64 = 0.;
+    let mut cdz: f64 = 0.;
+    let mut bdxcdy: f64 = 0.;
+    let mut cdxbdy: f64 = 0.;
+    let mut cdxady: f64 = 0.;
+    let mut adxcdy: f64 = 0.;
+    let mut adxbdy: f64 = 0.;
+    let mut bdxady: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut permanent: f64 = 0.;
+    let mut errbound: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
@@ -5210,23 +5210,23 @@ pub unsafe extern "C" fn orient3d(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incirclefast(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut abdet: libc::c_double = 0.;
-    let mut bcdet: libc::c_double = 0.;
-    let mut cadet: libc::c_double = 0.;
-    let mut alift: libc::c_double = 0.;
-    let mut blift: libc::c_double = 0.;
-    let mut clift: libc::c_double = 0.;
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut abdet: f64 = 0.;
+    let mut bcdet: f64 = 0.;
+    let mut cadet: f64 = 0.;
+    let mut alift: f64 = 0.;
+    let mut blift: f64 = 0.;
+    let mut clift: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     ady = *pa.offset(1 as i32 as isize) - *pd.offset(1 as i32 as isize);
     bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
@@ -5243,88 +5243,88 @@ pub unsafe extern "C" fn incirclefast(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircleexact(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-) -> libc::c_double {
-    let mut axby1: libc::c_double = 0.;
-    let mut bxcy1: libc::c_double = 0.;
-    let mut cxdy1: libc::c_double = 0.;
-    let mut dxay1: libc::c_double = 0.;
-    let mut axcy1: libc::c_double = 0.;
-    let mut bxdy1: libc::c_double = 0.;
-    let mut bxay1: libc::c_double = 0.;
-    let mut cxby1: libc::c_double = 0.;
-    let mut dxcy1: libc::c_double = 0.;
-    let mut axdy1: libc::c_double = 0.;
-    let mut cxay1: libc::c_double = 0.;
-    let mut dxby1: libc::c_double = 0.;
-    let mut axby0: libc::c_double = 0.;
-    let mut bxcy0: libc::c_double = 0.;
-    let mut cxdy0: libc::c_double = 0.;
-    let mut dxay0: libc::c_double = 0.;
-    let mut axcy0: libc::c_double = 0.;
-    let mut bxdy0: libc::c_double = 0.;
-    let mut bxay0: libc::c_double = 0.;
-    let mut cxby0: libc::c_double = 0.;
-    let mut dxcy0: libc::c_double = 0.;
-    let mut axdy0: libc::c_double = 0.;
-    let mut cxay0: libc::c_double = 0.;
-    let mut dxby0: libc::c_double = 0.;
-    let mut ab: [libc::c_double; 4] = [0.; 4];
-    let mut bc: [libc::c_double; 4] = [0.; 4];
-    let mut cd: [libc::c_double; 4] = [0.; 4];
-    let mut da: [libc::c_double; 4] = [0.; 4];
-    let mut ac: [libc::c_double; 4] = [0.; 4];
-    let mut bd: [libc::c_double; 4] = [0.; 4];
-    let mut temp8: [libc::c_double; 8] = [0.; 8];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+) -> f64 {
+    let mut axby1: f64 = 0.;
+    let mut bxcy1: f64 = 0.;
+    let mut cxdy1: f64 = 0.;
+    let mut dxay1: f64 = 0.;
+    let mut axcy1: f64 = 0.;
+    let mut bxdy1: f64 = 0.;
+    let mut bxay1: f64 = 0.;
+    let mut cxby1: f64 = 0.;
+    let mut dxcy1: f64 = 0.;
+    let mut axdy1: f64 = 0.;
+    let mut cxay1: f64 = 0.;
+    let mut dxby1: f64 = 0.;
+    let mut axby0: f64 = 0.;
+    let mut bxcy0: f64 = 0.;
+    let mut cxdy0: f64 = 0.;
+    let mut dxay0: f64 = 0.;
+    let mut axcy0: f64 = 0.;
+    let mut bxdy0: f64 = 0.;
+    let mut bxay0: f64 = 0.;
+    let mut cxby0: f64 = 0.;
+    let mut dxcy0: f64 = 0.;
+    let mut axdy0: f64 = 0.;
+    let mut cxay0: f64 = 0.;
+    let mut dxby0: f64 = 0.;
+    let mut ab: [f64; 4] = [0.; 4];
+    let mut bc: [f64; 4] = [0.; 4];
+    let mut cd: [f64; 4] = [0.; 4];
+    let mut da: [f64; 4] = [0.; 4];
+    let mut ac: [f64; 4] = [0.; 4];
+    let mut bd: [f64; 4] = [0.; 4];
+    let mut temp8: [f64; 8] = [0.; 8];
     let mut templen: i32 = 0;
-    let mut abc: [libc::c_double; 12] = [0.; 12];
-    let mut bcd: [libc::c_double; 12] = [0.; 12];
-    let mut cda: [libc::c_double; 12] = [0.; 12];
-    let mut dab: [libc::c_double; 12] = [0.; 12];
+    let mut abc: [f64; 12] = [0.; 12];
+    let mut bcd: [f64; 12] = [0.; 12];
+    let mut cda: [f64; 12] = [0.; 12];
+    let mut dab: [f64; 12] = [0.; 12];
     let mut abclen: i32 = 0;
     let mut bcdlen: i32 = 0;
     let mut cdalen: i32 = 0;
     let mut dablen: i32 = 0;
-    let mut det24x: [libc::c_double; 24] = [0.; 24];
-    let mut det24y: [libc::c_double; 24] = [0.; 24];
-    let mut det48x: [libc::c_double; 48] = [0.; 48];
-    let mut det48y: [libc::c_double; 48] = [0.; 48];
+    let mut det24x: [f64; 24] = [0.; 24];
+    let mut det24y: [f64; 24] = [0.; 24];
+    let mut det48x: [f64; 48] = [0.; 48];
+    let mut det48y: [f64; 48] = [0.; 48];
     let mut xlen: i32 = 0;
     let mut ylen: i32 = 0;
-    let mut adet: [libc::c_double; 96] = [0.; 96];
-    let mut bdet: [libc::c_double; 96] = [0.; 96];
-    let mut cdet: [libc::c_double; 96] = [0.; 96];
-    let mut ddet: [libc::c_double; 96] = [0.; 96];
+    let mut adet: [f64; 96] = [0.; 96];
+    let mut bdet: [f64; 96] = [0.; 96];
+    let mut cdet: [f64; 96] = [0.; 96];
+    let mut ddet: [f64; 96] = [0.; 96];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
     let mut dlen: i32 = 0;
-    let mut abdet: [libc::c_double; 192] = [0.; 192];
-    let mut cddet: [libc::c_double; 192] = [0.; 192];
+    let mut abdet: [f64; 192] = [0.; 192];
+    let mut cddet: [f64; 192] = [0.; 192];
     let mut ablen: i32 = 0;
     let mut cdlen: i32 = 0;
-    let mut deter: [libc::c_double; 384] = [0.; 384];
+    let mut deter: [f64; 384] = [0.; 384];
     let mut deterlen: i32 = 0;
     let mut i: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     axby1 = *pa.offset(0 as i32 as isize)
         * *pb.offset(1 as i32 as isize);
     c = splitter * *pa.offset(0 as i32 as isize);
@@ -5848,102 +5848,102 @@ pub unsafe extern "C" fn incircleexact(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircleslow(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut adxtail: libc::c_double = 0.;
-    let mut bdxtail: libc::c_double = 0.;
-    let mut cdxtail: libc::c_double = 0.;
-    let mut adytail: libc::c_double = 0.;
-    let mut bdytail: libc::c_double = 0.;
-    let mut cdytail: libc::c_double = 0.;
-    let mut negate: libc::c_double = 0.;
-    let mut negatetail: libc::c_double = 0.;
-    let mut axby7: libc::c_double = 0.;
-    let mut bxcy7: libc::c_double = 0.;
-    let mut axcy7: libc::c_double = 0.;
-    let mut bxay7: libc::c_double = 0.;
-    let mut cxby7: libc::c_double = 0.;
-    let mut cxay7: libc::c_double = 0.;
-    let mut axby: [libc::c_double; 8] = [0.; 8];
-    let mut bxcy: [libc::c_double; 8] = [0.; 8];
-    let mut axcy: [libc::c_double; 8] = [0.; 8];
-    let mut bxay: [libc::c_double; 8] = [0.; 8];
-    let mut cxby: [libc::c_double; 8] = [0.; 8];
-    let mut cxay: [libc::c_double; 8] = [0.; 8];
-    let mut temp16: [libc::c_double; 16] = [0.; 16];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut adxtail: f64 = 0.;
+    let mut bdxtail: f64 = 0.;
+    let mut cdxtail: f64 = 0.;
+    let mut adytail: f64 = 0.;
+    let mut bdytail: f64 = 0.;
+    let mut cdytail: f64 = 0.;
+    let mut negate: f64 = 0.;
+    let mut negatetail: f64 = 0.;
+    let mut axby7: f64 = 0.;
+    let mut bxcy7: f64 = 0.;
+    let mut axcy7: f64 = 0.;
+    let mut bxay7: f64 = 0.;
+    let mut cxby7: f64 = 0.;
+    let mut cxay7: f64 = 0.;
+    let mut axby: [f64; 8] = [0.; 8];
+    let mut bxcy: [f64; 8] = [0.; 8];
+    let mut axcy: [f64; 8] = [0.; 8];
+    let mut bxay: [f64; 8] = [0.; 8];
+    let mut cxby: [f64; 8] = [0.; 8];
+    let mut cxay: [f64; 8] = [0.; 8];
+    let mut temp16: [f64; 16] = [0.; 16];
     let mut temp16len: i32 = 0;
-    let mut detx: [libc::c_double; 32] = [0.; 32];
-    let mut detxx: [libc::c_double; 64] = [0.; 64];
-    let mut detxt: [libc::c_double; 32] = [0.; 32];
-    let mut detxxt: [libc::c_double; 64] = [0.; 64];
-    let mut detxtxt: [libc::c_double; 64] = [0.; 64];
+    let mut detx: [f64; 32] = [0.; 32];
+    let mut detxx: [f64; 64] = [0.; 64];
+    let mut detxt: [f64; 32] = [0.; 32];
+    let mut detxxt: [f64; 64] = [0.; 64];
+    let mut detxtxt: [f64; 64] = [0.; 64];
     let mut xlen: i32 = 0;
     let mut xxlen: i32 = 0;
     let mut xtlen: i32 = 0;
     let mut xxtlen: i32 = 0;
     let mut xtxtlen: i32 = 0;
-    let mut x1: [libc::c_double; 128] = [0.; 128];
-    let mut x2: [libc::c_double; 192] = [0.; 192];
+    let mut x1: [f64; 128] = [0.; 128];
+    let mut x2: [f64; 192] = [0.; 192];
     let mut x1len: i32 = 0;
     let mut x2len: i32 = 0;
-    let mut dety: [libc::c_double; 32] = [0.; 32];
-    let mut detyy: [libc::c_double; 64] = [0.; 64];
-    let mut detyt: [libc::c_double; 32] = [0.; 32];
-    let mut detyyt: [libc::c_double; 64] = [0.; 64];
-    let mut detytyt: [libc::c_double; 64] = [0.; 64];
+    let mut dety: [f64; 32] = [0.; 32];
+    let mut detyy: [f64; 64] = [0.; 64];
+    let mut detyt: [f64; 32] = [0.; 32];
+    let mut detyyt: [f64; 64] = [0.; 64];
+    let mut detytyt: [f64; 64] = [0.; 64];
     let mut ylen: i32 = 0;
     let mut yylen: i32 = 0;
     let mut ytlen: i32 = 0;
     let mut yytlen: i32 = 0;
     let mut ytytlen: i32 = 0;
-    let mut y1: [libc::c_double; 128] = [0.; 128];
-    let mut y2: [libc::c_double; 192] = [0.; 192];
+    let mut y1: [f64; 128] = [0.; 128];
+    let mut y2: [f64; 192] = [0.; 192];
     let mut y1len: i32 = 0;
     let mut y2len: i32 = 0;
-    let mut adet: [libc::c_double; 384] = [0.; 384];
-    let mut bdet: [libc::c_double; 384] = [0.; 384];
-    let mut cdet: [libc::c_double; 384] = [0.; 384];
-    let mut abdet: [libc::c_double; 768] = [0.; 768];
-    let mut deter: [libc::c_double; 1152] = [0.; 1152];
+    let mut adet: [f64; 384] = [0.; 384];
+    let mut bdet: [f64; 384] = [0.; 384];
+    let mut cdet: [f64; 384] = [0.; 384];
+    let mut abdet: [f64; 768] = [0.; 768];
+    let mut deter: [f64; 1152] = [0.; 1152];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
     let mut ablen: i32 = 0;
     let mut deterlen: i32 = 0;
     let mut i: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut a0hi: libc::c_double = 0.;
-    let mut a0lo: libc::c_double = 0.;
-    let mut a1hi: libc::c_double = 0.;
-    let mut a1lo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _k: libc::c_double = 0.;
-    let mut _l: libc::c_double = 0.;
-    let mut _m: libc::c_double = 0.;
-    let mut _n: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
-    let mut _1: libc::c_double = 0.;
-    let mut _2: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut a0hi: f64 = 0.;
+    let mut a0lo: f64 = 0.;
+    let mut a1hi: f64 = 0.;
+    let mut a1lo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _k: f64 = 0.;
+    let mut _l: f64 = 0.;
+    let mut _m: f64 = 0.;
+    let mut _n: f64 = 0.;
+    let mut _0: f64 = 0.;
+    let mut _1: f64 = 0.;
+    let mut _2: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bvirt = *pa.offset(0 as i32 as isize) - adx;
     avirt = adx + bvirt;
@@ -7090,116 +7090,116 @@ pub unsafe extern "C" fn incircleslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircleadapt(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-    mut permanent: libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
-    let mut bdxcdy1: libc::c_double = 0.;
-    let mut cdxbdy1: libc::c_double = 0.;
-    let mut cdxady1: libc::c_double = 0.;
-    let mut adxcdy1: libc::c_double = 0.;
-    let mut adxbdy1: libc::c_double = 0.;
-    let mut bdxady1: libc::c_double = 0.;
-    let mut bdxcdy0: libc::c_double = 0.;
-    let mut cdxbdy0: libc::c_double = 0.;
-    let mut cdxady0: libc::c_double = 0.;
-    let mut adxcdy0: libc::c_double = 0.;
-    let mut adxbdy0: libc::c_double = 0.;
-    let mut bdxady0: libc::c_double = 0.;
-    let mut bc: [libc::c_double; 4] = [0.; 4];
-    let mut ca: [libc::c_double; 4] = [0.; 4];
-    let mut ab: [libc::c_double; 4] = [0.; 4];
-    let mut bc3: libc::c_double = 0.;
-    let mut ca3: libc::c_double = 0.;
-    let mut ab3: libc::c_double = 0.;
-    let mut axbc: [libc::c_double; 8] = [0.; 8];
-    let mut axxbc: [libc::c_double; 16] = [0.; 16];
-    let mut aybc: [libc::c_double; 8] = [0.; 8];
-    let mut ayybc: [libc::c_double; 16] = [0.; 16];
-    let mut adet: [libc::c_double; 32] = [0.; 32];
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+    mut permanent: f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut errbound: f64 = 0.;
+    let mut bdxcdy1: f64 = 0.;
+    let mut cdxbdy1: f64 = 0.;
+    let mut cdxady1: f64 = 0.;
+    let mut adxcdy1: f64 = 0.;
+    let mut adxbdy1: f64 = 0.;
+    let mut bdxady1: f64 = 0.;
+    let mut bdxcdy0: f64 = 0.;
+    let mut cdxbdy0: f64 = 0.;
+    let mut cdxady0: f64 = 0.;
+    let mut adxcdy0: f64 = 0.;
+    let mut adxbdy0: f64 = 0.;
+    let mut bdxady0: f64 = 0.;
+    let mut bc: [f64; 4] = [0.; 4];
+    let mut ca: [f64; 4] = [0.; 4];
+    let mut ab: [f64; 4] = [0.; 4];
+    let mut bc3: f64 = 0.;
+    let mut ca3: f64 = 0.;
+    let mut ab3: f64 = 0.;
+    let mut axbc: [f64; 8] = [0.; 8];
+    let mut axxbc: [f64; 16] = [0.; 16];
+    let mut aybc: [f64; 8] = [0.; 8];
+    let mut ayybc: [f64; 16] = [0.; 16];
+    let mut adet: [f64; 32] = [0.; 32];
     let mut axbclen: i32 = 0;
     let mut axxbclen: i32 = 0;
     let mut aybclen: i32 = 0;
     let mut ayybclen: i32 = 0;
     let mut alen: i32 = 0;
-    let mut bxca: [libc::c_double; 8] = [0.; 8];
-    let mut bxxca: [libc::c_double; 16] = [0.; 16];
-    let mut byca: [libc::c_double; 8] = [0.; 8];
-    let mut byyca: [libc::c_double; 16] = [0.; 16];
-    let mut bdet: [libc::c_double; 32] = [0.; 32];
+    let mut bxca: [f64; 8] = [0.; 8];
+    let mut bxxca: [f64; 16] = [0.; 16];
+    let mut byca: [f64; 8] = [0.; 8];
+    let mut byyca: [f64; 16] = [0.; 16];
+    let mut bdet: [f64; 32] = [0.; 32];
     let mut bxcalen: i32 = 0;
     let mut bxxcalen: i32 = 0;
     let mut bycalen: i32 = 0;
     let mut byycalen: i32 = 0;
     let mut blen: i32 = 0;
-    let mut cxab: [libc::c_double; 8] = [0.; 8];
-    let mut cxxab: [libc::c_double; 16] = [0.; 16];
-    let mut cyab: [libc::c_double; 8] = [0.; 8];
-    let mut cyyab: [libc::c_double; 16] = [0.; 16];
-    let mut cdet: [libc::c_double; 32] = [0.; 32];
+    let mut cxab: [f64; 8] = [0.; 8];
+    let mut cxxab: [f64; 16] = [0.; 16];
+    let mut cyab: [f64; 8] = [0.; 8];
+    let mut cyyab: [f64; 16] = [0.; 16];
+    let mut cdet: [f64; 32] = [0.; 32];
     let mut cxablen: i32 = 0;
     let mut cxxablen: i32 = 0;
     let mut cyablen: i32 = 0;
     let mut cyyablen: i32 = 0;
     let mut clen: i32 = 0;
-    let mut abdet: [libc::c_double; 64] = [0.; 64];
+    let mut abdet: [f64; 64] = [0.; 64];
     let mut ablen: i32 = 0;
-    let mut fin1: [libc::c_double; 1152] = [0.; 1152];
-    let mut fin2: [libc::c_double; 1152] = [0.; 1152];
-    let mut finnow: *mut libc::c_double = 0 as *mut libc::c_double;
-    let mut finother: *mut libc::c_double = 0 as *mut libc::c_double;
-    let mut finswap: *mut libc::c_double = 0 as *mut libc::c_double;
+    let mut fin1: [f64; 1152] = [0.; 1152];
+    let mut fin2: [f64; 1152] = [0.; 1152];
+    let mut finnow: *mut f64 = 0 as *mut f64;
+    let mut finother: *mut f64 = 0 as *mut f64;
+    let mut finswap: *mut f64 = 0 as *mut f64;
     let mut finlength: i32 = 0;
-    let mut adxtail: libc::c_double = 0.;
-    let mut bdxtail: libc::c_double = 0.;
-    let mut cdxtail: libc::c_double = 0.;
-    let mut adytail: libc::c_double = 0.;
-    let mut bdytail: libc::c_double = 0.;
-    let mut cdytail: libc::c_double = 0.;
-    let mut adxadx1: libc::c_double = 0.;
-    let mut adyady1: libc::c_double = 0.;
-    let mut bdxbdx1: libc::c_double = 0.;
-    let mut bdybdy1: libc::c_double = 0.;
-    let mut cdxcdx1: libc::c_double = 0.;
-    let mut cdycdy1: libc::c_double = 0.;
-    let mut adxadx0: libc::c_double = 0.;
-    let mut adyady0: libc::c_double = 0.;
-    let mut bdxbdx0: libc::c_double = 0.;
-    let mut bdybdy0: libc::c_double = 0.;
-    let mut cdxcdx0: libc::c_double = 0.;
-    let mut cdycdy0: libc::c_double = 0.;
-    let mut aa: [libc::c_double; 4] = [0.; 4];
-    let mut bb: [libc::c_double; 4] = [0.; 4];
-    let mut cc: [libc::c_double; 4] = [0.; 4];
-    let mut aa3: libc::c_double = 0.;
-    let mut bb3: libc::c_double = 0.;
-    let mut cc3: libc::c_double = 0.;
-    let mut ti1: libc::c_double = 0.;
-    let mut tj1: libc::c_double = 0.;
-    let mut ti0: libc::c_double = 0.;
-    let mut tj0: libc::c_double = 0.;
-    let mut u: [libc::c_double; 4] = [0.; 4];
-    let mut v: [libc::c_double; 4] = [0.; 4];
-    let mut u3: libc::c_double = 0.;
-    let mut v3: libc::c_double = 0.;
-    let mut temp8: [libc::c_double; 8] = [0.; 8];
-    let mut temp16a: [libc::c_double; 16] = [0.; 16];
-    let mut temp16b: [libc::c_double; 16] = [0.; 16];
-    let mut temp16c: [libc::c_double; 16] = [0.; 16];
-    let mut temp32a: [libc::c_double; 32] = [0.; 32];
-    let mut temp32b: [libc::c_double; 32] = [0.; 32];
-    let mut temp48: [libc::c_double; 48] = [0.; 48];
-    let mut temp64: [libc::c_double; 64] = [0.; 64];
+    let mut adxtail: f64 = 0.;
+    let mut bdxtail: f64 = 0.;
+    let mut cdxtail: f64 = 0.;
+    let mut adytail: f64 = 0.;
+    let mut bdytail: f64 = 0.;
+    let mut cdytail: f64 = 0.;
+    let mut adxadx1: f64 = 0.;
+    let mut adyady1: f64 = 0.;
+    let mut bdxbdx1: f64 = 0.;
+    let mut bdybdy1: f64 = 0.;
+    let mut cdxcdx1: f64 = 0.;
+    let mut cdycdy1: f64 = 0.;
+    let mut adxadx0: f64 = 0.;
+    let mut adyady0: f64 = 0.;
+    let mut bdxbdx0: f64 = 0.;
+    let mut bdybdy0: f64 = 0.;
+    let mut cdxcdx0: f64 = 0.;
+    let mut cdycdy0: f64 = 0.;
+    let mut aa: [f64; 4] = [0.; 4];
+    let mut bb: [f64; 4] = [0.; 4];
+    let mut cc: [f64; 4] = [0.; 4];
+    let mut aa3: f64 = 0.;
+    let mut bb3: f64 = 0.;
+    let mut cc3: f64 = 0.;
+    let mut ti1: f64 = 0.;
+    let mut tj1: f64 = 0.;
+    let mut ti0: f64 = 0.;
+    let mut tj0: f64 = 0.;
+    let mut u: [f64; 4] = [0.; 4];
+    let mut v: [f64; 4] = [0.; 4];
+    let mut u3: f64 = 0.;
+    let mut v3: f64 = 0.;
+    let mut temp8: [f64; 8] = [0.; 8];
+    let mut temp16a: [f64; 16] = [0.; 16];
+    let mut temp16b: [f64; 16] = [0.; 16];
+    let mut temp16c: [f64; 16] = [0.; 16];
+    let mut temp32a: [f64; 32] = [0.; 32];
+    let mut temp32b: [f64; 32] = [0.; 32];
+    let mut temp48: [f64; 48] = [0.; 48];
+    let mut temp64: [f64; 64] = [0.; 64];
     let mut temp8len: i32 = 0;
     let mut temp16alen: i32 = 0;
     let mut temp16blen: i32 = 0;
@@ -7208,98 +7208,98 @@ pub unsafe extern "C" fn incircleadapt(
     let mut temp32blen: i32 = 0;
     let mut temp48len: i32 = 0;
     let mut temp64len: i32 = 0;
-    let mut axtbb: [libc::c_double; 8] = [0.; 8];
-    let mut axtcc: [libc::c_double; 8] = [0.; 8];
-    let mut aytbb: [libc::c_double; 8] = [0.; 8];
-    let mut aytcc: [libc::c_double; 8] = [0.; 8];
+    let mut axtbb: [f64; 8] = [0.; 8];
+    let mut axtcc: [f64; 8] = [0.; 8];
+    let mut aytbb: [f64; 8] = [0.; 8];
+    let mut aytcc: [f64; 8] = [0.; 8];
     let mut axtbblen: i32 = 0;
     let mut axtcclen: i32 = 0;
     let mut aytbblen: i32 = 0;
     let mut aytcclen: i32 = 0;
-    let mut bxtaa: [libc::c_double; 8] = [0.; 8];
-    let mut bxtcc: [libc::c_double; 8] = [0.; 8];
-    let mut bytaa: [libc::c_double; 8] = [0.; 8];
-    let mut bytcc: [libc::c_double; 8] = [0.; 8];
+    let mut bxtaa: [f64; 8] = [0.; 8];
+    let mut bxtcc: [f64; 8] = [0.; 8];
+    let mut bytaa: [f64; 8] = [0.; 8];
+    let mut bytcc: [f64; 8] = [0.; 8];
     let mut bxtaalen: i32 = 0;
     let mut bxtcclen: i32 = 0;
     let mut bytaalen: i32 = 0;
     let mut bytcclen: i32 = 0;
-    let mut cxtaa: [libc::c_double; 8] = [0.; 8];
-    let mut cxtbb: [libc::c_double; 8] = [0.; 8];
-    let mut cytaa: [libc::c_double; 8] = [0.; 8];
-    let mut cytbb: [libc::c_double; 8] = [0.; 8];
+    let mut cxtaa: [f64; 8] = [0.; 8];
+    let mut cxtbb: [f64; 8] = [0.; 8];
+    let mut cytaa: [f64; 8] = [0.; 8];
+    let mut cytbb: [f64; 8] = [0.; 8];
     let mut cxtaalen: i32 = 0;
     let mut cxtbblen: i32 = 0;
     let mut cytaalen: i32 = 0;
     let mut cytbblen: i32 = 0;
-    let mut axtbc: [libc::c_double; 8] = [0.; 8];
-    let mut aytbc: [libc::c_double; 8] = [0.; 8];
-    let mut bxtca: [libc::c_double; 8] = [0.; 8];
-    let mut bytca: [libc::c_double; 8] = [0.; 8];
-    let mut cxtab: [libc::c_double; 8] = [0.; 8];
-    let mut cytab: [libc::c_double; 8] = [0.; 8];
+    let mut axtbc: [f64; 8] = [0.; 8];
+    let mut aytbc: [f64; 8] = [0.; 8];
+    let mut bxtca: [f64; 8] = [0.; 8];
+    let mut bytca: [f64; 8] = [0.; 8];
+    let mut cxtab: [f64; 8] = [0.; 8];
+    let mut cytab: [f64; 8] = [0.; 8];
     let mut axtbclen: i32 = 0;
     let mut aytbclen: i32 = 0;
     let mut bxtcalen: i32 = 0;
     let mut bytcalen: i32 = 0;
     let mut cxtablen: i32 = 0;
     let mut cytablen: i32 = 0;
-    let mut axtbct: [libc::c_double; 16] = [0.; 16];
-    let mut aytbct: [libc::c_double; 16] = [0.; 16];
-    let mut bxtcat: [libc::c_double; 16] = [0.; 16];
-    let mut bytcat: [libc::c_double; 16] = [0.; 16];
-    let mut cxtabt: [libc::c_double; 16] = [0.; 16];
-    let mut cytabt: [libc::c_double; 16] = [0.; 16];
+    let mut axtbct: [f64; 16] = [0.; 16];
+    let mut aytbct: [f64; 16] = [0.; 16];
+    let mut bxtcat: [f64; 16] = [0.; 16];
+    let mut bytcat: [f64; 16] = [0.; 16];
+    let mut cxtabt: [f64; 16] = [0.; 16];
+    let mut cytabt: [f64; 16] = [0.; 16];
     let mut axtbctlen: i32 = 0;
     let mut aytbctlen: i32 = 0;
     let mut bxtcatlen: i32 = 0;
     let mut bytcatlen: i32 = 0;
     let mut cxtabtlen: i32 = 0;
     let mut cytabtlen: i32 = 0;
-    let mut axtbctt: [libc::c_double; 8] = [0.; 8];
-    let mut aytbctt: [libc::c_double; 8] = [0.; 8];
-    let mut bxtcatt: [libc::c_double; 8] = [0.; 8];
-    let mut bytcatt: [libc::c_double; 8] = [0.; 8];
-    let mut cxtabtt: [libc::c_double; 8] = [0.; 8];
-    let mut cytabtt: [libc::c_double; 8] = [0.; 8];
+    let mut axtbctt: [f64; 8] = [0.; 8];
+    let mut aytbctt: [f64; 8] = [0.; 8];
+    let mut bxtcatt: [f64; 8] = [0.; 8];
+    let mut bytcatt: [f64; 8] = [0.; 8];
+    let mut cxtabtt: [f64; 8] = [0.; 8];
+    let mut cytabtt: [f64; 8] = [0.; 8];
     let mut axtbcttlen: i32 = 0;
     let mut aytbcttlen: i32 = 0;
     let mut bxtcattlen: i32 = 0;
     let mut bytcattlen: i32 = 0;
     let mut cxtabttlen: i32 = 0;
     let mut cytabttlen: i32 = 0;
-    let mut abt: [libc::c_double; 8] = [0.; 8];
-    let mut bct: [libc::c_double; 8] = [0.; 8];
-    let mut cat: [libc::c_double; 8] = [0.; 8];
+    let mut abt: [f64; 8] = [0.; 8];
+    let mut bct: [f64; 8] = [0.; 8];
+    let mut cat: [f64; 8] = [0.; 8];
     let mut abtlen: i32 = 0;
     let mut bctlen: i32 = 0;
     let mut catlen: i32 = 0;
-    let mut abtt: [libc::c_double; 4] = [0.; 4];
-    let mut bctt: [libc::c_double; 4] = [0.; 4];
-    let mut catt: [libc::c_double; 4] = [0.; 4];
+    let mut abtt: [f64; 4] = [0.; 4];
+    let mut bctt: [f64; 4] = [0.; 4];
+    let mut catt: [f64; 4] = [0.; 4];
     let mut abttlen: i32 = 0;
     let mut bcttlen: i32 = 0;
     let mut cattlen: i32 = 0;
-    let mut abtt3: libc::c_double = 0.;
-    let mut bctt3: libc::c_double = 0.;
-    let mut catt3: libc::c_double = 0.;
-    let mut negate: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut abtt3: f64 = 0.;
+    let mut bctt3: f64 = 0.;
+    let mut catt3: f64 = 0.;
+    let mut negate: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
@@ -9304,29 +9304,29 @@ pub unsafe extern "C" fn incircleadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn incircle(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-) -> libc::c_double {
-    let mut adx: libc::c_double = 0.;
-    let mut bdx: libc::c_double = 0.;
-    let mut cdx: libc::c_double = 0.;
-    let mut ady: libc::c_double = 0.;
-    let mut bdy: libc::c_double = 0.;
-    let mut cdy: libc::c_double = 0.;
-    let mut bdxcdy: libc::c_double = 0.;
-    let mut cdxbdy: libc::c_double = 0.;
-    let mut cdxady: libc::c_double = 0.;
-    let mut adxcdy: libc::c_double = 0.;
-    let mut adxbdy: libc::c_double = 0.;
-    let mut bdxady: libc::c_double = 0.;
-    let mut alift: libc::c_double = 0.;
-    let mut blift: libc::c_double = 0.;
-    let mut clift: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut permanent: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+) -> f64 {
+    let mut adx: f64 = 0.;
+    let mut bdx: f64 = 0.;
+    let mut cdx: f64 = 0.;
+    let mut ady: f64 = 0.;
+    let mut bdy: f64 = 0.;
+    let mut cdy: f64 = 0.;
+    let mut bdxcdy: f64 = 0.;
+    let mut cdxbdy: f64 = 0.;
+    let mut cdxady: f64 = 0.;
+    let mut adxcdy: f64 = 0.;
+    let mut adxbdy: f64 = 0.;
+    let mut bdxady: f64 = 0.;
+    let mut alift: f64 = 0.;
+    let mut blift: f64 = 0.;
+    let mut clift: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut permanent: f64 = 0.;
+    let mut errbound: f64 = 0.;
     adx = *pa.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     bdx = *pb.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
     cdx = *pc.offset(0 as i32 as isize) - *pd.offset(0 as i32 as isize);
@@ -9358,38 +9358,38 @@ pub unsafe extern "C" fn incircle(
 }
 #[no_mangle]
 pub unsafe extern "C" fn inspherefast(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-    mut pe: *mut libc::c_double,
-) -> libc::c_double {
-    let mut aex: libc::c_double = 0.;
-    let mut bex: libc::c_double = 0.;
-    let mut cex: libc::c_double = 0.;
-    let mut dex: libc::c_double = 0.;
-    let mut aey: libc::c_double = 0.;
-    let mut bey: libc::c_double = 0.;
-    let mut cey: libc::c_double = 0.;
-    let mut dey: libc::c_double = 0.;
-    let mut aez: libc::c_double = 0.;
-    let mut bez: libc::c_double = 0.;
-    let mut cez: libc::c_double = 0.;
-    let mut dez: libc::c_double = 0.;
-    let mut alift: libc::c_double = 0.;
-    let mut blift: libc::c_double = 0.;
-    let mut clift: libc::c_double = 0.;
-    let mut dlift: libc::c_double = 0.;
-    let mut ab: libc::c_double = 0.;
-    let mut bc: libc::c_double = 0.;
-    let mut cd: libc::c_double = 0.;
-    let mut da: libc::c_double = 0.;
-    let mut ac: libc::c_double = 0.;
-    let mut bd: libc::c_double = 0.;
-    let mut abc: libc::c_double = 0.;
-    let mut bcd: libc::c_double = 0.;
-    let mut cda: libc::c_double = 0.;
-    let mut dab: libc::c_double = 0.;
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+    mut pe: *mut f64,
+) -> f64 {
+    let mut aex: f64 = 0.;
+    let mut bex: f64 = 0.;
+    let mut cex: f64 = 0.;
+    let mut dex: f64 = 0.;
+    let mut aey: f64 = 0.;
+    let mut bey: f64 = 0.;
+    let mut cey: f64 = 0.;
+    let mut dey: f64 = 0.;
+    let mut aez: f64 = 0.;
+    let mut bez: f64 = 0.;
+    let mut cez: f64 = 0.;
+    let mut dez: f64 = 0.;
+    let mut alift: f64 = 0.;
+    let mut blift: f64 = 0.;
+    let mut clift: f64 = 0.;
+    let mut dlift: f64 = 0.;
+    let mut ab: f64 = 0.;
+    let mut bc: f64 = 0.;
+    let mut cd: f64 = 0.;
+    let mut da: f64 = 0.;
+    let mut ac: f64 = 0.;
+    let mut bd: f64 = 0.;
+    let mut abc: f64 = 0.;
+    let mut bcd: f64 = 0.;
+    let mut cda: f64 = 0.;
+    let mut dab: f64 = 0.;
     aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
@@ -9420,78 +9420,78 @@ pub unsafe extern "C" fn inspherefast(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereexact(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-    mut pe: *const libc::c_double,
-) -> libc::c_double {
-    let mut axby1: libc::c_double = 0.;
-    let mut bxcy1: libc::c_double = 0.;
-    let mut cxdy1: libc::c_double = 0.;
-    let mut dxey1: libc::c_double = 0.;
-    let mut exay1: libc::c_double = 0.;
-    let mut bxay1: libc::c_double = 0.;
-    let mut cxby1: libc::c_double = 0.;
-    let mut dxcy1: libc::c_double = 0.;
-    let mut exdy1: libc::c_double = 0.;
-    let mut axey1: libc::c_double = 0.;
-    let mut axcy1: libc::c_double = 0.;
-    let mut bxdy1: libc::c_double = 0.;
-    let mut cxey1: libc::c_double = 0.;
-    let mut dxay1: libc::c_double = 0.;
-    let mut exby1: libc::c_double = 0.;
-    let mut cxay1: libc::c_double = 0.;
-    let mut dxby1: libc::c_double = 0.;
-    let mut excy1: libc::c_double = 0.;
-    let mut axdy1: libc::c_double = 0.;
-    let mut bxey1: libc::c_double = 0.;
-    let mut axby0: libc::c_double = 0.;
-    let mut bxcy0: libc::c_double = 0.;
-    let mut cxdy0: libc::c_double = 0.;
-    let mut dxey0: libc::c_double = 0.;
-    let mut exay0: libc::c_double = 0.;
-    let mut bxay0: libc::c_double = 0.;
-    let mut cxby0: libc::c_double = 0.;
-    let mut dxcy0: libc::c_double = 0.;
-    let mut exdy0: libc::c_double = 0.;
-    let mut axey0: libc::c_double = 0.;
-    let mut axcy0: libc::c_double = 0.;
-    let mut bxdy0: libc::c_double = 0.;
-    let mut cxey0: libc::c_double = 0.;
-    let mut dxay0: libc::c_double = 0.;
-    let mut exby0: libc::c_double = 0.;
-    let mut cxay0: libc::c_double = 0.;
-    let mut dxby0: libc::c_double = 0.;
-    let mut excy0: libc::c_double = 0.;
-    let mut axdy0: libc::c_double = 0.;
-    let mut bxey0: libc::c_double = 0.;
-    let mut ab: [libc::c_double; 4] = [0.; 4];
-    let mut bc: [libc::c_double; 4] = [0.; 4];
-    let mut cd: [libc::c_double; 4] = [0.; 4];
-    let mut de: [libc::c_double; 4] = [0.; 4];
-    let mut ea: [libc::c_double; 4] = [0.; 4];
-    let mut ac: [libc::c_double; 4] = [0.; 4];
-    let mut bd: [libc::c_double; 4] = [0.; 4];
-    let mut ce: [libc::c_double; 4] = [0.; 4];
-    let mut da: [libc::c_double; 4] = [0.; 4];
-    let mut eb: [libc::c_double; 4] = [0.; 4];
-    let mut temp8a: [libc::c_double; 8] = [0.; 8];
-    let mut temp8b: [libc::c_double; 8] = [0.; 8];
-    let mut temp16: [libc::c_double; 16] = [0.; 16];
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+    mut pe: *const f64,
+) -> f64 {
+    let mut axby1: f64 = 0.;
+    let mut bxcy1: f64 = 0.;
+    let mut cxdy1: f64 = 0.;
+    let mut dxey1: f64 = 0.;
+    let mut exay1: f64 = 0.;
+    let mut bxay1: f64 = 0.;
+    let mut cxby1: f64 = 0.;
+    let mut dxcy1: f64 = 0.;
+    let mut exdy1: f64 = 0.;
+    let mut axey1: f64 = 0.;
+    let mut axcy1: f64 = 0.;
+    let mut bxdy1: f64 = 0.;
+    let mut cxey1: f64 = 0.;
+    let mut dxay1: f64 = 0.;
+    let mut exby1: f64 = 0.;
+    let mut cxay1: f64 = 0.;
+    let mut dxby1: f64 = 0.;
+    let mut excy1: f64 = 0.;
+    let mut axdy1: f64 = 0.;
+    let mut bxey1: f64 = 0.;
+    let mut axby0: f64 = 0.;
+    let mut bxcy0: f64 = 0.;
+    let mut cxdy0: f64 = 0.;
+    let mut dxey0: f64 = 0.;
+    let mut exay0: f64 = 0.;
+    let mut bxay0: f64 = 0.;
+    let mut cxby0: f64 = 0.;
+    let mut dxcy0: f64 = 0.;
+    let mut exdy0: f64 = 0.;
+    let mut axey0: f64 = 0.;
+    let mut axcy0: f64 = 0.;
+    let mut bxdy0: f64 = 0.;
+    let mut cxey0: f64 = 0.;
+    let mut dxay0: f64 = 0.;
+    let mut exby0: f64 = 0.;
+    let mut cxay0: f64 = 0.;
+    let mut dxby0: f64 = 0.;
+    let mut excy0: f64 = 0.;
+    let mut axdy0: f64 = 0.;
+    let mut bxey0: f64 = 0.;
+    let mut ab: [f64; 4] = [0.; 4];
+    let mut bc: [f64; 4] = [0.; 4];
+    let mut cd: [f64; 4] = [0.; 4];
+    let mut de: [f64; 4] = [0.; 4];
+    let mut ea: [f64; 4] = [0.; 4];
+    let mut ac: [f64; 4] = [0.; 4];
+    let mut bd: [f64; 4] = [0.; 4];
+    let mut ce: [f64; 4] = [0.; 4];
+    let mut da: [f64; 4] = [0.; 4];
+    let mut eb: [f64; 4] = [0.; 4];
+    let mut temp8a: [f64; 8] = [0.; 8];
+    let mut temp8b: [f64; 8] = [0.; 8];
+    let mut temp16: [f64; 16] = [0.; 16];
     let mut temp8alen: i32 = 0;
     let mut temp8blen: i32 = 0;
     let mut temp16len: i32 = 0;
-    let mut abc: [libc::c_double; 24] = [0.; 24];
-    let mut bcd: [libc::c_double; 24] = [0.; 24];
-    let mut cde: [libc::c_double; 24] = [0.; 24];
-    let mut dea: [libc::c_double; 24] = [0.; 24];
-    let mut eab: [libc::c_double; 24] = [0.; 24];
-    let mut abd: [libc::c_double; 24] = [0.; 24];
-    let mut bce: [libc::c_double; 24] = [0.; 24];
-    let mut cda: [libc::c_double; 24] = [0.; 24];
-    let mut deb: [libc::c_double; 24] = [0.; 24];
-    let mut eac: [libc::c_double; 24] = [0.; 24];
+    let mut abc: [f64; 24] = [0.; 24];
+    let mut bcd: [f64; 24] = [0.; 24];
+    let mut cde: [f64; 24] = [0.; 24];
+    let mut dea: [f64; 24] = [0.; 24];
+    let mut eab: [f64; 24] = [0.; 24];
+    let mut abd: [f64; 24] = [0.; 24];
+    let mut bce: [f64; 24] = [0.; 24];
+    let mut cda: [f64; 24] = [0.; 24];
+    let mut deb: [f64; 24] = [0.; 24];
+    let mut eac: [f64; 24] = [0.; 24];
     let mut abclen: i32 = 0;
     let mut bcdlen: i32 = 0;
     let mut cdelen: i32 = 0;
@@ -9502,63 +9502,63 @@ pub unsafe extern "C" fn insphereexact(
     let mut cdalen: i32 = 0;
     let mut deblen: i32 = 0;
     let mut eaclen: i32 = 0;
-    let mut temp48a: [libc::c_double; 48] = [0.; 48];
-    let mut temp48b: [libc::c_double; 48] = [0.; 48];
+    let mut temp48a: [f64; 48] = [0.; 48];
+    let mut temp48b: [f64; 48] = [0.; 48];
     let mut temp48alen: i32 = 0;
     let mut temp48blen: i32 = 0;
-    let mut abcd: [libc::c_double; 96] = [0.; 96];
-    let mut bcde: [libc::c_double; 96] = [0.; 96];
-    let mut cdea: [libc::c_double; 96] = [0.; 96];
-    let mut deab: [libc::c_double; 96] = [0.; 96];
-    let mut eabc: [libc::c_double; 96] = [0.; 96];
+    let mut abcd: [f64; 96] = [0.; 96];
+    let mut bcde: [f64; 96] = [0.; 96];
+    let mut cdea: [f64; 96] = [0.; 96];
+    let mut deab: [f64; 96] = [0.; 96];
+    let mut eabc: [f64; 96] = [0.; 96];
     let mut abcdlen: i32 = 0;
     let mut bcdelen: i32 = 0;
     let mut cdealen: i32 = 0;
     let mut deablen: i32 = 0;
     let mut eabclen: i32 = 0;
-    let mut temp192: [libc::c_double; 192] = [0.; 192];
-    let mut det384x: [libc::c_double; 384] = [0.; 384];
-    let mut det384y: [libc::c_double; 384] = [0.; 384];
-    let mut det384z: [libc::c_double; 384] = [0.; 384];
+    let mut temp192: [f64; 192] = [0.; 192];
+    let mut det384x: [f64; 384] = [0.; 384];
+    let mut det384y: [f64; 384] = [0.; 384];
+    let mut det384z: [f64; 384] = [0.; 384];
     let mut xlen: i32 = 0;
     let mut ylen: i32 = 0;
     let mut zlen: i32 = 0;
-    let mut detxy: [libc::c_double; 768] = [0.; 768];
+    let mut detxy: [f64; 768] = [0.; 768];
     let mut xylen: i32 = 0;
-    let mut adet: [libc::c_double; 1152] = [0.; 1152];
-    let mut bdet: [libc::c_double; 1152] = [0.; 1152];
-    let mut cdet: [libc::c_double; 1152] = [0.; 1152];
-    let mut ddet: [libc::c_double; 1152] = [0.; 1152];
-    let mut edet: [libc::c_double; 1152] = [0.; 1152];
+    let mut adet: [f64; 1152] = [0.; 1152];
+    let mut bdet: [f64; 1152] = [0.; 1152];
+    let mut cdet: [f64; 1152] = [0.; 1152];
+    let mut ddet: [f64; 1152] = [0.; 1152];
+    let mut edet: [f64; 1152] = [0.; 1152];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
     let mut dlen: i32 = 0;
     let mut elen: i32 = 0;
-    let mut abdet: [libc::c_double; 2304] = [0.; 2304];
-    let mut cddet: [libc::c_double; 2304] = [0.; 2304];
-    let mut cdedet: [libc::c_double; 3456] = [0.; 3456];
+    let mut abdet: [f64; 2304] = [0.; 2304];
+    let mut cddet: [f64; 2304] = [0.; 2304];
+    let mut cdedet: [f64; 3456] = [0.; 3456];
     let mut ablen: i32 = 0;
     let mut cdlen: i32 = 0;
-    let mut deter: [libc::c_double; 5760] = [0.; 5760];
+    let mut deter: [f64; 5760] = [0.; 5760];
     let mut deterlen: i32 = 0;
     let mut i: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     axby1 = *pa.offset(0 as i32 as isize)
         * *pb.offset(1 as i32 as isize);
     c = splitter * *pa.offset(0 as i32 as isize);
@@ -10811,169 +10811,169 @@ pub unsafe extern "C" fn insphereexact(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereslow(
-    mut pa: *mut libc::c_double,
-    mut pb: *mut libc::c_double,
-    mut pc: *mut libc::c_double,
-    mut pd: *mut libc::c_double,
-    mut pe: *mut libc::c_double,
-) -> libc::c_double {
-    let mut aex: libc::c_double = 0.;
-    let mut bex: libc::c_double = 0.;
-    let mut cex: libc::c_double = 0.;
-    let mut dex: libc::c_double = 0.;
-    let mut aey: libc::c_double = 0.;
-    let mut bey: libc::c_double = 0.;
-    let mut cey: libc::c_double = 0.;
-    let mut dey: libc::c_double = 0.;
-    let mut aez: libc::c_double = 0.;
-    let mut bez: libc::c_double = 0.;
-    let mut cez: libc::c_double = 0.;
-    let mut dez: libc::c_double = 0.;
-    let mut aextail: libc::c_double = 0.;
-    let mut bextail: libc::c_double = 0.;
-    let mut cextail: libc::c_double = 0.;
-    let mut dextail: libc::c_double = 0.;
-    let mut aeytail: libc::c_double = 0.;
-    let mut beytail: libc::c_double = 0.;
-    let mut ceytail: libc::c_double = 0.;
-    let mut deytail: libc::c_double = 0.;
-    let mut aeztail: libc::c_double = 0.;
-    let mut beztail: libc::c_double = 0.;
-    let mut ceztail: libc::c_double = 0.;
-    let mut deztail: libc::c_double = 0.;
-    let mut negate: libc::c_double = 0.;
-    let mut negatetail: libc::c_double = 0.;
-    let mut axby7: libc::c_double = 0.;
-    let mut bxcy7: libc::c_double = 0.;
-    let mut cxdy7: libc::c_double = 0.;
-    let mut dxay7: libc::c_double = 0.;
-    let mut axcy7: libc::c_double = 0.;
-    let mut bxdy7: libc::c_double = 0.;
-    let mut bxay7: libc::c_double = 0.;
-    let mut cxby7: libc::c_double = 0.;
-    let mut dxcy7: libc::c_double = 0.;
-    let mut axdy7: libc::c_double = 0.;
-    let mut cxay7: libc::c_double = 0.;
-    let mut dxby7: libc::c_double = 0.;
-    let mut axby: [libc::c_double; 8] = [0.; 8];
-    let mut bxcy: [libc::c_double; 8] = [0.; 8];
-    let mut cxdy: [libc::c_double; 8] = [0.; 8];
-    let mut dxay: [libc::c_double; 8] = [0.; 8];
-    let mut axcy: [libc::c_double; 8] = [0.; 8];
-    let mut bxdy: [libc::c_double; 8] = [0.; 8];
-    let mut bxay: [libc::c_double; 8] = [0.; 8];
-    let mut cxby: [libc::c_double; 8] = [0.; 8];
-    let mut dxcy: [libc::c_double; 8] = [0.; 8];
-    let mut axdy: [libc::c_double; 8] = [0.; 8];
-    let mut cxay: [libc::c_double; 8] = [0.; 8];
-    let mut dxby: [libc::c_double; 8] = [0.; 8];
-    let mut ab: [libc::c_double; 16] = [0.; 16];
-    let mut bc: [libc::c_double; 16] = [0.; 16];
-    let mut cd: [libc::c_double; 16] = [0.; 16];
-    let mut da: [libc::c_double; 16] = [0.; 16];
-    let mut ac: [libc::c_double; 16] = [0.; 16];
-    let mut bd: [libc::c_double; 16] = [0.; 16];
+    mut pa: *mut f64,
+    mut pb: *mut f64,
+    mut pc: *mut f64,
+    mut pd: *mut f64,
+    mut pe: *mut f64,
+) -> f64 {
+    let mut aex: f64 = 0.;
+    let mut bex: f64 = 0.;
+    let mut cex: f64 = 0.;
+    let mut dex: f64 = 0.;
+    let mut aey: f64 = 0.;
+    let mut bey: f64 = 0.;
+    let mut cey: f64 = 0.;
+    let mut dey: f64 = 0.;
+    let mut aez: f64 = 0.;
+    let mut bez: f64 = 0.;
+    let mut cez: f64 = 0.;
+    let mut dez: f64 = 0.;
+    let mut aextail: f64 = 0.;
+    let mut bextail: f64 = 0.;
+    let mut cextail: f64 = 0.;
+    let mut dextail: f64 = 0.;
+    let mut aeytail: f64 = 0.;
+    let mut beytail: f64 = 0.;
+    let mut ceytail: f64 = 0.;
+    let mut deytail: f64 = 0.;
+    let mut aeztail: f64 = 0.;
+    let mut beztail: f64 = 0.;
+    let mut ceztail: f64 = 0.;
+    let mut deztail: f64 = 0.;
+    let mut negate: f64 = 0.;
+    let mut negatetail: f64 = 0.;
+    let mut axby7: f64 = 0.;
+    let mut bxcy7: f64 = 0.;
+    let mut cxdy7: f64 = 0.;
+    let mut dxay7: f64 = 0.;
+    let mut axcy7: f64 = 0.;
+    let mut bxdy7: f64 = 0.;
+    let mut bxay7: f64 = 0.;
+    let mut cxby7: f64 = 0.;
+    let mut dxcy7: f64 = 0.;
+    let mut axdy7: f64 = 0.;
+    let mut cxay7: f64 = 0.;
+    let mut dxby7: f64 = 0.;
+    let mut axby: [f64; 8] = [0.; 8];
+    let mut bxcy: [f64; 8] = [0.; 8];
+    let mut cxdy: [f64; 8] = [0.; 8];
+    let mut dxay: [f64; 8] = [0.; 8];
+    let mut axcy: [f64; 8] = [0.; 8];
+    let mut bxdy: [f64; 8] = [0.; 8];
+    let mut bxay: [f64; 8] = [0.; 8];
+    let mut cxby: [f64; 8] = [0.; 8];
+    let mut dxcy: [f64; 8] = [0.; 8];
+    let mut axdy: [f64; 8] = [0.; 8];
+    let mut cxay: [f64; 8] = [0.; 8];
+    let mut dxby: [f64; 8] = [0.; 8];
+    let mut ab: [f64; 16] = [0.; 16];
+    let mut bc: [f64; 16] = [0.; 16];
+    let mut cd: [f64; 16] = [0.; 16];
+    let mut da: [f64; 16] = [0.; 16];
+    let mut ac: [f64; 16] = [0.; 16];
+    let mut bd: [f64; 16] = [0.; 16];
     let mut ablen: i32 = 0;
     let mut bclen: i32 = 0;
     let mut cdlen: i32 = 0;
     let mut dalen: i32 = 0;
     let mut aclen: i32 = 0;
     let mut bdlen: i32 = 0;
-    let mut temp32a: [libc::c_double; 32] = [0.; 32];
-    let mut temp32b: [libc::c_double; 32] = [0.; 32];
-    let mut temp64a: [libc::c_double; 64] = [0.; 64];
-    let mut temp64b: [libc::c_double; 64] = [0.; 64];
-    let mut temp64c: [libc::c_double; 64] = [0.; 64];
+    let mut temp32a: [f64; 32] = [0.; 32];
+    let mut temp32b: [f64; 32] = [0.; 32];
+    let mut temp64a: [f64; 64] = [0.; 64];
+    let mut temp64b: [f64; 64] = [0.; 64];
+    let mut temp64c: [f64; 64] = [0.; 64];
     let mut temp32alen: i32 = 0;
     let mut temp32blen: i32 = 0;
     let mut temp64alen: i32 = 0;
     let mut temp64blen: i32 = 0;
     let mut temp64clen: i32 = 0;
-    let mut temp128: [libc::c_double; 128] = [0.; 128];
-    let mut temp192: [libc::c_double; 192] = [0.; 192];
+    let mut temp128: [f64; 128] = [0.; 128];
+    let mut temp192: [f64; 192] = [0.; 192];
     let mut temp128len: i32 = 0;
     let mut temp192len: i32 = 0;
-    let mut detx: [libc::c_double; 384] = [0.; 384];
-    let mut detxx: [libc::c_double; 768] = [0.; 768];
-    let mut detxt: [libc::c_double; 384] = [0.; 384];
-    let mut detxxt: [libc::c_double; 768] = [0.; 768];
-    let mut detxtxt: [libc::c_double; 768] = [0.; 768];
+    let mut detx: [f64; 384] = [0.; 384];
+    let mut detxx: [f64; 768] = [0.; 768];
+    let mut detxt: [f64; 384] = [0.; 384];
+    let mut detxxt: [f64; 768] = [0.; 768];
+    let mut detxtxt: [f64; 768] = [0.; 768];
     let mut xlen: i32 = 0;
     let mut xxlen: i32 = 0;
     let mut xtlen: i32 = 0;
     let mut xxtlen: i32 = 0;
     let mut xtxtlen: i32 = 0;
-    let mut x1: [libc::c_double; 1536] = [0.; 1536];
-    let mut x2: [libc::c_double; 2304] = [0.; 2304];
+    let mut x1: [f64; 1536] = [0.; 1536];
+    let mut x2: [f64; 2304] = [0.; 2304];
     let mut x1len: i32 = 0;
     let mut x2len: i32 = 0;
-    let mut dety: [libc::c_double; 384] = [0.; 384];
-    let mut detyy: [libc::c_double; 768] = [0.; 768];
-    let mut detyt: [libc::c_double; 384] = [0.; 384];
-    let mut detyyt: [libc::c_double; 768] = [0.; 768];
-    let mut detytyt: [libc::c_double; 768] = [0.; 768];
+    let mut dety: [f64; 384] = [0.; 384];
+    let mut detyy: [f64; 768] = [0.; 768];
+    let mut detyt: [f64; 384] = [0.; 384];
+    let mut detyyt: [f64; 768] = [0.; 768];
+    let mut detytyt: [f64; 768] = [0.; 768];
     let mut ylen: i32 = 0;
     let mut yylen: i32 = 0;
     let mut ytlen: i32 = 0;
     let mut yytlen: i32 = 0;
     let mut ytytlen: i32 = 0;
-    let mut y1: [libc::c_double; 1536] = [0.; 1536];
-    let mut y2: [libc::c_double; 2304] = [0.; 2304];
+    let mut y1: [f64; 1536] = [0.; 1536];
+    let mut y2: [f64; 2304] = [0.; 2304];
     let mut y1len: i32 = 0;
     let mut y2len: i32 = 0;
-    let mut detz: [libc::c_double; 384] = [0.; 384];
-    let mut detzz: [libc::c_double; 768] = [0.; 768];
-    let mut detzt: [libc::c_double; 384] = [0.; 384];
-    let mut detzzt: [libc::c_double; 768] = [0.; 768];
-    let mut detztzt: [libc::c_double; 768] = [0.; 768];
+    let mut detz: [f64; 384] = [0.; 384];
+    let mut detzz: [f64; 768] = [0.; 768];
+    let mut detzt: [f64; 384] = [0.; 384];
+    let mut detzzt: [f64; 768] = [0.; 768];
+    let mut detztzt: [f64; 768] = [0.; 768];
     let mut zlen: i32 = 0;
     let mut zzlen: i32 = 0;
     let mut ztlen: i32 = 0;
     let mut zztlen: i32 = 0;
     let mut ztztlen: i32 = 0;
-    let mut z1: [libc::c_double; 1536] = [0.; 1536];
-    let mut z2: [libc::c_double; 2304] = [0.; 2304];
+    let mut z1: [f64; 1536] = [0.; 1536];
+    let mut z2: [f64; 2304] = [0.; 2304];
     let mut z1len: i32 = 0;
     let mut z2len: i32 = 0;
-    let mut detxy: [libc::c_double; 4608] = [0.; 4608];
+    let mut detxy: [f64; 4608] = [0.; 4608];
     let mut xylen: i32 = 0;
-    let mut adet: [libc::c_double; 6912] = [0.; 6912];
-    let mut bdet: [libc::c_double; 6912] = [0.; 6912];
-    let mut cdet: [libc::c_double; 6912] = [0.; 6912];
-    let mut ddet: [libc::c_double; 6912] = [0.; 6912];
+    let mut adet: [f64; 6912] = [0.; 6912];
+    let mut bdet: [f64; 6912] = [0.; 6912];
+    let mut cdet: [f64; 6912] = [0.; 6912];
+    let mut ddet: [f64; 6912] = [0.; 6912];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
     let mut dlen: i32 = 0;
-    let mut abdet: [libc::c_double; 13824] = [0.; 13824];
-    let mut cddet: [libc::c_double; 13824] = [0.; 13824];
-    let mut deter: [libc::c_double; 27648] = [0.; 27648];
+    let mut abdet: [f64; 13824] = [0.; 13824];
+    let mut cddet: [f64; 13824] = [0.; 13824];
+    let mut deter: [f64; 27648] = [0.; 27648];
     let mut deterlen: i32 = 0;
     let mut i: i32 = 0;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut a0hi: libc::c_double = 0.;
-    let mut a0lo: libc::c_double = 0.;
-    let mut a1hi: libc::c_double = 0.;
-    let mut a1lo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _k: libc::c_double = 0.;
-    let mut _l: libc::c_double = 0.;
-    let mut _m: libc::c_double = 0.;
-    let mut _n: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
-    let mut _1: libc::c_double = 0.;
-    let mut _2: libc::c_double = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut a0hi: f64 = 0.;
+    let mut a0lo: f64 = 0.;
+    let mut a1hi: f64 = 0.;
+    let mut a1lo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _k: f64 = 0.;
+    let mut _l: f64 = 0.;
+    let mut _m: f64 = 0.;
+    let mut _n: f64 = 0.;
+    let mut _0: f64 = 0.;
+    let mut _1: f64 = 0.;
+    let mut _2: f64 = 0.;
     aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     bvirt = *pa.offset(0 as i32 as isize) - aex;
     avirt = aex + bvirt;
@@ -13553,131 +13553,131 @@ pub unsafe extern "C" fn insphereslow(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphereadapt(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-    mut pe: *const libc::c_double,
-    mut permanent: libc::c_double,
-) -> libc::c_double {
-    let mut aex: libc::c_double = 0.;
-    let mut bex: libc::c_double = 0.;
-    let mut cex: libc::c_double = 0.;
-    let mut dex: libc::c_double = 0.;
-    let mut aey: libc::c_double = 0.;
-    let mut bey: libc::c_double = 0.;
-    let mut cey: libc::c_double = 0.;
-    let mut dey: libc::c_double = 0.;
-    let mut aez: libc::c_double = 0.;
-    let mut bez: libc::c_double = 0.;
-    let mut cez: libc::c_double = 0.;
-    let mut dez: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
-    let mut aexbey1: libc::c_double = 0.;
-    let mut bexaey1: libc::c_double = 0.;
-    let mut bexcey1: libc::c_double = 0.;
-    let mut cexbey1: libc::c_double = 0.;
-    let mut cexdey1: libc::c_double = 0.;
-    let mut dexcey1: libc::c_double = 0.;
-    let mut dexaey1: libc::c_double = 0.;
-    let mut aexdey1: libc::c_double = 0.;
-    let mut aexcey1: libc::c_double = 0.;
-    let mut cexaey1: libc::c_double = 0.;
-    let mut bexdey1: libc::c_double = 0.;
-    let mut dexbey1: libc::c_double = 0.;
-    let mut aexbey0: libc::c_double = 0.;
-    let mut bexaey0: libc::c_double = 0.;
-    let mut bexcey0: libc::c_double = 0.;
-    let mut cexbey0: libc::c_double = 0.;
-    let mut cexdey0: libc::c_double = 0.;
-    let mut dexcey0: libc::c_double = 0.;
-    let mut dexaey0: libc::c_double = 0.;
-    let mut aexdey0: libc::c_double = 0.;
-    let mut aexcey0: libc::c_double = 0.;
-    let mut cexaey0: libc::c_double = 0.;
-    let mut bexdey0: libc::c_double = 0.;
-    let mut dexbey0: libc::c_double = 0.;
-    let mut ab: [libc::c_double; 4] = [0.; 4];
-    let mut bc: [libc::c_double; 4] = [0.; 4];
-    let mut cd: [libc::c_double; 4] = [0.; 4];
-    let mut da: [libc::c_double; 4] = [0.; 4];
-    let mut ac: [libc::c_double; 4] = [0.; 4];
-    let mut bd: [libc::c_double; 4] = [0.; 4];
-    let mut ab3: libc::c_double = 0.;
-    let mut bc3: libc::c_double = 0.;
-    let mut cd3: libc::c_double = 0.;
-    let mut da3: libc::c_double = 0.;
-    let mut ac3: libc::c_double = 0.;
-    let mut bd3: libc::c_double = 0.;
-    let mut abeps: libc::c_double = 0.;
-    let mut bceps: libc::c_double = 0.;
-    let mut cdeps: libc::c_double = 0.;
-    let mut daeps: libc::c_double = 0.;
-    let mut aceps: libc::c_double = 0.;
-    let mut bdeps: libc::c_double = 0.;
-    let mut temp8a: [libc::c_double; 8] = [0.; 8];
-    let mut temp8b: [libc::c_double; 8] = [0.; 8];
-    let mut temp8c: [libc::c_double; 8] = [0.; 8];
-    let mut temp16: [libc::c_double; 16] = [0.; 16];
-    let mut temp24: [libc::c_double; 24] = [0.; 24];
-    let mut temp48: [libc::c_double; 48] = [0.; 48];
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+    mut pe: *const f64,
+    mut permanent: f64,
+) -> f64 {
+    let mut aex: f64 = 0.;
+    let mut bex: f64 = 0.;
+    let mut cex: f64 = 0.;
+    let mut dex: f64 = 0.;
+    let mut aey: f64 = 0.;
+    let mut bey: f64 = 0.;
+    let mut cey: f64 = 0.;
+    let mut dey: f64 = 0.;
+    let mut aez: f64 = 0.;
+    let mut bez: f64 = 0.;
+    let mut cez: f64 = 0.;
+    let mut dez: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut errbound: f64 = 0.;
+    let mut aexbey1: f64 = 0.;
+    let mut bexaey1: f64 = 0.;
+    let mut bexcey1: f64 = 0.;
+    let mut cexbey1: f64 = 0.;
+    let mut cexdey1: f64 = 0.;
+    let mut dexcey1: f64 = 0.;
+    let mut dexaey1: f64 = 0.;
+    let mut aexdey1: f64 = 0.;
+    let mut aexcey1: f64 = 0.;
+    let mut cexaey1: f64 = 0.;
+    let mut bexdey1: f64 = 0.;
+    let mut dexbey1: f64 = 0.;
+    let mut aexbey0: f64 = 0.;
+    let mut bexaey0: f64 = 0.;
+    let mut bexcey0: f64 = 0.;
+    let mut cexbey0: f64 = 0.;
+    let mut cexdey0: f64 = 0.;
+    let mut dexcey0: f64 = 0.;
+    let mut dexaey0: f64 = 0.;
+    let mut aexdey0: f64 = 0.;
+    let mut aexcey0: f64 = 0.;
+    let mut cexaey0: f64 = 0.;
+    let mut bexdey0: f64 = 0.;
+    let mut dexbey0: f64 = 0.;
+    let mut ab: [f64; 4] = [0.; 4];
+    let mut bc: [f64; 4] = [0.; 4];
+    let mut cd: [f64; 4] = [0.; 4];
+    let mut da: [f64; 4] = [0.; 4];
+    let mut ac: [f64; 4] = [0.; 4];
+    let mut bd: [f64; 4] = [0.; 4];
+    let mut ab3: f64 = 0.;
+    let mut bc3: f64 = 0.;
+    let mut cd3: f64 = 0.;
+    let mut da3: f64 = 0.;
+    let mut ac3: f64 = 0.;
+    let mut bd3: f64 = 0.;
+    let mut abeps: f64 = 0.;
+    let mut bceps: f64 = 0.;
+    let mut cdeps: f64 = 0.;
+    let mut daeps: f64 = 0.;
+    let mut aceps: f64 = 0.;
+    let mut bdeps: f64 = 0.;
+    let mut temp8a: [f64; 8] = [0.; 8];
+    let mut temp8b: [f64; 8] = [0.; 8];
+    let mut temp8c: [f64; 8] = [0.; 8];
+    let mut temp16: [f64; 16] = [0.; 16];
+    let mut temp24: [f64; 24] = [0.; 24];
+    let mut temp48: [f64; 48] = [0.; 48];
     let mut temp8alen: i32 = 0;
     let mut temp8blen: i32 = 0;
     let mut temp8clen: i32 = 0;
     let mut temp16len: i32 = 0;
     let mut temp24len: i32 = 0;
     let mut temp48len: i32 = 0;
-    let mut xdet: [libc::c_double; 96] = [0.; 96];
-    let mut ydet: [libc::c_double; 96] = [0.; 96];
-    let mut zdet: [libc::c_double; 96] = [0.; 96];
-    let mut xydet: [libc::c_double; 192] = [0.; 192];
+    let mut xdet: [f64; 96] = [0.; 96];
+    let mut ydet: [f64; 96] = [0.; 96];
+    let mut zdet: [f64; 96] = [0.; 96];
+    let mut xydet: [f64; 192] = [0.; 192];
     let mut xlen: i32 = 0;
     let mut ylen: i32 = 0;
     let mut zlen: i32 = 0;
     let mut xylen: i32 = 0;
-    let mut adet: [libc::c_double; 288] = [0.; 288];
-    let mut bdet: [libc::c_double; 288] = [0.; 288];
-    let mut cdet: [libc::c_double; 288] = [0.; 288];
-    let mut ddet: [libc::c_double; 288] = [0.; 288];
+    let mut adet: [f64; 288] = [0.; 288];
+    let mut bdet: [f64; 288] = [0.; 288];
+    let mut cdet: [f64; 288] = [0.; 288];
+    let mut ddet: [f64; 288] = [0.; 288];
     let mut alen: i32 = 0;
     let mut blen: i32 = 0;
     let mut clen: i32 = 0;
     let mut dlen: i32 = 0;
-    let mut abdet: [libc::c_double; 576] = [0.; 576];
-    let mut cddet: [libc::c_double; 576] = [0.; 576];
+    let mut abdet: [f64; 576] = [0.; 576];
+    let mut cddet: [f64; 576] = [0.; 576];
     let mut ablen: i32 = 0;
     let mut cdlen: i32 = 0;
-    let mut fin1: [libc::c_double; 1152] = [0.; 1152];
+    let mut fin1: [f64; 1152] = [0.; 1152];
     let mut finlength: i32 = 0;
-    let mut aextail: libc::c_double = 0.;
-    let mut bextail: libc::c_double = 0.;
-    let mut cextail: libc::c_double = 0.;
-    let mut dextail: libc::c_double = 0.;
-    let mut aeytail: libc::c_double = 0.;
-    let mut beytail: libc::c_double = 0.;
-    let mut ceytail: libc::c_double = 0.;
-    let mut deytail: libc::c_double = 0.;
-    let mut aeztail: libc::c_double = 0.;
-    let mut beztail: libc::c_double = 0.;
-    let mut ceztail: libc::c_double = 0.;
-    let mut deztail: libc::c_double = 0.;
-    let mut bvirt: libc::c_double = 0.;
-    let mut avirt: libc::c_double = 0.;
-    let mut bround: libc::c_double = 0.;
-    let mut around: libc::c_double = 0.;
-    let mut c: libc::c_double = 0.;
-    let mut abig: libc::c_double = 0.;
-    let mut ahi: libc::c_double = 0.;
-    let mut alo: libc::c_double = 0.;
-    let mut bhi: libc::c_double = 0.;
-    let mut blo: libc::c_double = 0.;
-    let mut err1: libc::c_double = 0.;
-    let mut err2: libc::c_double = 0.;
-    let mut err3: libc::c_double = 0.;
-    let mut _i: libc::c_double = 0.;
-    let mut _j: libc::c_double = 0.;
-    let mut _0: libc::c_double = 0.;
+    let mut aextail: f64 = 0.;
+    let mut bextail: f64 = 0.;
+    let mut cextail: f64 = 0.;
+    let mut dextail: f64 = 0.;
+    let mut aeytail: f64 = 0.;
+    let mut beytail: f64 = 0.;
+    let mut ceytail: f64 = 0.;
+    let mut deytail: f64 = 0.;
+    let mut aeztail: f64 = 0.;
+    let mut beztail: f64 = 0.;
+    let mut ceztail: f64 = 0.;
+    let mut deztail: f64 = 0.;
+    let mut bvirt: f64 = 0.;
+    let mut avirt: f64 = 0.;
+    let mut bround: f64 = 0.;
+    let mut around: f64 = 0.;
+    let mut c: f64 = 0.;
+    let mut abig: f64 = 0.;
+    let mut ahi: f64 = 0.;
+    let mut alo: f64 = 0.;
+    let mut bhi: f64 = 0.;
+    let mut blo: f64 = 0.;
+    let mut err1: f64 = 0.;
+    let mut err2: f64 = 0.;
+    let mut err3: f64 = 0.;
+    let mut _i: f64 = 0.;
+    let mut _j: f64 = 0.;
+    let mut _0: f64 = 0.;
     aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
@@ -14454,69 +14454,69 @@ pub unsafe extern "C" fn insphereadapt(
 }
 #[no_mangle]
 pub unsafe extern "C" fn insphere(
-    mut pa: *const libc::c_double,
-    mut pb: *const libc::c_double,
-    mut pc: *const libc::c_double,
-    mut pd: *const libc::c_double,
-    mut pe: *const libc::c_double,
-) -> libc::c_double {
-    let mut aex: libc::c_double = 0.;
-    let mut bex: libc::c_double = 0.;
-    let mut cex: libc::c_double = 0.;
-    let mut dex: libc::c_double = 0.;
-    let mut aey: libc::c_double = 0.;
-    let mut bey: libc::c_double = 0.;
-    let mut cey: libc::c_double = 0.;
-    let mut dey: libc::c_double = 0.;
-    let mut aez: libc::c_double = 0.;
-    let mut bez: libc::c_double = 0.;
-    let mut cez: libc::c_double = 0.;
-    let mut dez: libc::c_double = 0.;
-    let mut aexbey: libc::c_double = 0.;
-    let mut bexaey: libc::c_double = 0.;
-    let mut bexcey: libc::c_double = 0.;
-    let mut cexbey: libc::c_double = 0.;
-    let mut cexdey: libc::c_double = 0.;
-    let mut dexcey: libc::c_double = 0.;
-    let mut dexaey: libc::c_double = 0.;
-    let mut aexdey: libc::c_double = 0.;
-    let mut aexcey: libc::c_double = 0.;
-    let mut cexaey: libc::c_double = 0.;
-    let mut bexdey: libc::c_double = 0.;
-    let mut dexbey: libc::c_double = 0.;
-    let mut alift: libc::c_double = 0.;
-    let mut blift: libc::c_double = 0.;
-    let mut clift: libc::c_double = 0.;
-    let mut dlift: libc::c_double = 0.;
-    let mut ab: libc::c_double = 0.;
-    let mut bc: libc::c_double = 0.;
-    let mut cd: libc::c_double = 0.;
-    let mut da: libc::c_double = 0.;
-    let mut ac: libc::c_double = 0.;
-    let mut bd: libc::c_double = 0.;
-    let mut abc: libc::c_double = 0.;
-    let mut bcd: libc::c_double = 0.;
-    let mut cda: libc::c_double = 0.;
-    let mut dab: libc::c_double = 0.;
-    let mut aezplus: libc::c_double = 0.;
-    let mut bezplus: libc::c_double = 0.;
-    let mut cezplus: libc::c_double = 0.;
-    let mut dezplus: libc::c_double = 0.;
-    let mut aexbeyplus: libc::c_double = 0.;
-    let mut bexaeyplus: libc::c_double = 0.;
-    let mut bexceyplus: libc::c_double = 0.;
-    let mut cexbeyplus: libc::c_double = 0.;
-    let mut cexdeyplus: libc::c_double = 0.;
-    let mut dexceyplus: libc::c_double = 0.;
-    let mut dexaeyplus: libc::c_double = 0.;
-    let mut aexdeyplus: libc::c_double = 0.;
-    let mut aexceyplus: libc::c_double = 0.;
-    let mut cexaeyplus: libc::c_double = 0.;
-    let mut bexdeyplus: libc::c_double = 0.;
-    let mut dexbeyplus: libc::c_double = 0.;
-    let mut det: libc::c_double = 0.;
-    let mut permanent: libc::c_double = 0.;
-    let mut errbound: libc::c_double = 0.;
+    mut pa: *const f64,
+    mut pb: *const f64,
+    mut pc: *const f64,
+    mut pd: *const f64,
+    mut pe: *const f64,
+) -> f64 {
+    let mut aex: f64 = 0.;
+    let mut bex: f64 = 0.;
+    let mut cex: f64 = 0.;
+    let mut dex: f64 = 0.;
+    let mut aey: f64 = 0.;
+    let mut bey: f64 = 0.;
+    let mut cey: f64 = 0.;
+    let mut dey: f64 = 0.;
+    let mut aez: f64 = 0.;
+    let mut bez: f64 = 0.;
+    let mut cez: f64 = 0.;
+    let mut dez: f64 = 0.;
+    let mut aexbey: f64 = 0.;
+    let mut bexaey: f64 = 0.;
+    let mut bexcey: f64 = 0.;
+    let mut cexbey: f64 = 0.;
+    let mut cexdey: f64 = 0.;
+    let mut dexcey: f64 = 0.;
+    let mut dexaey: f64 = 0.;
+    let mut aexdey: f64 = 0.;
+    let mut aexcey: f64 = 0.;
+    let mut cexaey: f64 = 0.;
+    let mut bexdey: f64 = 0.;
+    let mut dexbey: f64 = 0.;
+    let mut alift: f64 = 0.;
+    let mut blift: f64 = 0.;
+    let mut clift: f64 = 0.;
+    let mut dlift: f64 = 0.;
+    let mut ab: f64 = 0.;
+    let mut bc: f64 = 0.;
+    let mut cd: f64 = 0.;
+    let mut da: f64 = 0.;
+    let mut ac: f64 = 0.;
+    let mut bd: f64 = 0.;
+    let mut abc: f64 = 0.;
+    let mut bcd: f64 = 0.;
+    let mut cda: f64 = 0.;
+    let mut dab: f64 = 0.;
+    let mut aezplus: f64 = 0.;
+    let mut bezplus: f64 = 0.;
+    let mut cezplus: f64 = 0.;
+    let mut dezplus: f64 = 0.;
+    let mut aexbeyplus: f64 = 0.;
+    let mut bexaeyplus: f64 = 0.;
+    let mut bexceyplus: f64 = 0.;
+    let mut cexbeyplus: f64 = 0.;
+    let mut cexdeyplus: f64 = 0.;
+    let mut dexceyplus: f64 = 0.;
+    let mut dexaeyplus: f64 = 0.;
+    let mut aexdeyplus: f64 = 0.;
+    let mut aexceyplus: f64 = 0.;
+    let mut cexaeyplus: f64 = 0.;
+    let mut bexdeyplus: f64 = 0.;
+    let mut dexbeyplus: f64 = 0.;
+    let mut det: f64 = 0.;
+    let mut permanent: f64 = 0.;
+    let mut errbound: f64 = 0.;
     aex = *pa.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     bex = *pb.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
     cex = *pc.offset(0 as i32 as isize) - *pe.offset(0 as i32 as isize);
